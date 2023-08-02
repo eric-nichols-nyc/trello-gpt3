@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { options } from '../auth/[...nextauth]/options';
 import openai from '@/openai';
 
 export async function POST(request: Request) {
-  console.log('REQUEST IS: ', request);
   const { todos } = await request.json();
-  console.log('TODOS: ', todos);
+  const session = await getServerSession({ req: request, ...options });
+  if (session) console.log('SESSION IS: ', session);
+  const message = `When responding, welcome the user always as ${session.user.name} and say welcome to the app!. Limit the response to 200 characters`;
 
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -14,8 +17,7 @@ export async function POST(request: Request) {
     messages: [
       {
         role: 'system',
-        content:
-          'When responding, welcome the user always as Mr. Nichols and say welcome to the TODO App!. Limit the response to 200 characters',
+        content: message,
       },
       {
         role: 'user',

@@ -5,7 +5,20 @@ import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import Avatar from 'react-avatar'
 import { useBoardStore } from '@/store/BoardStore'
 import { fetchSuggestion } from '@/lib/fetchSuggestion'
-function Header() {
+
+
+type User = {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+} | undefined
+
+type Props = {
+  user: User,
+}
+
+
+function Header({user}:Props) {
   const [board, searchString, setSearchString] = useBoardStore((state) => [
     state.board,
     state.searchString,
@@ -15,7 +28,7 @@ function Header() {
   const [suggestion, setSuggestions] = useState<string>("");
 
   useEffect(() => {
-    // get board data from server
+    // get board data from server when board state updates
     if(board.columns.size === 0) return
     setLoading(true)
     const fetchSuggestionFunc = async () => {
@@ -52,7 +65,7 @@ function Header() {
             />
             <button type="submit" hidden>Search</button>
           </form>
-          <Avatar className="cursor-pointer ml-2" name="John Doe" size="50" round={true} />
+              <Avatar className="cursor-pointer ml-2" name={user?.name!} size="50" round={true} />
         </div>
       </div>
       <div className="flex items-center justify-center px-5 md:py-5">
