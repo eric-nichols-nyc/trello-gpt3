@@ -8,7 +8,7 @@ export const connectDB = async () => {
     .connect(process.env.MONGODB_URI!, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      dbName: 'user',
+      dbName: 'trello-gpt',
     } as ConnectOptions)
     .then((res) => {
       console.log(
