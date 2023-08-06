@@ -8,34 +8,34 @@ interface BoardState {
   board: Board;
   getBoard: () => void;
   setBoardState: (board: Board) => void;
-  updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
+  updateTodoInDB: (card: Card, columnId: string) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
   newTask: string;
   setNewTask: (task: string) => void;
-  newTaskType: TypedColumn;
-  setNewTaskType: (columnId: TypedColumn) => void;
+  newTaskType: string;
+  setNewTaskType: (columnId: string) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
   board: {
-    columns: new Map<TypedColumn, Column>()
+    columns: []
   },
 
   getBoard: async() => {
-    const board = await getTodosGroupedByColumn() as Board;
-    set({board});
+    // const board = await getTodosGroupedByColumn() as Board;
+    // set({board});
   },
 
   setBoardState: (board: Board) => set({board}),
 
-  updateTodoInDB: async (todo: Todo, columnId: TypedColumn) => {
+  updateTodoInDB: async (card: Card, columnId: string) => {
     await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID as string,
-      todo.$id,
+      card._id,
       {
-        title: todo.title,
+        title: card.name,
         status: columnId,
       }
     )

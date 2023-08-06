@@ -15,11 +15,11 @@ export const getTodosGroupedByColumn = async () => {
       if(!acc.get(todo.status)){
         acc.set(todo.status, {
           id: todo.status,
-          todos: []
+          cards: []
         })
       }
 
-      acc.get(todo.status)?.todos.push({
+      acc.get(todo.status)?.cards.push({
         $id: todo.$id,
         $createdAt: todo.$createdAt,
         title: todo.title,
@@ -31,10 +31,10 @@ export const getTodosGroupedByColumn = async () => {
       });
 
       return acc;
-    }, new Map<TypedColumn, Column>());
+    }, []);
 
     // if column doesn't have a todo, assign an empty array
-    const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done'];
+    const columnTypes: string[]
     for(const columnType of columnTypes){
       if(!columns.get(columnType)){
         columns.set(columnType, {

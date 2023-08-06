@@ -3,16 +3,16 @@ import { XCircleIcon } from '@heroicons/react/24/solid';
 import React from 'react'
 
 type Props = {
-  todo: Todo;
+  card: Card;
   index: number;
-  id: TypedColumn;
+  id: string;
   innerRef: any;
   draggableProps: any;
   draggableHandleProps: any;
 }
 
 function TodoCard({
-  todo,
+  card,
   index,
   id,
   innerRef,
@@ -26,7 +26,7 @@ function TodoCard({
       ref={innerRef}
       className='bg-white rounded-md space-y-2 drop-shadow-md p-2'>
       <div className='flex justify-between items-center p-5'>
-        <p>{todo.title}</p>
+        <p>{card.name}</p>
         <button>
           <XCircleIcon className='h-6 w-6 text-red-400' />
         </button>

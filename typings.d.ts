@@ -1,19 +1,19 @@
 interface Board {
-  columns: Map<TypedColumn, Column>;
+  columns: Column[];
 }
 
-type TypedColumn = 'todo' | 'inprogress' | 'done';
+// type TypedColumn = 'todo' | 'inprogress' | 'done';
 
 interface Column {
-  id: TypedColumn;
-  todos: Todo[];
+  id: string;
+  cards: Card[];
 }
 
-interface Todo {
-  $id: string;
-  $createdAt: string;
-  title: string;
-  status: TypedColumn;
+interface Card {
+  _id: string;
+  $createdAt?: string;
+  name: string;
+  listId: string;
   image?: string;
 }
 

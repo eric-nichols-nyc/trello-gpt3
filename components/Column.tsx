@@ -8,20 +8,13 @@ import { PlusCircleIcon } from '@heroicons/react/24/solid'
 import { useBoardStore } from '@/store/BoardStore'
 import { useModalStore } from '@/store/ModalStore'
 type Props = {
-  id: TypedColumn,
-  todos: Todo[],
+  id: string,
+  name: string,
+  cards: Card[],
   index: number
 }
 
-const idTocolumnText: {
-  [key in TypedColumn]: string;
-} = {
-  todo: 'To Do',
-  inprogress: 'In Progress',
-  done: 'Done'
-}
-
-function Column({ id, todos, index }: Props) {
+function Column({ id, cards, name, index }: Props) {
   const [searchString] = useBoardStore((state) => [state.searchString])
   const [openModal] = useModalStore((state) => [state.openModal])
   return (
@@ -41,19 +34,19 @@ function Column({ id, todos, index }: Props) {
                 ref={provided.innerRef}
                 className={`pb-2 rounded-2xl ${snapshot.isDraggingOver ? 'bg-green-100' : 'bg-white'}`}
               >
-                <h2 className='flex justify-between font-bold text-xl'>{idTocolumnText[id]}
+                <h2 className='flex justify-between font-bold text-xl'>{name}
                   <span className='text-gray-500 bg-gray-200 rounded-full p-2 text-sm font-normal'>{!searchString 
-                  ? todos.length 
-                  : todos.filter((todo) => todo.title.toLowerCase()
+                  ? cards.length 
+                  : cards.filter((card) => card.name.toLowerCase()
                   .includes(searchString.toLowerCase()))
                   .length}</span></h2>
                 <div className="space-y-2">
-                  {todos.map((todo, index) => {
-                    if(searchString && !todo.title.toLowerCase().includes(searchString.toLowerCase())) return null
-                      return  <Draggable key={todo.$id} draggableId={todo.$id} index={index}>
+                  {cards.map((card, index) => {
+                    if(searchString && !card.name.toLowerCase().includes(searchString.toLowerCase())) return null
+                      return  <Draggable key={card._id} draggableId={card._id} index={index}>
                       {(provided) => (
                         <TodoCard
-                          todo={todo}
+                          card={card}
                           index={index}
                           id={id}
                           innerRef={provided.innerRef}

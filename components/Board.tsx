@@ -7,6 +7,7 @@ import React, { useEffect } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './Column'
 import CreateListForm from './CreateListForm'
+import data from '../public/json/columns.json';
 
 function Board() {
   const [board, getBoard, setBoardState, updateTodoInDB] = useBoardStore((state) => [
@@ -15,9 +16,13 @@ function Board() {
     state.setBoardState,
     state.updateTodoInDB])
 
+    console.log(data)
+
   useEffect(() => {
     // get board data from server
     getBoard();
+    const columns = data.columns;
+    console.log('columns = ', columns)
     return () => {
       // second
     }
@@ -36,93 +41,82 @@ function Board() {
       // create new map
       const rearaangedColumns = new Map(entries);
       // update board state
-      setBoardState({
-        ...board,
-        columns: rearaangedColumns
-      })
+      // setBoardState({
+      //   ...board,
+      //   columns: rearaangedColumns
+      // })
 
       return;
     } 
     // handle card drag
     // this step is need as the column indexs are stored as numbers 0,1,2 instead of ids
     const columns = Array.from(board.columns);
+    console.log('columns = ', columns)
     const startColIndex = columns[Number(source.droppableId)];
     const finalColIndex = columns[Number(destination.droppableId)];
 
-    const lists = [
-      {
-        id: 0,
-        title: 'To Do',
-        todos: []
-      },
-      {
-        id: 1,
-        title: '',
-        todos: []
-      }
-    ];
 
-    const startCol: Column = {
-      id: startColIndex[0],
-      todos: startColIndex[1].todos
-    }
+    // const startCol: Column = {
+    //   id: startColIndex,
+    //   todos: startColIndex[1].todos
+    // }
 
-    const destinationCol: Column = {
-      id: finalColIndex[0],
-      todos: finalColIndex[1].todos
-    }
-    if (!startCol || !destinationCol) return;
-    if (source.index === destination.index && startCol === destinationCol) return;
+    // const destinationCol: Column = {
+    //   id: finalColIndex[0],
+    //   todos: finalColIndex[1].cards
+    // }
+    //if (!startCol || !destinationCol) return;
+   // if (source.index === destination.index && startCol === destinationCol) return;
     // copy the todos from the source column
-    const newTodos = startCol.todos
+    //const newTodos = startCol.cards
     // target the moved todo
-    const [todoMoved] = newTodos.splice(source.index, 1);
+    //const [todoMoved] = newTodos.splice(source.index, 1);
     // push moved todo to the destination column
-    if (startCol.id === destinationCol.id) {
+    //if (startCol.id === destinationCol.id) {
       // Todo is in the same column
-      newTodos.splice(destination.index, 0, todoMoved);
-      const newCol: Column = {
-        id: startCol.id,
-        todos: newTodos
-      };
-      const newColumns = new Map(board.columns);
-      newColumns.set(startCol.id, newCol);
+     // newTodos.splice(destination.index, 0, todoMoved);
+      // const newCol: Column = {
+      //   id: startCol.id,
+      //   todos: newTodos
+      // };
+      // const newColumns = new Map(board.columns);
+      // newColumns.set(startCol.id, newCol);
 
-      setBoardState({ ...board, columns: newColumns });
-    } else {
+      //setBoardState({ ...board, columns: newColumns });
+    //} else {
       // remove from start column and add to destination column
-      const destinationTodos = Array.from(destinationCol.todos);
+     // const destinationTodos = Array.from(destinationCol.todos);
       // add to destination column todos
-      destinationTodos.splice(destination.index, 0, todoMoved);
+      //destinationTodos.splice(destination.index, 0, todoMoved);
       // copy columns
-      const newColums = new Map(board.columns);
-      const newCol = {
-        id: startCol.id,
-        todos: newTodos
-      }
+      // const newColums = new Map(board.columns);
+      // const newCol = {
+      //   id: startCol.id,
+      //   todos: newTodos
+      // }
 
-      newColums.set(startCol.id, newCol);
-      newColums.set(destinationCol.id, {
-        id: destinationCol.id,
-        todos: destinationTodos
-      });
+      // newColums.set(startCol.id, newCol);
+      // newColums.set(destinationCol.id, {
+      //   id: destinationCol.id,
+      //   todos: destinationTodos
+      // });
 
       // Update in DB
-      updateTodoInDB(todoMoved, destinationCol.id);
+      // updateTodoInDB(todoMoved, destinationCol.id);
 
       // set board state to new columns
-      setBoardState({
-        ...board,
-        columns: newColums
-      })
-    }
+      // setBoardState({
+      //   ...board,
+      //   columns: newColums
+      // })
+    //}
   }
   return (
     <div className="h-screen bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <CreateListForm />
       <div className="bg-blue w-full h-screen font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-scroll">
-          <div className="rounded bg-grey-light  flex-no-shrink w-64 p-2 mr-3">
+          {/* <div className="rounded bg-grey-light  flex-no-shrink w-64 p-2 mr-3">
             <div className="flex justify-between py-1">
               <h3 className="text-sm">New landing page</h3>
               <svg className="h-4 fill-current text-grey-dark cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 10a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4zm7 0a1.999 1.999 0 1 0 0 4 1.999 1.999 0 1 0 0-4z" /></svg>
@@ -228,8 +222,29 @@ function Board() {
               </div>
               <p className="mt-3 text-grey-dark">Add a card...</p>
             </div>
-          </div>
-        </div>
+          </div>*/}
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="board" direction="horizontal" type="column">
+              {(provided) =>
+                <div
+                  className='grid grid-cols-1 md:grid-cols-3 gap-5 p-5 max-w-7xl mx-auto'
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}>{
+                    data.columns.map((column, index) => (
+                      <Column
+                        key={column._id}
+                        id={column._id}
+                        name={column.name}
+                        cards={column.cards}
+                        index={index}
+                      />
+                    ))
+                  }
+                </div>
+              }
+            </Droppable>
+          </DragDropContext>
+        </div> 
       </div>
     </div>
   )
