@@ -16,7 +16,7 @@ export default function ClientPage() {
 
   return (
     <section className="flex flex-col gap-6">
-      <Header user={session?.user} />
+      {/* <Header user={session?.user} /> */}
       <Board />
     </section>
   )
