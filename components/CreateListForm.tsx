@@ -18,10 +18,10 @@ function CreateListForm() {
   }
   return (
 
-    <div>
+    <div className="p-2 w-72 shrink-0">
       {
         open ? (
-          <div className="bg-slate-300 p-2 shrink-0 w-72 rounded overflow-hidden">
+          <div className="bg-slate-300 p-2 rounded w-full">
             <input
               type="text"
               placeholder="Enter list title"
