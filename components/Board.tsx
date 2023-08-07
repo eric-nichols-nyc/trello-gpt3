@@ -10,31 +10,45 @@ import CreateListForm from './CreateListForm'
 import data from '../public/json/columns.json';
 
 function Board() {
-  const [board, getBoard, setBoardState, updateTodoInDB] = useBoardStore((state) => [
-    state.board,
-    state.getBoard,
-    state.setBoardState,
-    state.updateTodoInDB])
+  // const [board, getBoard, setBoardState, updateTodoInDB] = useBoardStore((state) => [
+  //   state.board,
+  //   state.getBoard,
+  //   state.setBoardState,
+  //   state.updateTodoInDB])
 
-    console.log(data)
+  //   console.log(data)
 
-  useEffect(() => {
-    // get board data from server
-    getBoard();
-    const columns = data.columns;
-    console.log('columns = ', columns)
-    return () => {
-      // second
-    }
-  }, [getBoard])
+  // useEffect(() => {
+  //   // get board data from server
+  //   getBoard();
+  //   const columns = data.columns;
+  //   console.log('columns = ', columns)
+  //   return () => {
+  //     // second
+  //   }
+  // }, [getBoard])
+
+  const [lists, setLists] = React.useState(data.columns);
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, type } = result;
-    console.log('source = ', source.droppableId)
+    console.log('result = ', result)
     //check if use drop the card outside the droppable area
     if (!destination) return;
+    if(destination.droppableId === source.droppableId && destination.index === source.index) return;
     // handle column drag
     if (type === 'column') {
+      console.log('column drag')
+      // copy current state and store it in a variable
+      const reorderedColumns = [...lists];
+      const sourceIndex = source.index;
+      const destinationIndex = destination.index;
+      // remove the column from the state and store it in a variable
+      const [removedColumn] = reorderedColumns.splice(sourceIndex, 1);
+      // addes the removed column to the destination index
+      reorderedColumns.splice(destinationIndex, 0, removedColumn);
+      // set the state with the new order
+      setLists(reorderedColumns);
       // const entries = Array.from(board.columns.entries());
       // const [removed] = entries.splice(source.index, 1);
       // entries.splice(destination.index, 0, removed);
@@ -47,13 +61,12 @@ function Board() {
       // })
 
       return;
-    } 
     // handle card drag
     // this step is need as the column indexs are stored as numbers 0,1,2 instead of ids
-    const columns = Array.from(board.columns);
-    console.log('columns = ', columns)
-    const startColIndex = columns[Number(source.droppableId)];
-    const finalColIndex = columns[Number(destination.droppableId)];
+    // const columns = Array.from(board.columns);
+    // console.log('columns = ', columns)
+    // const startColIndex = columns[Number(source.droppableId)];
+    // const finalColIndex = columns[Number(destination.droppableId)];
 
 
     // const startCol: Column = {
@@ -83,7 +96,7 @@ function Board() {
       // newColumns.set(startCol.id, newCol);
 
       //setBoardState({ ...board, columns: newColumns });
-    //} else {
+     } else {
       // remove from start column and add to destination column
      // const destinationTodos = Array.from(destinationCol.todos);
       // add to destination column todos
@@ -109,7 +122,7 @@ function Board() {
       //   ...board,
       //   columns: newColums
       // })
-    //}
+    }
   }
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
@@ -123,7 +136,7 @@ function Board() {
                   className='flex items-start py-2'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
-                    data.columns.map((column, index) => (
+                    lists.map((column, index) => (
                       <Column
                         key={column._id}
                         id={column._id}
