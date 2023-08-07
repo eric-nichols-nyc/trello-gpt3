@@ -115,9 +115,6 @@ function Board() {
       const destColIndex = lists.findIndex(
         (l) => l._id === destination.droppableId
       );
-      console.log('sourceColIndex', sourceColIndex)
-      console.log('destColIndex', destColIndex)
-      return;
 
       // create copy of source and destination cards
       const newSourceCards = [...lists[sourceColIndex].cards];
@@ -126,34 +123,32 @@ function Board() {
       // if drag is not in the same column get destination column items
       // else use source column items
       let newDestinationCards = [];
-      if (source.droppableId !== destination.droppableId) {
-        console.log('not same column')
+      if (source.droppableId !== destination?.droppableId) {
         newDestinationCards = [...lists[itemDestinationIndex].cards]
       } else {
-        console.log('same column', cardSourceIndex, cardDestinationIndex)
         newDestinationCards = newSourceCards
       }
 
-      console.log('card drag', newDestinationCards)
-      // // pull out the item from the source
-      // const [removedItem] = newSourceCards.splice(itemSourceIndex, 1);
-      // // add item to destination
-      // newDestinationCards.splice(itemDestinationIndex, 0, removedItem);
+      // pull out the item from the source
+      const [removedItem] = newSourceCards.splice(cardSourceIndex, 1);
 
-      // newLists = [...lists];
+      // add item to destination
+      newDestinationCards.splice(itemDestinationIndex, 0, removedItem);
+      console.log('newDestinationCards', newDestinationCards)
+      const newLists = [...lists];
 
-      // // update both columns with new cards
-      // newLists[itemSourceIndex] = {
-      //   ...lists[itemSourceIndex],
-      //   cards: newSourceCards,
-      // };
-      // newLists[itemDestinationIndex] = {
-      //   ...lists[itemDestinationIndex],
-      //   cards: newDestinationItems,
-      // };
+      // update both columns with new cards
+      newLists[sourceColIndex] = {
+        ...lists[sourceColIndex],
+        cards: newSourceCards,
+      };
+      newLists[destColIndex] = {
+        ...lists[destColIndex],
+        cards: newDestinationCards,
+      };
 
-      // // set lists to new lists
-      // setLists(newLists);
+      // set lists to new lists
+      setLists(newLists);
       // if drag is in a different column
       // remove from start column and add to destination column
       // const destinationTodos = Array.from(destinationCol.todos);
