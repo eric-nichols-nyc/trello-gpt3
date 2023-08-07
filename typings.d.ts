@@ -13,7 +13,7 @@ interface Card {
   _id: string;
   $createdAt?: string;
   name: string;
-  listId: string;
+  listId?: string;
   image?: string;
 }
 

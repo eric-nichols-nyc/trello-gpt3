@@ -1,5 +1,5 @@
 'use client'
-import Board from '@/components/Board'
+import BoardStatic from '@/components/BoardStatic'
 import Header from '@/components/Header'
 // Remember you must use an AuthProvider for 
 // client components to useSession
@@ -17,7 +17,7 @@ export default function ClientPage() {
   return (
     <section className="flex flex-col h-full">
       <Header user={session?.user} />
-      <Board />
+      <BoardStatic />
     </section>
   )
 }

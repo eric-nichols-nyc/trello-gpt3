@@ -107,8 +107,6 @@ function Board() {
       const cardSourceIndex = source.index;
       const cardDestinationIndex = destination.index;
       // find the source and destination columns
-      const itemDestinationIndex = destination.index;
-      console.log('source droppable',source.droppableId)
       const sourceColIndex = lists.findIndex(
         (l) => l._id === source.droppableId
       );
@@ -124,7 +122,7 @@ function Board() {
       // else use source column items
       let newDestinationCards = [];
       if (source.droppableId !== destination?.droppableId) {
-        newDestinationCards = [...lists[itemDestinationIndex].cards]
+        newDestinationCards = [...lists[cardDestinationIndex].cards]
       } else {
         newDestinationCards = newSourceCards
       }
@@ -133,7 +131,7 @@ function Board() {
       const [removedItem] = newSourceCards.splice(cardSourceIndex, 1);
 
       // add item to destination
-      newDestinationCards.splice(itemDestinationIndex, 0, removedItem);
+      newDestinationCards.splice(cardDestinationIndex, 0, removedItem);
       console.log('newDestinationCards', newDestinationCards)
       const newLists = [...lists];
 
