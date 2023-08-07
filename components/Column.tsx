@@ -15,7 +15,6 @@ type Props = {
 }
 
 function Column({ id, cards, name, index }: Props) {
-  const [searchString] = useBoardStore((state) => [state.searchString])
   const [openModal] = useModalStore((state) => [state.openModal])
   return (
     <Draggable draggableId={id} index={index}>
@@ -37,7 +36,6 @@ function Column({ id, cards, name, index }: Props) {
                 <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
                 <div className="mx-2">
                   {cards.map((card, index) => {
-                    if (searchString && !card.name.toLowerCase().includes(searchString.toLowerCase())) return null
                     return <Draggable key={card._id} draggableId={card._id} index={index}>
                       {(provided) => (
                         <TodoCard
