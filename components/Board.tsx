@@ -32,13 +32,12 @@ function Board() {
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, type } = result;
-    console.log('result = ', result)
+    console.log('source = ', destination)
     //check if use drop the card outside the droppable area
     if (!destination) return;
-    if(destination.droppableId === source.droppableId && destination.index === source.index) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
     // handle column drag
     if (type === 'column') {
-      console.log('column drag')
       // copy current state and store it in a variable
       const reorderedColumns = [...lists];
       const sourceIndex = source.index;
@@ -61,33 +60,33 @@ function Board() {
       // })
 
       return;
-    // handle card drag
-    // this step is need as the column indexs are stored as numbers 0,1,2 instead of ids
-    // const columns = Array.from(board.columns);
-    // console.log('columns = ', columns)
-    // const startColIndex = columns[Number(source.droppableId)];
-    // const finalColIndex = columns[Number(destination.droppableId)];
+      // handle card drag
+      // this step is need as the column indexs are stored as numbers 0,1,2 instead of ids
+      // const columns = Array.from(board.columns);
+      // console.log('columns = ', columns)
+      // const startColIndex = columns[Number(source.droppableId)];
+      // const finalColIndex = columns[Number(destination.droppableId)];
 
 
-    // const startCol: Column = {
-    //   id: startColIndex,
-    //   todos: startColIndex[1].todos
-    // }
+      // const startCol: Column = {
+      //   id: startColIndex,
+      //   todos: startColIndex[1].todos
+      // }
 
-    // const destinationCol: Column = {
-    //   id: finalColIndex[0],
-    //   todos: finalColIndex[1].cards
-    // }
-    //if (!startCol || !destinationCol) return;
-   // if (source.index === destination.index && startCol === destinationCol) return;
-    // copy the todos from the source column
-    //const newTodos = startCol.cards
-    // target the moved todo
-    //const [todoMoved] = newTodos.splice(source.index, 1);
-    // push moved todo to the destination column
-    //if (startCol.id === destinationCol.id) {
+      // const destinationCol: Column = {
+      //   id: finalColIndex[0],
+      //   todos: finalColIndex[1].cards
+      // }
+      //if (!startCol || !destinationCol) return;
+      // if (source.index === destination.index && startCol === destinationCol) return;
+      // copy the todos from the source column
+      //const newTodos = startCol.cards
+      // target the moved todo
+      //const [todoMoved] = newTodos.splice(source.index, 1);
+      // push moved todo to the destination column
+      //if (startCol.id === destinationCol.id) {
       // Todo is in the same column
-     // newTodos.splice(destination.index, 0, todoMoved);
+      // newTodos.splice(destination.index, 0, todoMoved);
       // const newCol: Column = {
       //   id: startCol.id,
       //   todos: newTodos
@@ -96,9 +95,68 @@ function Board() {
       // newColumns.set(startCol.id, newCol);
 
       //setBoardState({ ...board, columns: newColumns });
-     } else {
+    } else {
+      const reorderedStores = [...lists];
+      const storeSourceIndex = source.index;
+      const storeDestinatonIndex = destination.index;
+      const [removedStore] = reorderedStores.splice(storeSourceIndex, 1);
+      reorderedStores.splice(storeDestinatonIndex, 0, removedStore);
+      // make copy of columns
+      //let newLists = [...lists];
+      // find the cards and destination indexes
+      const cardSourceIndex = source.index;
+      const cardDestinationIndex = destination.index;
+      // find the source and destination columns
+      const itemDestinationIndex = destination.index;
+      console.log('source droppable',source.droppableId)
+      const sourceColIndex = lists.findIndex(
+        (l) => l._id === source.droppableId
+      );
+      const destColIndex = lists.findIndex(
+        (l) => l._id === destination.droppableId
+      );
+      console.log('sourceColIndex', sourceColIndex)
+      console.log('destColIndex', destColIndex)
+      return;
+
+      // create copy of source and destination cards
+      const newSourceCards = [...lists[sourceColIndex].cards];
+      // const newDestinationCards = [...lists[destColIndex].cards];
+
+      // if drag is not in the same column get destination column items
+      // else use source column items
+      let newDestinationCards = [];
+      if (source.droppableId !== destination.droppableId) {
+        console.log('not same column')
+        newDestinationCards = [...lists[itemDestinationIndex].cards]
+      } else {
+        console.log('same column', cardSourceIndex, cardDestinationIndex)
+        newDestinationCards = newSourceCards
+      }
+
+      console.log('card drag', newDestinationCards)
+      // // pull out the item from the source
+      // const [removedItem] = newSourceCards.splice(itemSourceIndex, 1);
+      // // add item to destination
+      // newDestinationCards.splice(itemDestinationIndex, 0, removedItem);
+
+      // newLists = [...lists];
+
+      // // update both columns with new cards
+      // newLists[itemSourceIndex] = {
+      //   ...lists[itemSourceIndex],
+      //   cards: newSourceCards,
+      // };
+      // newLists[itemDestinationIndex] = {
+      //   ...lists[itemDestinationIndex],
+      //   cards: newDestinationItems,
+      // };
+
+      // // set lists to new lists
+      // setLists(newLists);
+      // if drag is in a different column
       // remove from start column and add to destination column
-     // const destinationTodos = Array.from(destinationCol.todos);
+      // const destinationTodos = Array.from(destinationCol.todos);
       // add to destination column todos
       //destinationTodos.splice(destination.index, 0, todoMoved);
       // copy columns
@@ -150,7 +208,7 @@ function Board() {
               }
             </Droppable>
           </DragDropContext>
-        </div> 
+        </div>
       </div>
     </div>
   )

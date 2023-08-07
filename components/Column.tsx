@@ -15,6 +15,7 @@ type Props = {
 }
 
 function Column({ id, cards, name, index }: Props) {
+  console.log('column id ', id)
   const [searchString] = useBoardStore((state) => [state.searchString])
   const [openModal] = useModalStore((state) => [state.openModal])
   return (
@@ -27,7 +28,7 @@ function Column({ id, cards, name, index }: Props) {
           className={`rounded mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           {/* render droppable todos */}
-          <Droppable droppableId={index.toString()} type="card">
+          <Droppable droppableId={id} type="card">
             {(provided, snapshot) => (
               <div
                 {...provided.droppableProps}
@@ -37,8 +38,8 @@ function Column({ id, cards, name, index }: Props) {
                 <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
                 <div className="mx-2">
                   {cards.map((card, index) => {
-                    if(searchString && !card.name.toLowerCase().includes(searchString.toLowerCase())) return null
-                      return  <Draggable key={card._id} draggableId={card._id} index={index}>
+                    if (searchString && !card.name.toLowerCase().includes(searchString.toLowerCase())) return null
+                    return <Draggable key={card._id} draggableId={card._id} index={index}>
                       {(provided) => (
                         <TodoCard
                           card={card}
@@ -54,7 +55,7 @@ function Column({ id, cards, name, index }: Props) {
                   {provided.placeholder}
                   <div className='flex items-end justify-end p-2'>
                     <button>
-                      <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={openModal}/>
+                      <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={openModal} />
                     </button>
                   </div>
                 </div>

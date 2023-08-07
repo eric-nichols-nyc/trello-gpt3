@@ -32,7 +32,6 @@ function TodoCard({
         </button>
       </div>
       {/* Add image here */}
-      
     </div>
   )
 }
