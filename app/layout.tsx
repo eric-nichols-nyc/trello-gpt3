@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-slate-50">
         <AuthProvider>
-          <main>
+          <main className='h-screen'>
             {children}
           </main>
         </AuthProvider>
