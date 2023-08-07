@@ -15,7 +15,6 @@ type Props = {
 }
 
 function Column({ id, cards, name, index }: Props) {
-  console.log('Column id = ', id)
   const [searchString] = useBoardStore((state) => [state.searchString])
   const [openModal] = useModalStore((state) => [state.openModal])
   return (

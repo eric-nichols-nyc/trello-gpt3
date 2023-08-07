@@ -43,11 +43,10 @@ const DATA = [
 
 function BoardStatic() {
   // local state
-  const [stores, setStores] = useState(DATA);
+  const [lists, setLists] = useState(DATA);
   // handle drag and drop
   const handleDragAndDrop = (results:any) => {
     const { source, destination, type } = results;
-    console.log(results)
 
     if (!destination) return;
 
@@ -58,52 +57,51 @@ function BoardStatic() {
       return;
 
     if (type === "column") {
-      const reorderedStores = [...stores];
+      const reorderedLists = [...lists];
 
-      const storeSourceIndex = source.index;
-      const storeDestinatonIndex = destination.index;
+      const listSourceIndex = source.index;
+      const listDestinatonIndex = destination.index;
 
-      const [removedStore] = reorderedStores.splice(storeSourceIndex, 1);
-      reorderedStores.splice(storeDestinatonIndex, 0, removedStore);
+      const [removeList] = reorderedLists.splice(listSourceIndex, 1);
+      reorderedLists.splice(listDestinatonIndex, 0, removeList);
 
-      return setStores(reorderedStores);
+      return setLists(reorderedLists);
     }
-    const itemSourceIndex = source.index;
-    const itemDestinationIndex = destination.index;
-    console.log('droppable id',source.droppableId)
+    const cardSourceIndex = source.index;
+    const cardDestinationIndex = destination.index;
 
-    const storeSourceIndex = stores.findIndex(
+    const listSourceIndex = lists.findIndex(
       (store) => store._id === source.droppableId
     );
-    const storeDestinationIndex = stores.findIndex(
+    const storeDestinationIndex = lists.findIndex(
       (store) => store._id === destination.droppableId
     );
-    const newSourceItems = [...stores[storeSourceIndex].cards];
-    const newDestinationItems =
+    const newSourcsCards = [...lists[listSourceIndex].cards];
+    const newDestinationCards =
       source.droppableId !== destination.droppableId
-        ? [...stores[storeDestinationIndex].cards]
-        : newSourceItems;
+        ? [...lists[storeDestinationIndex].cards]
+        : newSourcsCards;
 
-    const [deletedItem] = newSourceItems.splice(itemSourceIndex, 1);
-    newDestinationItems.splice(itemDestinationIndex, 0, deletedItem);
+    const [deletedItem] = newSourcsCards.splice(cardSourceIndex, 1);
+    newDestinationCards.splice(cardDestinationIndex, 0, deletedItem);
 
-    const newStores = [...stores];
+    const newLists = [...lists];
 
-    newStores[storeSourceIndex] = {
-      ...stores[storeSourceIndex],
-      cards: newSourceItems,
+    newLists[listSourceIndex] = {
+      ...lists[listSourceIndex],
+      cards: newSourcsCards,
     };
-    newStores[storeDestinationIndex] = {
-      ...stores[storeDestinationIndex],
-      cards: newDestinationItems,
+    newLists[storeDestinationIndex] = {
+      ...lists[storeDestinationIndex],
+      cards: newDestinationCards,
     };
 
-    setStores(newStores);
+    setLists(newLists);
   };
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
-        <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full border border-cyan-100">
+        <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
           <CreateListForm />
           <DragDropContext onDragEnd={handleDragAndDrop}>
             <Droppable droppableId="ROOT" direction="horizontal" type="column">
@@ -112,7 +110,7 @@ function BoardStatic() {
                   className='flex items-start py-2'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
-                    stores.map((column, index) => (
+                    lists.map((column, index) => (
                       <Column
                         key={column._id}
                         id={column._id}
