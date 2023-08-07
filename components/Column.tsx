@@ -24,7 +24,7 @@ function Column({ id, cards, name, index }: Props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`p-2 rounded-2xl shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
+          className={`p-2 rounded mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           {/* render droppable todos */}
           <Droppable droppableId={index.toString()} type="card">
@@ -32,14 +32,9 @@ function Column({ id, cards, name, index }: Props) {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className={`pb-2 rounded-2xl ${snapshot.isDraggingOver ? 'bg-green-100' : 'bg-white'}`}
+                className={`shrink-0 w-72 bg-slate-300 rounded flex flex-col ${snapshot.isDraggingOver ? 'bg-green-100' : 'bg-white'}`}
               >
-                <h2 className='flex justify-between font-bold text-xl'>{name}
-                  <span className='text-gray-500 bg-gray-200 rounded-full p-2 text-sm font-normal'>{!searchString 
-                  ? cards.length 
-                  : cards.filter((card) => card.name.toLowerCase()
-                  .includes(searchString.toLowerCase()))
-                  .length}</span></h2>
+                <h3 className='flex justify-between font-bold text-sm'>{name}</h3>
                 <div className="space-y-2">
                   {cards.map((card, index) => {
                     if(searchString && !card.name.toLowerCase().includes(searchString.toLowerCase())) return null

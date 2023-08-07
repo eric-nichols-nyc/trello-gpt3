@@ -35,11 +35,11 @@ function Board() {
     if (!destination) return;
     // handle column drag
     if (type === 'column') {
-      const entries = Array.from(board.columns.entries());
-      const [removed] = entries.splice(source.index, 1);
-      entries.splice(destination.index, 0, removed);
+      // const entries = Array.from(board.columns.entries());
+      // const [removed] = entries.splice(source.index, 1);
+      // entries.splice(destination.index, 0, removed);
       // create new map
-      const rearaangedColumns = new Map(entries);
+      //const rearaangedColumns = new Map(entries);
       // update board state
       // setBoardState({
       //   ...board,
@@ -113,9 +113,9 @@ function Board() {
   }
   return (
     <div className="h-screen bg-red-600 overflow-hidden flex items-start justify-center px-5">
-      <CreateListForm />
       <div className="bg-blue w-full h-screen font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-scroll">
+          <CreateListForm />
           {/* <div className="rounded bg-grey-light  flex-no-shrink w-64 p-2 mr-3">
             <div className="flex justify-between py-1">
               <h3 className="text-sm">New landing page</h3>
@@ -227,7 +227,7 @@ function Board() {
             <Droppable droppableId="board" direction="horizontal" type="column">
               {(provided) =>
                 <div
-                  className='grid grid-cols-1 md:grid-cols-3 gap-5 p-5 max-w-7xl mx-auto'
+                  className='flex items-start py-2'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
                     data.columns.map((column, index) => (

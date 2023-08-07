@@ -24,8 +24,8 @@ function TodoCard({
       {...draggableProps}
       {...draggableHandleProps}
       ref={innerRef}
-      className='bg-white rounded-md space-y-2 drop-shadow-md p-2'>
-      <div className='flex justify-between items-center p-5'>
+      className='text-sm mt-2"'>
+      <div className='bg-white p-2 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter flex justify-between'>
         <p>{card.name}</p>
         <button>
           <XCircleIcon className='h-6 w-6 text-red-400' />
