@@ -9,9 +9,13 @@ export default function ClientPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/api/auth/signin?callbackUrl=/client')
+      redirect('/api/auth/signin?callbackUrl=/board')
     }
   })
+  console.log('session = ', session)
+  if(session?.user){
+    redirect('/board')
+  }
 
   return (
     <section className="flex flex-col gap-6">

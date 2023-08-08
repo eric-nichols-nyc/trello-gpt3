@@ -18,7 +18,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-50">
+      <body suppressHydrationWarning={true}>
+
         <AuthProvider>
           <main className='h-screen'>
             {children}
