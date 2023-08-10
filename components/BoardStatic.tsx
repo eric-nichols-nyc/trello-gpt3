@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './Column'
 import CreateListForm from './CreateListForm'
-import data from '../public/json/columns.json';
+import useSWR, { Fetcher } from 'swr'
 const DATA = [
   {
     _id: "0e2f0db1-5457-46b0-949e-8032d2f9997a",
@@ -44,6 +44,17 @@ const DATA = [
 function BoardStatic() {
   // local state
   const [lists, setLists] = useState(DATA);
+
+  const fetcher: Fetcher<number, string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
+
+  const { data, mutate, error, isLoading } = useSWR(
+    '/api/columns',
+    fetcher
+  );
+  useEffect(() => {
+    console.log('data ', data)
+  }, [data])
+
   // handle drag and drop
   const handleDragAndDrop = (results:any) => {
     const { source, destination, type } = results;

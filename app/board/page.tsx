@@ -1,10 +1,11 @@
 'use client'
-import BoardStatic from '@/components/BoardStatic'
+import Board from '@/components/Board'
 import Header from '@/components/Header'
 // Remember you must use an AuthProvider for 
 // client components to useSession
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import useSWR from 'swr'
 
 export default function ClientPage() {
   const { data: session } = useSession({
@@ -17,7 +18,7 @@ export default function ClientPage() {
   return (
     <section className="flex flex-col h-full">
       <Header user={session?.user} />
-      <BoardStatic />
+      <Board />
     </section>
   )
 }

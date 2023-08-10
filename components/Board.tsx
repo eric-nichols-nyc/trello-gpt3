@@ -3,185 +3,119 @@
 */
 'use client'
 import { useBoardStore } from '@/store/BoardStore'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './Column'
 import CreateListForm from './CreateListForm'
-import data from '../public/json/columns.json';
+import useSWR, { Fetcher } from 'swr'
+const DATA = [
+  {
+    _id: "0e2f0db1-5457-46b0-949e-8032d2f9997a",
+    name: "Walmart",
+    cards: [
+      { _id: "26fd50b3-3841-496e-8b32-73636f6f4197", name: "3% Milk" },
+      { _id: "b0ee9d50-d0a6-46f8-96e3-7f3f0f9a2525", name: "Butter" },
+    ],
+    tint: 1,
+  },
+  {
+    _id: "487f68b4-1746-438c-920e-d67b7df46247",
+    name: "Indigo",
+    cards: [
+      {
+        _id: "95ee6a5d-f927-4579-8c15-2b4eb86210ae",
+        name: "Designing Data Intensive Applications",
+      },
+      { _id: "5bee94eb-6bde-4411-b438-1c37fa6af364", name: "Atomic Habits" },
+    ],
+    tint: 2,
+  },
+  {
+    _id: "25daffdc-aae0-4d73-bd31-43f73101e7c0",
+    name: "Lowes",
+    cards: [
+      { _id: "960cbbcf-89a0-4d79-aa8e-56abbc15eacc", name: "Workbench" },
+      { _id: "d3edf796-6449-4931-a777-ff66965a025b", name: "Hammer" },
+    ],
+    tint: 3,
+  },
+];
 
 function Board() {
-  // const [board, getBoard, setBoardState, updateTodoInDB] = useBoardStore((state) => [
-  //   state.board,
-  //   state.getBoard,
-  //   state.setBoardState,
-  //   state.updateTodoInDB])
+  // local state
+  const [lists, setLists] = useState(DATA);
 
-  //   console.log(data)
+  const fetcher: Fetcher<number, string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
 
-  // useEffect(() => {
-  //   // get board data from server
-  //   getBoard();
-  //   const columns = data.columns;
-  //   console.log('columns = ', columns)
-  //   return () => {
-  //     // second
-  //   }
-  // }, [getBoard])
+  const { data, mutate, error, isLoading } = useSWR(
+    '/api/columns',
+    fetcher
+  );
+  useEffect(() => {
+    console.log('data ', data)
+  }, [data])
 
-  const [lists, setLists] = React.useState(data.columns);
+  // handle drag and drop
+  const handleDragAndDrop = (results: any) => {
+    const { source, destination, type } = results;
 
-  const handleOnDragEnd = (result: DropResult) => {
-    const { destination, source, type } = result;
-    console.log('source = ', destination)
-    //check if use drop the card outside the droppable area
     if (!destination) return;
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
-    // handle column drag
-    if (type === 'column') {
-      // copy current state and store it in a variable
-      const reorderedColumns = [...lists];
-      const sourceIndex = source.index;
-      const destinationIndex = destination.index;
-      // remove the column from the state and store it in a variable
-      const [removedColumn] = reorderedColumns.splice(sourceIndex, 1);
-      // addes the removed column to the destination index
-      reorderedColumns.splice(destinationIndex, 0, removedColumn);
-      // set the state with the new order
-      setLists(reorderedColumns);
-      // const entries = Array.from(board.columns.entries());
-      // const [removed] = entries.splice(source.index, 1);
-      // entries.splice(destination.index, 0, removed);
-      // create new map
-      //const rearaangedColumns = new Map(entries);
-      // update board state
-      // setBoardState({
-      //   ...board,
-      //   columns: rearaangedColumns
-      // })
 
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
       return;
-      // handle card drag
-      // this step is need as the column indexs are stored as numbers 0,1,2 instead of ids
-      // const columns = Array.from(board.columns);
-      // console.log('columns = ', columns)
-      // const startColIndex = columns[Number(source.droppableId)];
-      // const finalColIndex = columns[Number(destination.droppableId)];
 
+    if (type === "column") {
+      const reorderedLists = [...lists];
 
-      // const startCol: Column = {
-      //   id: startColIndex,
-      //   todos: startColIndex[1].todos
-      // }
+      const listSourceIndex = source.index;
+      const listDestinatonIndex = destination.index;
 
-      // const destinationCol: Column = {
-      //   id: finalColIndex[0],
-      //   todos: finalColIndex[1].cards
-      // }
-      //if (!startCol || !destinationCol) return;
-      // if (source.index === destination.index && startCol === destinationCol) return;
-      // copy the todos from the source column
-      //const newTodos = startCol.cards
-      // target the moved todo
-      //const [todoMoved] = newTodos.splice(source.index, 1);
-      // push moved todo to the destination column
-      //if (startCol.id === destinationCol.id) {
-      // Todo is in the same column
-      // newTodos.splice(destination.index, 0, todoMoved);
-      // const newCol: Column = {
-      //   id: startCol.id,
-      //   todos: newTodos
-      // };
-      // const newColumns = new Map(board.columns);
-      // newColumns.set(startCol.id, newCol);
+      const [removeList] = reorderedLists.splice(listSourceIndex, 1);
+      reorderedLists.splice(listDestinatonIndex, 0, removeList);
 
-      //setBoardState({ ...board, columns: newColumns });
-    } else {
-      const reorderedStores = [...lists];
-      const storeSourceIndex = source.index;
-      const storeDestinatonIndex = destination.index;
-      const [removedStore] = reorderedStores.splice(storeSourceIndex, 1);
-      reorderedStores.splice(storeDestinatonIndex, 0, removedStore);
-      // make copy of columns
-      //let newLists = [...lists];
-      // find the cards and destination indexes
-      const cardSourceIndex = source.index;
-      const cardDestinationIndex = destination.index;
-      // find the source and destination columns
-      const sourceColIndex = lists.findIndex(
-        (l) => l._id === source.droppableId
-      );
-      const destColIndex = lists.findIndex(
-        (l) => l._id === destination.droppableId
-      );
-
-      // create copy of source and destination cards
-      const newSourceCards = [...lists[sourceColIndex].cards];
-      // const newDestinationCards = [...lists[destColIndex].cards];
-
-      // if drag is not in the same column get destination column items
-      // else use source column items
-      let newDestinationCards = [];
-      if (source.droppableId !== destination?.droppableId) {
-        newDestinationCards = [...lists[cardDestinationIndex].cards]
-      } else {
-        newDestinationCards = newSourceCards
-      }
-
-      // pull out the item from the source
-      const [removedItem] = newSourceCards.splice(cardSourceIndex, 1);
-
-      // add item to destination
-      newDestinationCards.splice(cardDestinationIndex, 0, removedItem);
-      console.log('newDestinationCards', newDestinationCards)
-      const newLists = [...lists];
-
-      // update both columns with new cards
-      newLists[sourceColIndex] = {
-        ...lists[sourceColIndex],
-        cards: newSourceCards,
-      };
-      newLists[destColIndex] = {
-        ...lists[destColIndex],
-        cards: newDestinationCards,
-      };
-
-      // set lists to new lists
-      setLists(newLists);
-      // if drag is in a different column
-      // remove from start column and add to destination column
-      // const destinationTodos = Array.from(destinationCol.todos);
-      // add to destination column todos
-      //destinationTodos.splice(destination.index, 0, todoMoved);
-      // copy columns
-      // const newColums = new Map(board.columns);
-      // const newCol = {
-      //   id: startCol.id,
-      //   todos: newTodos
-      // }
-
-      // newColums.set(startCol.id, newCol);
-      // newColums.set(destinationCol.id, {
-      //   id: destinationCol.id,
-      //   todos: destinationTodos
-      // });
-
-      // Update in DB
-      // updateTodoInDB(todoMoved, destinationCol.id);
-
-      // set board state to new columns
-      // setBoardState({
-      //   ...board,
-      //   columns: newColums
-      // })
+      return setLists(reorderedLists);
     }
-  }
+    const cardSourceIndex = source.index;
+    const cardDestinationIndex = destination.index;
+
+    const listSourceIndex = lists.findIndex(
+      (store) => store._id === source.droppableId
+    );
+    const storeDestinationIndex = lists.findIndex(
+      (store) => store._id === destination.droppableId
+    );
+    const newSourcsCards = [...lists[listSourceIndex].cards];
+    const newDestinationCards =
+      source.droppableId !== destination.droppableId
+        ? [...lists[storeDestinationIndex].cards]
+        : newSourcsCards;
+
+    const [deletedItem] = newSourcsCards.splice(cardSourceIndex, 1);
+    newDestinationCards.splice(cardDestinationIndex, 0, deletedItem);
+
+    const newLists = [...lists];
+
+    newLists[listSourceIndex] = {
+      ...lists[listSourceIndex],
+      cards: newSourcsCards,
+    };
+    newLists[storeDestinationIndex] = {
+      ...lists[storeDestinationIndex],
+      cards: newDestinationCards,
+    };
+
+    setLists(newLists);
+  };
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
-        <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full border border-cyan-100">
-          <CreateListForm />
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type="column">
+        <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
+          {/* <CreateListForm /> */}
+          <DragDropContext onDragEnd={handleDragAndDrop}>
+            <Droppable droppableId="ROOT" direction="horizontal" type="column">
               {(provided) =>
                 <div
                   className='flex items-start py-2'
