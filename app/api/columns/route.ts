@@ -3,15 +3,15 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
-import Card from '@/models/Card';
+import Column from '@/models/Column';
 
 export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
     // get all cards
-    const cards = await Card.find();
-    console.log('cards: ', cards);
-    return NextResponse.json(cards, { status: 200 });
+    const columns = await Column.find();
+    console.log('columns: ', columns);
+    return NextResponse.json(columns, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
@@ -22,16 +22,16 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
-  const newCard = new Card(body);
+  const newColumn = new Column(body);
   try {
     await connectDB();
-    await newCard.save();
+    await newColumn.save();
     return NextResponse.json(
-      { message: 'Card created successfully' },
+      { message: 'Column created successfully' },
       { status: 201 }
     );
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 }

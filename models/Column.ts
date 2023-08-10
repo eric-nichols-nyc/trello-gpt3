@@ -4,7 +4,6 @@ const ColumnSchema = new Schema({
   userId: { type: String, required: [true, 'User ID is required'] },
   boardId: {
     type: String,
-    unique: [true, 'Board ID already exists'],
     required: [true, 'Board id is required'],
   },
   columnName: {
