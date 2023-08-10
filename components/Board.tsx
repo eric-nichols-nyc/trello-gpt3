@@ -13,8 +13,8 @@ const DATA = [
     _id: "0e2f0db1-5457-46b0-949e-8032d2f9997a",
     name: "Walmart",
     cards: [
-      { _id: "26fd50b3-3841-496e-8b32-73636f6f4197", name: "3% Milk" },
-      { _id: "b0ee9d50-d0a6-46f8-96e3-7f3f0f9a2525", name: "Butter" },
+      { _id: "26fd50b3-3841-496e-8b32-73636f6f4197", title: "3% Milk" },
+      { _id: "b0ee9d50-d0a6-46f8-96e3-7f3f0f9a2525", title: "Butter" },
     ],
     tint: 1,
   },
@@ -24,9 +24,9 @@ const DATA = [
     cards: [
       {
         _id: "95ee6a5d-f927-4579-8c15-2b4eb86210ae",
-        name: "Designing Data Intensive Applications",
+        title: "Designing Data Intensive Applications",
       },
-      { _id: "5bee94eb-6bde-4411-b438-1c37fa6af364", name: "Atomic Habits" },
+      { _id: "5bee94eb-6bde-4411-b438-1c37fa6af364", title: "Atomic Habits" },
     ],
     tint: 2,
   },
@@ -34,8 +34,8 @@ const DATA = [
     _id: "25daffdc-aae0-4d73-bd31-43f73101e7c0",
     name: "Lowes",
     cards: [
-      { _id: "960cbbcf-89a0-4d79-aa8e-56abbc15eacc", name: "Workbench" },
-      { _id: "d3edf796-6449-4931-a777-ff66965a025b", name: "Hammer" },
+      { _id: "960cbbcf-89a0-4d79-aa8e-56abbc15eacc", title: "Workbench" },
+      { _id: "d3edf796-6449-4931-a777-ff66965a025b", title: "Hammer" },
     ],
     tint: 3,
   },
@@ -44,16 +44,20 @@ const DATA = [
 function Board() {
   // local state
   const [lists, setLists] = useState(DATA);
+  const [test, setTest]  = useState()
 
   const fetcher: Fetcher<number, string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
 
-  const { data, mutate, error, isLoading } = useSWR(
-    '/api/columns',
-    fetcher
-  );
+  function useUser(id:string) {
+    return  useSWR(`/api/${id}`, fetcher);
+  }
+  const { data: cards } = useUser('cards')
+  const { data: columns } = useUser('columns')
+
   useEffect(() => {
-    console.log('data ', data)
-  }, [data])
+    console.log('columns ', columns)
+    console.log('cards ', cards)
+  }, [columns, cards])
 
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
@@ -121,15 +125,20 @@ function Board() {
                   className='flex items-start py-2'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
-                    lists.map((column, index) => (
-                      <Column
-                        key={column._id}
-                        id={column._id}
-                        name={column.name}
-                        cards={column.cards}
+                    lists.map((column, index) => {
+                      const {_id, name, cards} = column
+                      console.log('id ', _id)
+                      // match the cards to the column
+                      const items = cards.filter((card:Card) => card.columnId === _id);
+                      console.log('items ', items)
+                     return <Column
+                        key={_id}
+                        id={_id}
+                        name={name}
+                        cards={cards}
                         index={index}
                       />
-                    ))
+                  })
                   }
                 </div>
               }

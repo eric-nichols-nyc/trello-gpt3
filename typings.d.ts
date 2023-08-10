@@ -12,9 +12,13 @@ interface Column {
 interface Card {
   _id: string;
   $createdAt?: string;
-  name: string;
-  listId?: string;
+  order?: number;
+  userId?: string;
+  columnId?: string;
+  boardId?: string;
+  title?:string;
   image?: string;
+  deacription?: string;
 }
 
 interface Image {
