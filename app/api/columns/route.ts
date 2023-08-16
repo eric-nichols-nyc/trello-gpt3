@@ -7,7 +7,7 @@ import Column from '@/models/Column';
 
 export const GET = async (request: NextRequest) => {
   try {
-    await connectDB();
+    let client = await connectDB();
     // get all cards
     const columns = await Column.find();
     console.log('columns: ', columns);
@@ -38,3 +38,5 @@ export const POST = async (request: NextRequest) => {
     );
   }
 };
+
+

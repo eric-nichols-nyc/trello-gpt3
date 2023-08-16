@@ -7,57 +7,27 @@ import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './Column'
 import CreateListForm from './CreateListForm'
-import useSWR, { Fetcher } from 'swr'
-const DATA = [
-  {
-    _id: "0e2f0db1-5457-46b0-949e-8032d2f9997a",
-    name: "Walmart",
-    cards: [
-      { _id: "26fd50b3-3841-496e-8b32-73636f6f4197", title: "3% Milk" },
-      { _id: "b0ee9d50-d0a6-46f8-96e3-7f3f0f9a2525", title: "Butter" },
-    ],
-    tint: 1,
-  },
-  {
-    _id: "487f68b4-1746-438c-920e-d67b7df46247",
-    name: "Indigo",
-    cards: [
-      {
-        _id: "95ee6a5d-f927-4579-8c15-2b4eb86210ae",
-        title: "Designing Data Intensive Applications",
-      },
-      { _id: "5bee94eb-6bde-4411-b438-1c37fa6af364", title: "Atomic Habits" },
-    ],
-    tint: 2,
-  },
-  {
-    _id: "25daffdc-aae0-4d73-bd31-43f73101e7c0",
-    name: "Lowes",
-    cards: [
-      { _id: "960cbbcf-89a0-4d79-aa8e-56abbc15eacc", title: "Workbench" },
-      { _id: "d3edf796-6449-4931-a777-ff66965a025b", title: "Hammer" },
-    ],
-    tint: 3,
-  },
-];
+import useSWR, { Fetcher, mutate } from 'swr'
 
 function Board() {
   // local state
-  const [lists, setLists] = useState(DATA);
-  const [test, setTest]  = useState()
+  const [lists, setLists] = useState<Column[]>();
 
-  const fetcher: Fetcher<number, string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
+  const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
 
-  function useUser(id:string) {
+  function useData(id:string) {
     return  useSWR(`/api/${id}`, fetcher);
   }
-  const { data: cards } = useUser('cards')
-  const { data: columns } = useUser('columns')
+  const { data: cards } = useData('cards')
+  const { data: cols } = useData('columns') 
+
+  console.log(cols)
 
   useEffect(() => {
-    console.log('columns ', columns)
-    console.log('cards ', cards)
-  }, [columns, cards])
+    console.log('columns ', cols)
+   // set columns to swr data
+    setLists(cols)
+  }, [cols])
 
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
@@ -70,28 +40,34 @@ function Board() {
       source.index === destination.index
     )
       return;
-
+    // handle column drag and drop
     if (type === "column") {
-      const reorderedLists = [...lists];
-
-      const listSourceIndex = source.index;
-      const listDestinatonIndex = destination.index;
-
-      const [removeList] = reorderedLists.splice(listSourceIndex, 1);
-      reorderedLists.splice(listDestinatonIndex, 0, removeList);
-
-      return setLists(reorderedLists);
+      if(!cols) return;
+      // copy to cols array
+      const reorderedCols = [...cols];
+      console.log('reorderedCols ', reorderedCols)
+      // find out the index of the source and destination
+      const colSourceIndex = source.index;
+      const colDestinatonIndex = destination.index;
+      // remove the col from the array
+      const [removeList] = reorderedCols.splice(colSourceIndex, 1);
+      // add the col to the array in the right index
+      reorderedCols.splice(colDestinatonIndex, 0, removeList);
+      // reordering the cols in the database
+      return setLists(reorderedCols);
     }
+    // handle card drag and drop
     const cardSourceIndex = source.index;
     const cardDestinationIndex = destination.index;
 
-    const listSourceIndex = lists.findIndex(
+    const colSourceIndex = lists?.findIndex(
       (store) => store._id === source.droppableId
     );
-    const storeDestinationIndex = lists.findIndex(
+    const storeDestinationIndex = lists?.findIndex(
       (store) => store._id === destination.droppableId
     );
-    const newSourcsCards = [...lists[listSourceIndex].cards];
+    if(!colSourceIndex || !storeDestinationIndex || !lists) return;
+    const newSourcsCards = [...lists[colSourceIndex].cards];
     const newDestinationCards =
       source.droppableId !== destination.droppableId
         ? [...lists[storeDestinationIndex].cards]
@@ -102,8 +78,8 @@ function Board() {
 
     const newLists = [...lists];
 
-    newLists[listSourceIndex] = {
-      ...lists[listSourceIndex],
+    newLists[colSourceIndex] = {
+      ...lists[colSourceIndex],
       cards: newSourcsCards,
     };
     newLists[storeDestinationIndex] = {
@@ -113,6 +89,8 @@ function Board() {
 
     setLists(newLists);
   };
+
+  if (!lists || !cols || !cards) return null;
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
@@ -125,17 +103,15 @@ function Board() {
                   className='flex items-start py-2'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
-                    lists.map((column, index) => {
-                      const {_id, name, cards} = column
-                      console.log('id ', _id)
+                    cols.sort((a:Column, b:Column) => a.order - b.order).map((column:Column, index) => {
+                      const { _id, columnName } = column
                       // match the cards to the column
                       const items = cards.filter((card:Card) => card.columnId === _id);
-                      console.log('items ', items)
                      return <Column
                         key={_id}
                         id={_id}
-                        name={name}
-                        cards={cards}
+                        name={columnName}
+                        cards={items}
                         index={index}
                       />
                   })

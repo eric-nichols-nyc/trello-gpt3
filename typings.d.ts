@@ -5,7 +5,10 @@ interface Board {
 type TypedColumn = 'todo' | 'inprogress' | 'done';
 
 interface Column {
-  id: string;
+  _id: string;
+  columnName: string;
+  name: string;
+  order: number;
   cards: Card[];
 }
 
