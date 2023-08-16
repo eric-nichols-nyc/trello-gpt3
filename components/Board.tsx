@@ -18,8 +18,8 @@ function Board() {
   function useData(id:string) {
     return  useSWR(`/api/${id}`, fetcher);
   }
-  const { data: cards } = useData('cards')
-  const { data: cols } = useData('columns') 
+  const { data: cards } = useData('cards') as { data: Card[] };
+  const { data: cols } = useData('columns') as { data: Column[] };
 
   console.log(cols)
 
