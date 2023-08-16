@@ -35,7 +35,7 @@ export const useBoardStore = create<BoardState>((set) => ({
       process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID as string,
       card._id,
       {
-        title: card.name,
+        title: card.title,
         status: columnId,
       }
     )

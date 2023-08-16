@@ -1,6 +1,6 @@
 // Utitity to get the order of a new item in the database
 
-const order = (items: any[], item: any, key: string) => {
+export const newOrder = (items: any[], item: any, key: string) => {
   const itemOrder = item[key];
   const orderedItems = items
     .map((item) => item[key])
