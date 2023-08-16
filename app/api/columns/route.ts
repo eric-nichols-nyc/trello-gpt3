@@ -9,8 +9,10 @@ export const GET = async (request: NextRequest) => {
   try {
     let client = await connectDB();
     // get all cards
-    const columns = await Column.find();
-    console.log('columns: ', columns);
+    const columns = await Column
+      .find()
+      .sort({ order: 1 });
+      
     return NextResponse.json(columns, { status: 200 });
   } catch (error) {
     return NextResponse.json(
@@ -38,5 +40,7 @@ export const POST = async (request: NextRequest) => {
     );
   }
 };
+
+
 
 

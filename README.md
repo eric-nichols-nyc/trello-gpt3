@@ -40,6 +40,8 @@ NEXT AUTH
 
 DRAG AND DROP COLUMNS => DB
 
+call api/colums/{id}
+get the new column order and set it in the database
 
 
 

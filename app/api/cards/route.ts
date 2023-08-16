@@ -10,7 +10,6 @@ export const GET = async (request: NextRequest) => {
     await connectDB();
     // get all cards
     const cards = await Card.find();
-    console.log('cards: ', cards);
     return NextResponse.json(cards, { status: 200 });
   } catch (error) {
     return NextResponse.json(
