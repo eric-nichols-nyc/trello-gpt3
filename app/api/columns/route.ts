@@ -8,11 +8,11 @@ import Column from '@/models/Column';
 export const GET = async (request: NextRequest) => {
   try {
     let client = await connectDB();
-    // get all cards
+    // get all cards and return sorted by order key
     const columns = await Column
       .find()
       .sort({ order: 1 });
-      
+
     return NextResponse.json(columns, { status: 200 });
   } catch (error) {
     return NextResponse.json(

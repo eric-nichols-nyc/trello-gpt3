@@ -19,13 +19,15 @@ function Board() {
   const { data: cards } = useData('cards') as { data: Card[] };
   const { data: cols } = useData('columns') as { data: Column[] };
 
-  // console.log(cols)
+  // UPDATE COLUMN IN DATABASE
   const updateColumn = async(column:Column) => {
+    // update column by id
     const res = await axios.put(`/api/columns/${column._id}`, column)
     if(!res.data) {
       console.log('error')
       return
     }
+    // get new column order from db
     const cols = await axios.get('/api/columns')
     mutate('/api/columns', cols, false);
   }
@@ -41,11 +43,13 @@ function Board() {
       source.index === destination.index
     )
       return;
-    // handle column drag and drop
+    //=============== HANDLE COLUMN DRAG AND DROP =================
     if (type === "column") {
       if(!cols) return;
       // copy to cols array
       const reorderedCols = [...cols];
+      // 1. find out the target column
+      // 2. 
       // find out the index of the source and destination
       let colSourceIndex = source.index;
       const colDestinatonIndex = destination.index;
@@ -53,14 +57,13 @@ function Board() {
       const [changedCol] = reorderedCols.splice(colSourceIndex, 1);
       // add the col to the array in the right index
       reorderedCols.splice(colDestinatonIndex, 0, changedCol);
-      console.log('changedCol ', changedCol)
-      console.log('reorderedCols ', reorderedCols)
       // reordering the cols in the database
       updateColumn(changedCol)
+      // update the state immediately with swr
       mutate('/api/columns', reorderedCols, false);
       return 
     }
-    //=============== handle card drag and drop
+    //=============== HANDLE CARDS DRAG AND DROP =================
     const cardSourceIndex = source.index;
     const cardDestinationIndex = destination.index;
 
