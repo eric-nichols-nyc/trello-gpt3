@@ -9,6 +9,7 @@ import Column from './Column'
 import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
+import { newOrder } from '@/utils/getItemOrder'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -28,8 +29,8 @@ function Board() {
       return
     }
     // get new column order from db
-    const cols = await axios.get('/api/columns')
-    mutate('/api/columns', cols, false);
+    //const cols = await axios.get('/api/columns')
+    mutate('/api/columns');
   }
 
   // handle drag and drop
@@ -49,18 +50,20 @@ function Board() {
       // copy to cols array
       const reorderedCols = [...cols];
       // 1. find out the target column
-      // 2. 
       // find out the index of the source and destination
       let colSourceIndex = source.index;
       const colDestinatonIndex = destination.index;
       // remove the col from the array
       const [changedCol] = reorderedCols.splice(colSourceIndex, 1);
+      const test = newOrder(reorderedCols, changedCol, colSourceIndex, colDestinatonIndex);
+      console.log('test = ', test)
       // add the col to the array in the right index
       reorderedCols.splice(colDestinatonIndex, 0, changedCol);
-      // reordering the cols in the database
-      updateColumn(changedCol)
+
       // update the state immediately with swr
       mutate('/api/columns', reorderedCols, false);
+      // reordering the cols in the database
+      updateColumn(changedCol)
       return 
     }
     //=============== HANDLE CARDS DRAG AND DROP =================
@@ -123,6 +126,7 @@ function Board() {
                       />
                   })
                   }
+                  {provided.placeholder}
                 </div>
               }
             </Droppable>
