@@ -13,10 +13,11 @@ type Props = {
   id: string,
   name: string,
   cards: Card[],
-  index: number
+  index: number,
+  deleteColumn: (id: string) => void
 }
 
-function Column({ id, cards, name, index }: Props) {
+function Column({ id, cards, name, index, deleteColumn }: Props) {
   const [openModal] = useModalStore((state) => [state.openModal])
   return (
     <Draggable draggableId={id} index={index}>
@@ -37,7 +38,7 @@ function Column({ id, cards, name, index }: Props) {
               >
                 <div className='flex justify-between'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
-                  <MinusCircleIcon className='h-6 w-6 text-red-400' onClick={openModal} />
+                  <MinusCircleIcon className='h-6 w-6 text-red-400' onClick={() => deleteColumn(id)} />
                 </div>
 
                 <div className="mx-2">

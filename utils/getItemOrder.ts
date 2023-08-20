@@ -45,6 +45,8 @@ export const getNewOrder = (
   sourceIndex: number,
   destinationIndex: number
 ) => {
+  console.log('destinationIndex = ', destinationIndex);
+   console.log('columns = ', columns.length);
   // if position is first, get point between first and second
   let newOrder;
   if (destinationIndex === 0) {
@@ -54,7 +56,7 @@ export const getNewOrder = (
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
-  if (destinationIndex === columns.length) {
+  if (destinationIndex === columns.length - 1) {
     console.log('last');
     newOrder = midString(columns[columns.length - 1].order, '');
     console.log('newOrder = ', newOrder);

@@ -13,6 +13,7 @@ function CreateListForm({ addColumn }: Props) {
   const createList = () => {
     if (!title) return
     addColumn(title)
+    setOpen(false)
   }
   // handle event
   function handleChangeEvent(event: FormEvent<HTMLInputElement>) {

@@ -33,3 +33,23 @@ export async function PUT(request: NextRequest, { params }: any) {
     );
   }
 }
+
+export const DELETE = async (request: NextRequest, { params }: any) => {
+  const { id } = params;
+  try {
+    await connectDB();
+    await Column.deleteOne({
+      _id: id,
+    });
+    return new NextResponse(
+      JSON.stringify({ message: 'Column deleted successfully' }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(
+      JSON.stringify({ error: 'Internal Server Error' }),
+      { status: 500 }
+    );
+  }
+}

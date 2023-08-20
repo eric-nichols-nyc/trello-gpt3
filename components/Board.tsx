@@ -36,9 +36,8 @@ function Board() {
 
   // DELETE COLUMN IN DATABASE
   const deleteColumnInDB = async (id: string) => {
-    // delete column by id
+    // delete column by id from db in api route
     const res = await axios.delete(`/api/columns/${id}`)
-    console.log('Deleted column', res.data)
     if(!res.data) {
       console.log('error')
       return
@@ -145,7 +144,6 @@ function Board() {
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
-          <CreateListForm addColumn={addNewColumnToDB} />
           <DragDropContext onDragEnd={handleDragAndDrop}>
             <Droppable droppableId="ROOT" direction="horizontal" type="column">
               {(provided) =>
@@ -163,6 +161,7 @@ function Board() {
                         name={columnName}
                         cards={items}
                         index={index}
+                        deleteColumn={deleteColumnInDB}
                       />
                   })
                   }
@@ -171,6 +170,7 @@ function Board() {
               }
             </Droppable>
           </DragDropContext>
+          <CreateListForm addColumn={addNewColumnToDB} />
         </div>
       </div>
     </div>
