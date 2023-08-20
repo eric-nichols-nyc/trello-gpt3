@@ -4,7 +4,7 @@
 import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from './TodoCard'
-import { PlusCircleIcon } from '@heroicons/react/24/solid'
+import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid'
 import { useBoardStore } from '@/store/BoardStore'
 import { useModalStore } from '@/store/ModalStore'
 import { getServerSession } from "next-auth/next"
@@ -35,7 +35,11 @@ function Column({ id, cards, name, index }: Props) {
                 ref={provided.innerRef}
                 className={`shrink-0 w-72 bg-slate-300 rounded flex flex-col ${snapshot.isDraggingOver ? 'bg-green-100' : 'bg-white'}`}
               >
-                <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
+                <div className='flex justify-between'>
+                  <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
+                  <MinusCircleIcon className='h-6 w-6 text-red-400' onClick={openModal} />
+                </div>
+
                 <div className="mx-2">
                   {cards.map((card, index) => {
                     return <Draggable key={card._id} draggableId={card._id} index={index}>
@@ -52,11 +56,11 @@ function Column({ id, cards, name, index }: Props) {
                     </Draggable>
                   })}
                   {provided.placeholder}
-                  {/* <div className='flex items-end justify-end p-2'>
+                  <div className='flex items-end justify-end p-2'>
                     <button>
                       <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={openModal} />
                     </button>
-                  </div> */}
+                  </div>
                 </div>
               </div>
             )}

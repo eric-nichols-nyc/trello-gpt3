@@ -14,7 +14,7 @@ export default function Aoo() {
     }
   })
   if(session?.user){
-    console.log('session fsadf= ', session)
+    // console.log('session fsadf= ', session)
     redirect('board')
   }
 

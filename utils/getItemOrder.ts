@@ -54,28 +54,38 @@ export const getNewOrder = (
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
-  // item move down or right prev index
-  if (destinationIndex > sourceIndex) {
-    console.log('down or right');
-    newOrder = midString(
-      columns[destinationIndex - 1].order,
-      columns[destinationIndex].order
-    );
+  if (destinationIndex === columns.length) {
+    console.log('last');
+    newOrder = midString(columns[columns.length - 1].order, '');
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
-  if (destinationIndex < sourceIndex) {
-    console.log('up or left');
+  // item move down or right prev index
+  if (destinationIndex > sourceIndex) {
+    console.log('down or right');
     newOrder = midString(
       columns[destinationIndex].order,
       columns[destinationIndex + 1].order
     );
     console.log('newOrder = ', newOrder);
+    if (newOrder && newOrder > columns[destinationIndex].order) {
+      console.log('CORRECT');
+    } else {
+      throw new Error('newOrder is not correct');
+    }
     return newOrder;
   }
-  if (destinationIndex === columns.length) {
-    console.log('last');
-    newOrder = midString(columns[columns.length - 1].order, '');
+  if (destinationIndex < sourceIndex) {
+    console.log('up or left');
+    newOrder = midString(
+      columns[destinationIndex - 1].order,
+      columns[destinationIndex].order
+    );
+      if (newOrder && newOrder < columns[destinationIndex].order) {
+        console.log('CORRECT');
+      }else{
+        throw new Error('newOrder is not correct');
+      }
     console.log('newOrder = ', newOrder);
     return newOrder;
   }

@@ -34,16 +34,29 @@ function Board() {
     mutate('/api/columns');
   }
 
+  // DELETE COLUMN IN DATABASE
+  const deleteColumnInDB = async (id: string) => {
+    // delete column by id
+    const res = await axios.delete(`/api/columns/${id}`)
+    console.log('Deleted column', res.data)
+    if(!res.data) {
+      console.log('error')
+      return
+    }
+    // get new column order from db
+    mutate('/api/columns');
+  }
+
   // ADD NEW COLUMN TO DATABASE
   const addNewColumnToDB = async (name: string) => {
     // create obj add new column to db
     const col = {
       columnName:name,
       name,
-      order: cols && cols.length ? getNewOrder(cols, cols?.length, cols?.length)! : "m",
+      order: cols && cols.length ? getNewOrder(cols, cols?.length-1, cols?.length-1)! : "m",
       cards: [],
-      boardId: '64de2e64b0759ff112521213',
-      creatorId: '64de2e2cb0759ff11252120e',
+      boardId: process.env.NEXT_PUBLIC_USER,
+      creatorId: process.env.NEXT_PUBLIC_BOARD,
     }
     const res = await axios.post('/api/columns', col)
     if(!res.data) {

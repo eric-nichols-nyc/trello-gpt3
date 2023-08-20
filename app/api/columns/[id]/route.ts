@@ -9,6 +9,7 @@ export async function PUT(request: NextRequest, { params }: any) {
   const { id } = params;
   try {
     const body = await request.json();
+    // console.log('PUT ', body.order)
     await connectDB();
     await Column.updateOne(
       {
