@@ -3,16 +3,16 @@ import React, { FormEvent } from 'react'
 import { MdAdd, MdClose } from "react-icons/md";
 
 interface Props {
-  (): (title: string) => void
+  addColumn: (title: string) => void
 }
 
-function CreateListForm() {
+function CreateListForm({ addColumn }: Props) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
   // create new list column in database
   const createList = () => {
     if (!title) return
-    alert(title)
+    addColumn(title)
   }
   // handle event
   function handleChangeEvent(event: FormEvent<HTMLInputElement>) {

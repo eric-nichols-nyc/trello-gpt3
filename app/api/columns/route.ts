@@ -29,15 +29,11 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (req: any) => {
   const body = await req.json();
   const column = {
-    ...body,
-    boardId: new ObjectId(body.boardId),
-  };
+    ...body
+    };
   const newColumn = new Column(column);
-  const test = process.env.NEXTAUTH_SECRET
-  const session = await getServerSession(authOptions);
-  const token = await getToken({ req });
-  console.log('token = ', token);
-   console.log('session = ', session);
+  console.log('newColumn ======= ', newColumn)
+
   try {
     await connectDB();
     await newColumn.save();

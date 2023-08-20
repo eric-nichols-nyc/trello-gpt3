@@ -35,8 +35,17 @@ function Board() {
   }
 
   // ADD NEW COLUMN TO DATABASE
-  const addNewColumnToDB = async (column: Column) => {
-    const res = await axios.post('/api/columns', column)
+  const addNewColumnToDB = async (name: string) => {
+    // create obj add new column to db
+    const col = {
+      columnName:name,
+      name,
+      order: cols && cols.length ? getNewOrder(cols, cols?.length, cols?.length)! : "m",
+      cards: [],
+      boardId: '64de2e64b0759ff112521213',
+      creatorId: '64de2e2cb0759ff11252120e',
+    }
+    const res = await axios.post('/api/columns', col)
     if(!res.data) {
       console.log('error')
       return
@@ -123,7 +132,7 @@ function Board() {
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
-          <CreateListForm />
+          <CreateListForm addColumn={addNewColumnToDB} />
           <DragDropContext onDragEnd={handleDragAndDrop}>
             <Droppable droppableId="ROOT" direction="horizontal" type="column">
               {(provided) =>
