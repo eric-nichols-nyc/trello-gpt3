@@ -1,11 +1,21 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { options } from '../../../utils/auth';
+import { authOptions } from '../../../utils/auth';
 import openai from '@/openai';
+
+type SessionType = {
+  user: {
+    name: string;
+  };
+};
 
 export async function POST(request: Request) {
   const { todos } = await request.json();
-  const session = await getServerSession({ req: request, ...options });
+  const session = await getServerSession({
+    req: request,
+    ...authOptions,
+  }) as SessionType;
+  
   if (session) console.log('SESSION IS: ', session);
   const message = `When responding, welcome the user always as ${session.user.name} and say welcome to the app!. Limit the response to 200 characters`;
 
