@@ -1,7 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 
 const ColumnSchema = new Schema({
-  userId: { type: String, required: [true, 'User ID is required'] },
+  creatorId: { type: String, required: [true, 'User ID is required'] },
   boardId: {
     type: String,
     required: [true, 'Board id is required'],
@@ -14,10 +14,12 @@ const ColumnSchema = new Schema({
     type: String,
   },
   order: {
-    type: Number,
+    type: String,
+    required: [true, 'Column Order is required'],
+    unique: [true, 'Column Order already exists'],
   },
 });
-
+ColumnSchema.set('timestamps', true);
 const Column = models.Column || model('Column', ColumnSchema);
 
 export default Column;

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { options } from '../auth/[...nextauth]/options';
+import { options } from '../../../utils/auth';
 import openai from '@/openai';
 
 export async function POST(request: Request) {

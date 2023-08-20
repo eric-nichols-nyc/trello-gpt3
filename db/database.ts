@@ -12,7 +12,7 @@ export const connectDB = async () => {
     } as ConnectOptions)
     .then((res) => {
       console.log(
-        'Connected to Distribution API Database - Initial Connection'
+        'Connected to API Database - Successful'
       );
     })
     .catch((err) => {

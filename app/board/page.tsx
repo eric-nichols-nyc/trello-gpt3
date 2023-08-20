@@ -5,13 +5,12 @@ import Header from '@/components/Header'
 // client components to useSession
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import useSWR from 'swr'
 
-export default function ClientPage() {
+export default function BoardPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/api/auth/signin?callbackUrl=/client')
+      redirect('/api/auth/signin?callbackUrl=/board')
     }
   })
 

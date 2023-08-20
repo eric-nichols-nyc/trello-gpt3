@@ -1,29 +1,26 @@
 'use client'
+import Board from '@/components/Board'
+import Header from '@/components/Header'
 // Remember you must use an AuthProvider for 
 // client components to useSession
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { Header, Home } from '@/components'
 
-export default function Aoo() {
+export default function ClientPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      //redirect('/api/auth/signin?callbackUrl=/board')
-      console.log('User in not authenticated')
+      redirect('/api/auth/signin?callbackUrl=/board')
     }
   })
-  if(session?.user){
+  if (session?.user) {
     console.log('session fsadf= ', session)
-    redirect('board')
+    // redirect(`/board/${session?.user.id}`)
   }
-
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col h-full">
       <Header user={session?.user} />
-      {
-        session?.user ? <div>User is Authenticaated</div> : <Home />
-      }
+      <Board />
     </section>
   )
 }

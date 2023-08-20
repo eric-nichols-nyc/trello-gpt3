@@ -26,7 +26,7 @@ const CardSchema = new Schema({
     type: String,
   },
   order: {
-    type: Number,
+    type: String,
     required: [true, 'Card order is required'],
     unique: [true, 'Card order already exists'],
   },

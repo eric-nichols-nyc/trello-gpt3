@@ -8,7 +8,7 @@ interface Column {
   _id: string;
   columnName: string;
   name: string;
-  order: number;
+  order: string;
   cards: Card[];
 }
 

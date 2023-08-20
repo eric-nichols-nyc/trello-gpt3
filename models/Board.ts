@@ -1,11 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 
 const BoardSchema = new Schema({
-  userId: { type: String, required: [true, 'User ID is required'] },
-  boardId: {
-    type: String,
-    required: [true, 'Board id is required'],
-  },
+  creatorId: { type: String, required: [true, 'User ID is required'] },
   backgroundImage: { type: String },
   backgroundColor: { type: String },
   name: {
@@ -16,7 +12,7 @@ const BoardSchema = new Schema({
     type: String,
   },
 });
-
-const Board = models.board || model('Board', BoardSchema);
+BoardSchema.set('timestamps', true);
+const Board = models.Board || model('Board', BoardSchema);
 
 export default Board;

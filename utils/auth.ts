@@ -1,23 +1,37 @@
-// import type { NextAuthOptions } from 'next-auth'
+import NextAuth, { NextAuthOptions, getServerSession } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectDB } from '@/db/database';
+import clientPromise from './client';
 import User from '@/models/User';
 
-interface Profile {
-  profile: {
-    name: String;
-    email: String;
-    picture: String;
-  };
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  token: string;
 }
-export const options = {
+
+declare module 'next-auth' {
+  interface Session {
+    user: User;
+  }
+}
+
+export const authOptions: any = {
+  adapter: MongoDBAdapter(clientPromise),
+  session: {
+    strategy: 'jwt',
+  },
   providers: [
-    // GitHubProvider({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET,
-    // }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -54,10 +68,7 @@ export const options = {
     // }),
   ],
   callbacks: {
-    async session({ session }: any): Promise<any> {
-      return session;
-    },
-    async signIn({ profile }: Profile): Promise<boolean> {
+    async signIn({ profile }: any): Promise<boolean> {
       try {
         connectDB();
         // look for user email in db
@@ -69,7 +80,6 @@ export const options = {
             name: profile.name,
             image: profile.picture,
           });
-          // console.log('User = ', user);
         }
         return true;
       } catch (err) {
@@ -77,5 +87,31 @@ export const options = {
         return false;
       }
     },
+    async session({ session, token }:any) {
+      console.log('token = ', token);
+        if (session) {
+          session = Object.assign({}, session, {
+            user: token,
+            access_token: token.access_token,
+          });
+          console.log(session);
+        }
+        return session;
+    },
+    async jwt({ token, account, user }: any) {
+          if (account) {
+            token = Object.assign({}, token, {
+              access_token: account.access_token,
+            });
+          }
+      return { ...token, ...user };
+    },
   },
+  pages: {
+    signIn: '/auth/signin',
+  }
 };
+
+// get user credentials in server side components
+export const getAuthSession = () => getServerSession(authOptions);
+export default NextAuth(authOptions);

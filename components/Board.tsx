@@ -9,7 +9,7 @@ import Column from './Column'
 import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
-import { newOrder } from '@/utils/getItemOrder'
+import { getNewOrder } from '@/utils/getItemOrder'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -54,16 +54,16 @@ function Board() {
       let colSourceIndex = source.index;
       const colDestinatonIndex = destination.index;
       // remove the col from the array
-      const [changedCol] = reorderedCols.splice(colSourceIndex, 1);
-      const test = newOrder(reorderedCols, changedCol, colSourceIndex, colDestinatonIndex);
-      console.log('test = ', test)
+      // let [changedCol] = reorderedCols.splice(colSourceIndex, 1);
+      const test = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
+      console.log('sourceIndex ', colSourceIndex, 'destIndex', colDestinatonIndex, 'result = ', test)
       // add the col to the array in the right index
-      reorderedCols.splice(colDestinatonIndex, 0, changedCol);
+      // reorderedCols.splice(colDestinatonIndex, 0, changedCol);
 
-      // update the state immediately with swr
-      mutate('/api/columns', reorderedCols, false);
-      // reordering the cols in the database
-      updateColumn(changedCol)
+      // // update the state immediately with swr
+      // mutate('/api/columns', reorderedCols, false);
+      // // reordering the cols in the database
+      // updateColumn(changedCol)
       return 
     }
     //=============== HANDLE CARDS DRAG AND DROP =================
@@ -100,7 +100,8 @@ function Board() {
     // REODER CARDS IN THE DATABASE...
   };
 
-  if (!cols || !cards) return null;
+  if (!cols || !cards) return <div>Loading...</div>;
+  
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">

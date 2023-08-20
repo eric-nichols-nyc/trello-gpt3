@@ -7,6 +7,8 @@ import TodoCard from './TodoCard'
 import { PlusCircleIcon } from '@heroicons/react/24/solid'
 import { useBoardStore } from '@/store/BoardStore'
 import { useModalStore } from '@/store/ModalStore'
+import { getServerSession } from "next-auth/next"
+
 type Props = {
   id: string,
   name: string,
@@ -50,11 +52,11 @@ function Column({ id, cards, name, index }: Props) {
                     </Draggable>
                   })}
                   {provided.placeholder}
-                  <div className='flex items-end justify-end p-2'>
+                  {/* <div className='flex items-end justify-end p-2'>
                     <button>
                       <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={openModal} />
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             )}
