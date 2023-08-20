@@ -16,7 +16,7 @@ export async function PUT(request: NextRequest, { params }: any) {
       },
       {
         $set: {
-          order: 0,
+          order: body.order,
         },
       },
     );

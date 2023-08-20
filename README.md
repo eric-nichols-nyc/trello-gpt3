@@ -14,8 +14,8 @@ add new columns:
  - use getItemOrder util to get to new order after each drop
  - get the new column order and set it in the database
 
- CREATE NEW COLUMN
- - Board => CreateListForm => api/columns/{userid, form data}
+ CREATE NEW COLUMN BUTTON
+ - Board => CreateListForm(addColumn) => api/columns/{userid, form data}
 
 
 

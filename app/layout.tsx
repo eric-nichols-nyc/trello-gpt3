@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import AuthProvider from '@/context/AuthProvider'
 
 import { Inter } from 'next/font/google'
+import { UserProvider } from '@/components/UserContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -19,11 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-
         <AuthProvider>
-          <main className='h-screen'>
-            {children}
-          </main>
+          <UserProvider>
+            <main className='h-screen'>
+              {children}
+            </main>
+          </UserProvider>
         </AuthProvider>
       </body>
       <Modal />

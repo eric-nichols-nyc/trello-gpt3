@@ -8,13 +8,6 @@ import User from '@/models/User';
 
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-  token: string;
-}
 
 declare module 'next-auth' {
   interface Session {

@@ -21,9 +21,10 @@ function Board() {
   const { data: cols } = useData('columns') as { data: Column[] };
 
   // UPDATE COLUMN IN DATABASE
-  const updateColumn = async(column:Column) => {
+  const updateColumnInDB = async(column:Column) => {
     // update column by id
     const res = await axios.put(`/api/columns/${column._id}`, column)
+    console.log('Updated column', res.data)
     if(!res.data) {
       console.log('error')
       return
@@ -32,6 +33,18 @@ function Board() {
     //const cols = await axios.get('/api/columns')
     mutate('/api/columns');
   }
+
+  // ADD NEW COLUMN TO DATABASE
+  const addNewColumnToDB = async (column: Column) => {
+    const res = await axios.post('/api/columns', column)
+    if(!res.data) {
+      console.log('error')
+      return
+    }
+    // get new column order from db
+    mutate('/api/columns');
+  }
+
 
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
@@ -48,22 +61,26 @@ function Board() {
     if (type === "column") {
       if(!cols) return;
       // copy to cols array
-      const reorderedCols = [...cols];
-      // 1. find out the target column
-      // find out the index of the source and destination
+      let reorderedCols = [...cols];
+      // 1. find the target column
+      // 2. find index of source and destination
       let colSourceIndex = source.index;
       const colDestinatonIndex = destination.index;
-      // remove the col from the array
-      // let [changedCol] = reorderedCols.splice(colSourceIndex, 1);
-      const test = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
-      console.log('sourceIndex ', colSourceIndex, 'destIndex', colDestinatonIndex, 'result = ', test)
-      // add the col to the array in the right index
-      // reorderedCols.splice(colDestinatonIndex, 0, changedCol);
+      // 3. remove col from array
+      let changedCol = reorderedCols[colSourceIndex];
 
-      // // update the state immediately with swr
-      // mutate('/api/columns', reorderedCols, false);
-      // // reordering the cols in the database
-      // updateColumn(changedCol)
+      console.log('changedCol', changedCol)
+      const order = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
+      if(order){
+        changedCol.order = order;
+        console.log('changedCol', changedCol)
+      }else{
+        throw new Error('Error: order is undefined')
+      }
+      // 4. update the state immediately with swr
+      mutate('/api/columns', reorderedCols, false);
+      // 5. reordering the cols in the database
+      updateColumnInDB(changedCol)
       return 
     }
     //=============== HANDLE CARDS DRAG AND DROP =================
@@ -106,7 +123,7 @@ function Board() {
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
-          {/* <CreateListForm /> */}
+          <CreateListForm />
           <DragDropContext onDragEnd={handleDragAndDrop}>
             <Droppable droppableId="ROOT" direction="horizontal" type="column">
               {(provided) =>
