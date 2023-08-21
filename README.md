@@ -17,5 +17,8 @@ add new columns:
  CREATE NEW COLUMN BUTTON
  - Board => CreateListForm(addColumn) => api/columns/{userid, form data}
 
+ CREATE CARDS FOR COLUMNS
+ - Board => Column => createCard({columnId}) => api/cards/
+
 
 

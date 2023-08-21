@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Avatar from 'react-avatar'
 import { useBoardStore } from '@/store/BoardStore'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 type User = {
   name?: string | null | undefined;
@@ -38,6 +38,7 @@ function Header({user}:Props) {
           {
             session && 
             <button 
+              onClick={() => signOut({callbackUrl: '/'})}
               className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
             >
               Logout
