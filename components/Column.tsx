@@ -5,9 +5,9 @@ import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from './TodoCard'
 import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid'
-import { useBoardStore } from '@/store/BoardStore'
-import { useModalStore } from '@/store/ModalStore'
-import { getServerSession } from "next-auth/next"
+// import { useBoardStore } from '@/store/BoardStore'
+// import { useModalStore } from '@/store/ModalStore'
+// import { getServerSession } from "next-auth/next"
 
 type Props = {
   id: string,
@@ -15,10 +15,11 @@ type Props = {
   cards: Card[],
   index: number,
   deleteColumn: (id: string) => void
+  addCard: (title: string, id: string) => void
 }
 
-function Column({ id, cards, name, index, deleteColumn }: Props) {
-  const [openModal] = useModalStore((state) => [state.openModal])
+function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (
@@ -59,7 +60,7 @@ function Column({ id, cards, name, index, deleteColumn }: Props) {
                   {provided.placeholder}
                   <div className='flex items-end justify-end p-2'>
                     <button>
-                      <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={openModal} />
+                      <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={() => addCard('poop', id)} />
                     </button>
                   </div>
                 </div>

@@ -24,14 +24,11 @@ function Board() {
   const updateColumnInDB = async(column:Column) => {
     // update column by id
     const res = await axios.put(`/api/columns/${column._id}`, column)
-    console.log('Updated column', res.data)
     if(!res.data) {
       console.log('error')
       return
     }
-    // get new column order from db
-    //const cols = await axios.get('/api/columns')
-    mutate('/api/columns');
+   mutate('/api/columns');
   }
 
   // DELETE COLUMN IN DATABASE
@@ -64,6 +61,11 @@ function Board() {
     }
     // get new column order from db
     mutate('/api/columns');
+  }
+  // ADD NEW CARD TO DATABASE
+  const addNewCardToDB = async (title: string, id:string) => {
+    // create obj add new column to db
+    console.log('card title to add to db = ', title, id)
   }
 
 
@@ -98,6 +100,8 @@ function Board() {
       }else{
         throw new Error('Error: order is undefined')
       }
+      reorderedCols.sort((a, b) => a.order.localeCompare(b.order));
+      console.log('reorder = ',reorderedCols)
       // 4. update the state immediately with swr
       mutate('/api/columns', reorderedCols, false);
       // 5. reordering the cols in the database
@@ -162,6 +166,7 @@ function Board() {
                         cards={items}
                         index={index}
                         deleteColumn={deleteColumnInDB}
+                        addCard={addNewCardToDB}
                       />
                   })
                   }
