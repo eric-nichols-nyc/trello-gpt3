@@ -4,7 +4,8 @@
 import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from './TodoCard'
-import { PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid'
+import { MinusCircleIcon } from '@heroicons/react/24/solid'
+import CreateCardForm from './CreateCardForm'
 // import { useBoardStore } from '@/store/BoardStore'
 // import { useModalStore } from '@/store/ModalStore'
 // import { getServerSession } from "next-auth/next"
@@ -42,7 +43,7 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                   <MinusCircleIcon className='h-6 w-6 text-red-400' onClick={() => deleteColumn(id)} />
                 </div>
 
-                <div className="mx-2">
+                <div className="mx-2 list border-solid border-2 border-sky-500">
                   {cards.map((card, index) => {
                     return <Draggable key={card._id} draggableId={card._id} index={index}>
                       {(provided) => (
@@ -58,12 +59,10 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                     </Draggable>
                   })}
                   {provided.placeholder}
-                  <div className='flex items-end justify-end p-2'>
-                    <button>
-                      <PlusCircleIcon className='h-6 w-6 text-green-400' onClick={() => addCard('poop', id)} />
-                    </button>
-                  </div>
+             
                 </div>
+                  {/* send information to board to add to db */}
+                <CreateCardForm id={id} addCard={addCard}/>
               </div>
             )}
           </Droppable>

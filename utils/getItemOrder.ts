@@ -41,12 +41,12 @@ const midString = (prev: string, next: string) => {
 };
 
 export const getNewOrder = (
-  columns: Column[],
+  columns: Column[] | Card[],
   sourceIndex: number,
   destinationIndex: number
 ) => {
-  console.log('destinationIndex = ', destinationIndex);
-   console.log('columns = ', columns.length);
+  // console.log('destinationIndex = ', destinationIndex);
+   // console.log('columns = ', columns.length);
   // if position is first, get point between first and second
   let newOrder;
   if (destinationIndex === 0) {

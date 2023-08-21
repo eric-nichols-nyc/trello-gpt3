@@ -16,7 +16,6 @@ export const GET = async (request: NextRequest) => {
     let client = await connectDB();
     // get all cards and return sorted by order key
     const columns = await Column.find().sort({ order: 1 });
-    console.log('columns = ', columns)
 
     return NextResponse.json(columns, { status: 200 });
   } catch (error) {

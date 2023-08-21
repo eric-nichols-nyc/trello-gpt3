@@ -51,8 +51,8 @@ function Board() {
       name,
       order: cols && cols.length ? getNewOrder(cols, cols?.length-1, cols?.length-1)! : "m",
       cards: [],
-      boardId: process.env.NEXT_PUBLIC_USER,
-      creatorId: process.env.NEXT_PUBLIC_BOARD,
+      boardId: process.env.NEXT_PUBLIC_BOARD,
+      userId: process.env.NEXT_PUBLIC_USER,
     }
     const res = await axios.post('/api/columns', col)
     if(!res.data) {
@@ -64,8 +64,23 @@ function Board() {
   }
   // ADD NEW CARD TO DATABASE
   const addNewCardToDB = async (title: string, id:string) => {
-    // create obj add new column to db
-    console.log('card title to add to db = ', title, id)
+    // create obj add new card to db
+    const card = {
+      title,
+      columnId: id,
+      order: cards && cards.length ? getNewOrder(cards, cards?.length-1, cards?.length-1)! : "m",
+      boardId: process.env.NEXT_PUBLIC_BOARD,
+      userId: process.env.NEXT_PUBLIC_USER,
+    }
+    const res = await axios.post('/api/cards', card)
+    if(!res.data) {
+      console.log('error')
+      return
+    }
+    mutate('/api/cards');
+    console.log('cards = ', cards)
+
+    // update and reorder cards
   }
 
 

@@ -26,7 +26,7 @@ export const POST = async (request: NextRequest) => {
     await connectDB();
     await newCard.save();
     return NextResponse.json(
-      { message: 'Card created successfully' },
+      { message: 'Card created successfully', data: newCard },
       { status: 201 }
     );
   } catch (error) {

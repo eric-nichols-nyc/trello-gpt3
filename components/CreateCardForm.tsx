@@ -1,25 +1,29 @@
 import React, { FormEvent } from 'react'
-import { MdAdd, MdClose } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 
 interface Props {
-  addColumn: (title: string) => void
+  id: string;
+  addCard: (title: string, id:string) => void
 }
 
-// Create a new list
-function CreateListForm({ addColumn }: Props) {
+// Create a new card 
+// card is sent to database
+// swr hook updates the UI
+function CreateCardForm({ addCard, id }: Props) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
   // create new list column in database
-  const createList = () => {
+  const createCard = () => {
     if (!title) return
-    addColumn(title)
-    setOpen(false)
+    // 
+    addCard(title, id)
+    // unlike list form this form does not auto close
+    // setOpen(false)
   }
   // handle event
   function handleChangeEvent(event: FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
     setTitle(target.value);
-    console.log(target.value);
   }
   return (
 
@@ -36,7 +40,7 @@ function CreateListForm({ addColumn }: Props) {
             />
             <div className="flex items-center">
               <button
-                onClick={createList}
+                onClick={createCard}
                 className="px-3 py-3 rounded font-sans text-xs font-semibold outline-black mr-2 bg-blue-700 text-white"
               >
                 Add list
@@ -52,11 +56,11 @@ function CreateListForm({ addColumn }: Props) {
           onClick={() => setOpen(true)}
           className="flex items-center px-4 h-full transition-all duration-200 bg-blue-500 hover:bg-blue-400 py-2 cursor-pointer rounded-md">
           <MdAdd color="white" size={24} />
-          <p className="ml-2 text-xs text-white">Create new list</p>
+          <p className="ml-2 text-xs text-white">Create new card</p>
         </div>
       }
     </div>
   )
 }
 
-export default CreateListForm
+export default CreateCardForm

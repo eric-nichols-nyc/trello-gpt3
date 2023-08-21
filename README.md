@@ -18,6 +18,7 @@ add new columns:
  - Board => CreateListForm(addColumn) => api/columns/{userid, form data}
 
  CREATE CARDS FOR COLUMNS
+ - cards are created using a form like createListForm component
  - Board => Column => createCard({columnId}) => api/cards/
 
 
