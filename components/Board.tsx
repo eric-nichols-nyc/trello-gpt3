@@ -20,6 +20,15 @@ function Board() {
   const { data: cards } = useData('cards') as { data: Card[] };
   const { data: cols } = useData('columns') as { data: Column[] };
 
+  const [items, setItems] = useState<Card[]>()
+
+  useEffect(() => {
+    if(!cards) return
+    const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
+    setItems(sorted)
+  }, [cards])
+
+
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async(column:Column) => {
     // update column by id
@@ -83,7 +92,6 @@ function Board() {
 
   // UPDATE CARD IN DATABASE
   const updateCardInDB = async (card:Card) => {
-    console.log('card to update in DB = ', card)
     // update card by id
     const res = await axios.put(`/api/cards/${card._id}`, card)
     if(!res.data) {
@@ -171,14 +179,17 @@ function Board() {
     card.columnId = destinationColumn._id;
     card.order = order;
     // 6. update the state immediately with swr
-    console.log('cardsCopy', cardsCopy)
-    updateCardInDB(card)
+    console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
+    // const test:Card[] = []
+  
+    setItems(cardsCopy)
+    // mutate('/api/cards', cardsCopy, true);
+   updateCardInDB(card)
 
-    mutate('/api/cards', cardsCopy,false);
     // 7. reordering the cards in the database
   };
 
-  if (!cols || !cards) return <div>Loading...</div>;
+  if (!cols || !items ) return <div>Loading...</div>;
   
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
@@ -194,12 +205,12 @@ function Board() {
                     cols.map((column:Column, index) => {
                       const { _id, columnName } = column
                       // match the cards to the column
-                      const items = cards.filter((card:Card) => card.columnId === _id);
+                      const arr = items.filter((card:Card) => card.columnId === _id);
                      return <Column
                         key={_id}
                         id={_id}
                         name={columnName}
-                        cards={items}
+                        cards={arr}
                         index={index}
                         deleteColumn={deleteColumnInDB}
                         addCard={addNewCardToDB}
