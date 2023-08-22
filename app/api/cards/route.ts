@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
     // get all cards
-    const cards = await Card.find();
+    const cards = await Card.find().sort({ order: 1 });;
     return NextResponse.json(cards, { status: 200 });
   } catch (error) {
     return NextResponse.json(

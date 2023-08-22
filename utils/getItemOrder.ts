@@ -2,7 +2,7 @@
 // get the dipoint between to numbers
 // 6 positions first | last | middle-left | middle-right | up | down
 
-const midString = (prev: string, next: string) => {
+export const midString = (prev: string, next: string) => {
   let p;
   let n;
   let pos;
@@ -41,24 +41,27 @@ const midString = (prev: string, next: string) => {
 };
 
 export const getNewOrder = (
-  columns: Column[] | Card[],
+  items: Column[] | Card[],
   sourceIndex: number,
   destinationIndex: number
 ) => {
   // console.log('destinationIndex = ', destinationIndex);
-   // console.log('columns = ', columns.length);
+   // console.log('items = ', items.length);
   // if position is first, get point between first and second
   let newOrder;
+  if(!items.length) {
+    return midString('', 'a');
+  }
   if (destinationIndex === 0) {
     // item is first
     console.log('first');
-    newOrder = midString('', columns[0].order);
+    newOrder = midString('', items[0].order);
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
-  if (destinationIndex === columns.length - 1) {
+  if (destinationIndex === items.length - 1) {
     console.log('last');
-    newOrder = midString(columns[columns.length - 1].order, '');
+    newOrder = midString(items[items.length - 1].order, '');
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
@@ -66,11 +69,11 @@ export const getNewOrder = (
   if (destinationIndex > sourceIndex) {
     console.log('down or right');
     newOrder = midString(
-      columns[destinationIndex].order,
-      columns[destinationIndex + 1].order
+      items[destinationIndex].order,
+      items[destinationIndex + 1].order
     );
     console.log('newOrder = ', newOrder);
-    if (newOrder && newOrder > columns[destinationIndex].order) {
+    if (newOrder && newOrder > items[destinationIndex].order) {
       console.log('CORRECT');
     } else {
       throw new Error('newOrder is not correct');
@@ -80,10 +83,10 @@ export const getNewOrder = (
   if (destinationIndex < sourceIndex) {
     console.log('up or left');
     newOrder = midString(
-      columns[destinationIndex - 1].order,
-      columns[destinationIndex].order
+      items[destinationIndex - 1].order,
+      items[destinationIndex].order
     );
-      if (newOrder && newOrder < columns[destinationIndex].order) {
+      if (newOrder && newOrder < items[destinationIndex].order) {
         console.log('CORRECT');
       }else{
         throw new Error('newOrder is not correct');

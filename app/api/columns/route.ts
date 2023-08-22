@@ -29,7 +29,7 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (req: any) => {
   const body = await req.json();
   const column = {
-    ...body
+    ...body,
     };
   const newColumn = new Column(column);
   // console.log('newColumn ======= ', newColumn)

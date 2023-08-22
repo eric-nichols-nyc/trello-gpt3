@@ -6,14 +6,14 @@ const CardSchema = new Schema({
     required: [true, 'User ID is required'],
   },
   boardId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'board',
     required: [true, 'Board id is required'],
-    unique: false,
   },
   columnId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'column',
     required: [true, 'Column ID is required'],
-    unique: false,
   },
   title: {
     type: String,
@@ -28,7 +28,6 @@ const CardSchema = new Schema({
   order: {
     type: String,
     required: [true, 'Card order is required'],
-    unique: [true, 'Card order already exists'],
   },
 });
 CardSchema.set('timestamps', true);

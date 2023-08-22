@@ -81,13 +81,13 @@ export const authOptions: any = {
       }
     },
     async session({ session, token }:any) {
-      console.log('token = ', token);
+      // console.log('token = ', token);
         if (session) {
           session = Object.assign({}, session, {
             user: token,
             access_token: token.access_token,
           });
-          console.log(session);
+          // console.log(session);
         }
         return session;
     },

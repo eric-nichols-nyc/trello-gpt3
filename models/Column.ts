@@ -1,10 +1,14 @@
 import { Schema, model, models } from 'mongoose';
 
 const ColumnSchema = new Schema({
-  creatorId: { type: String, required: [true, 'User ID is required'] },
+  creatorId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
   boardId: {
     type: String,
-    required: [true, 'Board id is required'],
+    required: [true, 'User ID is required'],
   },
   columnName: {
     type: String,

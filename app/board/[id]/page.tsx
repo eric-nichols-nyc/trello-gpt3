@@ -14,7 +14,7 @@ export default function ClientPage() {
     }
   })
   if (session?.user) {
-    console.log('session fsadf= ', session)
+    // console.log('session fsadf= ', session)
     // redirect(`/board/${session?.user.id}`)
   }
   return (

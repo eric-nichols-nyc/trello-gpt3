@@ -9,7 +9,7 @@ import Column from './Column'
 import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
-import { getNewOrder } from '@/utils/getItemOrder'
+import { getNewOrder, midString } from '@/utils/getItemOrder'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -52,7 +52,7 @@ function Board() {
       order: cols && cols.length ? getNewOrder(cols, cols?.length-1, cols?.length-1)! : "m",
       cards: [],
       boardId: process.env.NEXT_PUBLIC_BOARD,
-      userId: process.env.NEXT_PUBLIC_USER,
+      creatorId: process.env.NEXT_PUBLIC_USER,
     }
     const res = await axios.post('/api/columns', col)
     if(!res.data) {
@@ -77,16 +77,27 @@ function Board() {
       console.log('error')
       return
     }
+    // revalidate cards
     mutate('/api/cards');
-    console.log('cards = ', cards)
+  }
 
-    // update and reorder cards
+  // UPDATE CARD IN DATABASE
+  const updateCardInDB = async (card:Card) => {
+    console.log('card to update in DB = ', card)
+    // update card by id
+    const res = await axios.put(`/api/cards/${card._id}`, card)
+    if(!res.data) {
+      console.log('error')
+      return
+    }
+    // revalidate cards
+    mutate('/api/cards');
   }
 
 
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
-    const { source, destination, type } = results;
+    const { source, destination, draggableId, type } = results;
 
     if (!destination) return;
 
@@ -126,35 +137,42 @@ function Board() {
     //=============== HANDLE CARDS DRAG AND DROP =================
     const cardSourceIndex = source.index;
     const cardDestinationIndex = destination.index;
-
+    // 1. find card index from source column
     let colSourceIndex = cols?.findIndex(
       (col) => col._id === source.droppableId
     );
+    // 2. find card index from destination column
     const colDestinationIndex = cols?.findIndex(
       (col) => col._id === destination.droppableId
     );
-    if(!colSourceIndex || !colDestinationIndex || !cols) return;
-    const newSourcsCards = [...cols[colSourceIndex].cards];
-    const newDestinationCards =
-      source.droppableId !== destination.droppableId
-        ? [...cols[colDestinationIndex].cards]
-        : newSourcsCards;
 
-    const [deletedItem] = newSourcsCards.splice(cardSourceIndex, 1);
-    newDestinationCards.splice(cardDestinationIndex, 0, deletedItem);
-
-    const newLists = [...cols];
-
-    newLists[colSourceIndex] = {
-      ...cols[colSourceIndex],
-      cards: newSourcsCards,
-    };
-    newLists[colDestinationIndex] = {
-      ...cols[colDestinationIndex],
-      cards: newDestinationCards,
-    };
-
-    // REODER CARDS IN THE DATABASE...
+    const destinationColumn = cols && cols[colDestinationIndex];
+    console.log('draggableId', draggableId)
+    console.log('destinationColumn', destinationColumn)
+    console.log('cardDestinationIndex', cardDestinationIndex)
+    const cardsCopy = [...cards];
+    // 3. get the card id and get find the destination column and index
+    const card = cardsCopy?.find((card) => card._id === draggableId);
+    console.log('card', card)
+    if(!card) return;
+    // find the cards in the target column
+    const cardsInTargetColumn = cardsCopy?.filter(
+      (card) => card.columnId === destinationColumn._id
+    );
+    // new order for the card = 
+    console.log('cardsInTargetColumn', cardsInTargetColumn)
+    // 4. get a new order for the card
+    const order = getNewOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
+    if(!order) throw new Error('Error: order is undefined');
+    console.log('new card order = ', order)
+    // 5. update the card with the new column and order
+    card.columnId = destinationColumn._id;
+    card.order = order;
+    // 6. update the state immediately with swr
+    console.log('cardsCopy', cardsCopy)
+    mutate('/api/cards', cardsCopy, false);
+    // 7. reordering the cards in the database
+    updateCardInDB(card)
   };
 
   if (!cols || !cards) return <div>Loading...</div>;
