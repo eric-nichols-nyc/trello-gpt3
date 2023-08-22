@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Avatar from 'react-avatar'
 import { useBoardStore } from '@/store/BoardStore'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession, signOut, signIn } from 'next-auth/react'
 
 type User = {
   name?: string | null | undefined;
@@ -16,8 +16,8 @@ type Props = {
 }
 
 
-function Header({user}:Props) {
-  const {data:session}= useSession();
+function Header({ user }: Props) {
+  const { data: session } = useSession();
   const [board] = useBoardStore((state) => [
     state.board,
     state.searchString,
@@ -36,15 +36,23 @@ function Header({user}:Props) {
         />
         <div className="flex items-center space-x-5 flex-1 justify-end w-full">
           {
-            session && 
-            <button 
-              onClick={() => signOut({callbackUrl: '/'})}
-              className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
-            >
-              Logout
-            </button>
-          }
+            session ?
+            <>
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
+              >
+                Logout
+              </button>
               <Avatar className="cursor-pointer ml-2" name={user?.name!} size="50" round={true} />
+            </>
+           : <button
+            onClick={() => signIn()}
+            className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
+          >
+            Login
+          </button>
+          }
         </div>
       </div>
     </header>
