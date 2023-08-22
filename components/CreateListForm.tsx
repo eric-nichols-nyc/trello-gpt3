@@ -28,7 +28,6 @@ function CreateListForm({ addColumn }: Props) {
         open ? (
           <div className="bg-slate-300 p-2 rounded w-full">
             <input
-              onBlur={() => setOpen(false)}
               autoFocus
               type="text"
               placeholder="Enter list title"

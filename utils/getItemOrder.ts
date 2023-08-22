@@ -59,7 +59,7 @@ export const getNewOrder = (
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
-  if (destinationIndex === items.length - 1) {
+  if (destinationIndex >= items.length - 1) {
     console.log('last');
     newOrder = midString(items[items.length - 1].order, '');
     console.log('newOrder = ', newOrder);
@@ -91,6 +91,62 @@ export const getNewOrder = (
       }else{
         throw new Error('newOrder is not correct');
       }
+    console.log('newOrder = ', newOrder);
+    return newOrder;
+  }
+};
+
+export const getNewCardOrder = (
+  items: Column[] | Card[],
+  sourceIndex: number,
+  destinationIndex: number
+) => {
+  // console.log('destinationIndex = ', destinationIndex);
+  // console.log('items = ', items.length);
+  // if position is first, get point between first and second
+  let newOrder;
+  if (!items.length) {
+    return midString('', 'a');
+  }
+  if (destinationIndex === 0) {
+    // item is first
+    console.log('first');
+    newOrder = midString('', items[0].order);
+    console.log('newOrder = ', newOrder);
+    return newOrder;
+  }
+  if (destinationIndex === items.length) {
+    console.log('last');
+    newOrder = midString(items[items.length - 1].order, '');
+    console.log('newOrder = ', newOrder);
+    return newOrder;
+  }
+  // item move down or right prev index
+  if (destinationIndex > sourceIndex) {
+    console.log('down or right to from', destinationIndex, sourceIndex);
+    newOrder = midString(
+      items[destinationIndex].order,
+      items[destinationIndex + 1].order
+    );
+    console.log('newOrder = ', newOrder);
+    if (newOrder && newOrder > items[destinationIndex].order) {
+      console.log('CORRECT');
+    } else {
+      throw new Error('newOrder is not correct');
+    }
+    return newOrder;
+  }
+  if (destinationIndex < sourceIndex) {
+    console.log('up or left');
+    newOrder = midString(
+      items[destinationIndex - 1].order,
+      items[destinationIndex].order
+    );
+    if (newOrder && newOrder < items[destinationIndex].order) {
+      console.log('CORRECT');
+    } else {
+      throw new Error('newOrder is not correct');
+    }
     console.log('newOrder = ', newOrder);
     return newOrder;
   }

@@ -1,3 +1,4 @@
+import { set } from 'mongoose';
 import React, { FormEvent } from 'react'
 import { MdAdd } from "react-icons/md";
 
@@ -17,6 +18,7 @@ function CreateCardForm({ addCard, id }: Props) {
     if (!title) return
     // 
     addCard(title, id)
+    setTitle('')
     // unlike list form this form does not auto close
     // setOpen(false)
   }
@@ -32,18 +34,20 @@ function CreateCardForm({ addCard, id }: Props) {
         open ? (
           <div className="bg-slate-300 p-2 rounded w-full">
             <input
+              autoFocus
               type="text"
-              placeholder="Enter list title"
+              placeholder="Enter card title"
               className="w-full py-3 px-2 rounded text-xs border-slate-400 outline-blue-500 mb-2"
               name="title"
               onChange={(event) => handleChangeEvent(event)}
+              value={title}
             />
             <div className="flex items-center">
               <button
                 onClick={createCard}
                 className="px-3 py-3 rounded font-sans text-xs font-semibold outline-black mr-2 bg-blue-700 text-white"
               >
-                Add list
+                Add card
               </button>
               <button
                 onClick={() => setOpen(false)}

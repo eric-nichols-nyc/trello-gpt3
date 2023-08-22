@@ -8,7 +8,6 @@ import { MinusCircleIcon } from '@heroicons/react/24/solid'
 import CreateCardForm from './CreateCardForm'
 // import { useBoardStore } from '@/store/BoardStore'
 // import { useModalStore } from '@/store/ModalStore'
-// import { getServerSession } from "next-auth/next"
 
 type Props = {
   id: string,
@@ -40,10 +39,10 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
               >
                 <div className='flex justify-between'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
-                  <MinusCircleIcon className='h-6 w-6 text-red-400' onClick={() => deleteColumn(id)} />
+                  <MinusCircleIcon className='h-6 w-6 text-gray-400' onClick={() => deleteColumn(id)} />
                 </div>
 
-                <div className="mx-2 list border-solid border-2 border-sky-500">
+                <div className="mx-2 list">
                   {cards.map((card, index) => {
                     return <Draggable key={card._id} draggableId={card._id} index={index}>
                       {(provided) => (

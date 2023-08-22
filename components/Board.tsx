@@ -9,7 +9,7 @@ import Column from './Column'
 import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
-import { getNewOrder, midString } from '@/utils/getItemOrder'
+import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -134,7 +134,9 @@ function Board() {
       updateColumnInDB(changedCol)
       return 
     }
+
     //=============== HANDLE CARDS DRAG AND DROP =================
+
     const cardSourceIndex = source.index;
     const cardDestinationIndex = destination.index;
     // 1. find card index from source column
@@ -162,7 +164,7 @@ function Board() {
     // new order for the card = 
     console.log('cardsInTargetColumn', cardsInTargetColumn)
     // 4. get a new order for the card
-    const order = getNewOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
+    const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if(!order) throw new Error('Error: order is undefined');
     console.log('new card order = ', order)
     // 5. update the card with the new column and order
@@ -170,9 +172,10 @@ function Board() {
     card.order = order;
     // 6. update the state immediately with swr
     console.log('cardsCopy', cardsCopy)
-    mutate('/api/cards', cardsCopy, false);
-    // 7. reordering the cards in the database
     updateCardInDB(card)
+
+    mutate('/api/cards', cardsCopy,false);
+    // 7. reordering the cards in the database
   };
 
   if (!cols || !cards) return <div>Loading...</div>;
