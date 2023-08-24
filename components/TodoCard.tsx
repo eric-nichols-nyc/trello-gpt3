@@ -9,6 +9,7 @@ type Props = {
   innerRef: any;
   draggableProps: any;
   draggableHandleProps: any;
+  deleteCard:(id:string) => void;
 }
 
 function TodoCard({
@@ -17,8 +18,10 @@ function TodoCard({
   id,
   innerRef,
   draggableProps,
-  draggableHandleProps
+  draggableHandleProps,
+  deleteCard
 }: Props) {
+
   return (
     <div
       {...draggableProps}
@@ -28,7 +31,10 @@ function TodoCard({
       <div className='bg-white p-2 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter flex justify-between'>
         <p>{card.title}</p>
         <button>
-          <XCircleIcon className='h-6 w-6 text-red-400' />
+          <XCircleIcon 
+          className='h-6 w-6 text-red-400' 
+          onClick={() => {deleteCard(card._id)}}
+          />
         </button>
       </div>
       {/* Add image here */}

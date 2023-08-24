@@ -10,6 +10,7 @@ import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
 import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
+import Loader from './Loader'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -102,6 +103,17 @@ function Board() {
     mutate('/api/cards');
   }
 
+    // DELETE CARD IN DATABASE
+  const deleteCard = async (id: string) => {
+    // delete card by id
+    const res = await axios.delete(`/api/cards/${id}`)
+    if (!res.data) {
+      console.log('error')
+      return
+    }
+    // revalidate cards
+    mutate('/api/cards');
+  }
 
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
@@ -189,7 +201,7 @@ function Board() {
     // 7. reordering the cards in the database
   };
 
-  if (!cols || !items ) return <div>Loading...</div>;
+  if (!cols || !items ) return <Loader/>;
   
   return (
     <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
@@ -214,6 +226,7 @@ function Board() {
                         index={index}
                         deleteColumn={deleteColumnInDB}
                         addCard={addNewCardToDB}
+                        deleteCard={deleteCard}
                       />
                   })
                   }

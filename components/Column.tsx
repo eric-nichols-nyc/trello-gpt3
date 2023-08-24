@@ -16,9 +16,10 @@ type Props = {
   index: number,
   deleteColumn: (id: string) => void
   addCard: (title: string, id: string) => void
+  deleteCard: (id: string) => void
 }
 
-function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
+function Column({ id, cards, name, index, deleteColumn, addCard, deleteCard }: Props) {
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -53,6 +54,7 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                           innerRef={provided.innerRef}
                           draggableProps={provided.draggableProps}
                           draggableHandleProps={provided.dragHandleProps}
+                          deleteCard={deleteCard}
                         />
                       )}
                     </Draggable>
