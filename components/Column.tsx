@@ -36,7 +36,7 @@ function Column({ id, cards, name, index, deleteColumn, addCard, deleteCard }: P
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className={`bg-slate-950 shrink-0 w-72 text-slate-100 rounded flex flex-col ${snapshot.isDraggingOver ? 'bg-green-100' : 'bg-white'}`}
+                className='bg-slate-950 shrink-0 w-72 text-slate-100 rounded flex flex-col'
               >
                 <div className='flex justify-between'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
