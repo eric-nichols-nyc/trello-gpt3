@@ -110,20 +110,20 @@ export const getNewCardOrder = (
   }
   if (destinationIndex === 0) {
     // item is first
-    console.log('first');
+    console.log('new index is first');
     newOrder = midString('', items[0].order);
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
   if (destinationIndex === items.length) {
-    console.log('last');
+    console.log('new index is last');
     newOrder = midString(items[items.length - 1].order, '');
     console.log('newOrder = ', newOrder);
     return newOrder;
   }
   // item move down or right prev index
   if (destinationIndex > sourceIndex) {
-    console.log('down or right to from', destinationIndex, sourceIndex);
+    console.log('new index is down or right to from', destinationIndex, sourceIndex);
     newOrder = midString(
       items[destinationIndex].order,
       items[destinationIndex + 1].order
@@ -137,7 +137,7 @@ export const getNewCardOrder = (
     return newOrder;
   }
   if (destinationIndex < sourceIndex) {
-    console.log('up or left');
+    console.log('new index is up or left');
     newOrder = midString(
       items[destinationIndex - 1].order,
       items[destinationIndex].order

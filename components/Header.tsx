@@ -40,11 +40,11 @@ function Header({ user }: Props) {
             <>
               <button
                 onClick={() => signOut({ callbackUrl: '/' })}
-                className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
+                className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white text-xs"
               >
                 Logout
               </button>
-              <Avatar className="cursor-pointer ml-2" name={user?.name!} size="50" round={true} />
+              <Avatar className="cursor-pointer ml-2" name={user?.name!} size="30" round={true} />
             </>
            : <button
             onClick={() => signIn()}

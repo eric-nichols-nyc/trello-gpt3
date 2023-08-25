@@ -23,7 +23,7 @@ function CreateListForm({ addColumn }: Props) {
   }
   return (
 
-    <div className="p-2 w-72 shrink-0">
+    <div className="p-4 w-72 shrink-0">
       {
         open ? (
           <div className="bg-slate-300 p-2 rounded w-full">

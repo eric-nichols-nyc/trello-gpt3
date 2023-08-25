@@ -1,6 +1,6 @@
 'use client'
 import { XCircleIcon } from '@heroicons/react/24/solid';
-import React from 'react'
+import React, { useState } from 'react'
 
 type Props = {
   card: Card;
@@ -22,20 +22,34 @@ function TodoCard({
   deleteCard
 }: Props) {
 
+  const [icon, showIcon] = useState(false)
+
   return (
     <div
       {...draggableProps}
       {...draggableHandleProps}
       ref={innerRef}
       className='text-sm mt-2"'>
-      <div className='bg-white p-2 rounded mt-1 border-b border-grey cursor-pointer hover:bg-grey-lighter flex justify-between'>
+      <div 
+      className='bg-gray-800 hover:bg-gray-600 p-2 
+      rounded mt-1 cursor-pointer 
+      flex justify-between
+      text-slate-50'
+        onMouseEnter={() => showIcon(true)}
+        onMouseLeave={() => showIcon(false)}
+        >
         <p>{card.title}</p>
-        <button>
-          <XCircleIcon 
-          className='h-6 w-6 text-red-400' 
-          onClick={() => {deleteCard(card._id)}}
-          />
-        </button>
+        {
+          icon && (
+            <button>
+              <XCircleIcon
+                className='h-5 w-5 text-red-400'
+                onClick={() => { deleteCard(card._id) }}
+              />
+            </button>
+          )
+        }
+   
       </div>
       {/* Add image here */}
     </div>

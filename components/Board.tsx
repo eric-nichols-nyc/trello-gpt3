@@ -23,6 +23,7 @@ function Board() {
 
   const [items, setItems] = useState<Card[]>()
 
+  // revalidate cards
   useEffect(() => {
     if(!cards) return
     const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
@@ -192,26 +193,23 @@ function Board() {
     card.order = order;
     // 6. update the state immediately with swr
     console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
-    // const test:Card[] = []
-  
     setItems(cardsCopy)
-    // mutate('/api/cards', cardsCopy, true);
-   updateCardInDB(card)
-
     // 7. reordering the cards in the database
+    updateCardInDB(card)
+
   };
 
   if (!cols || !items ) return <Loader/>;
   
   return (
-    <div className="h-full bg-red-600 overflow-hidden flex items-start justify-center px-5">
+    <div className="h-full bg-slate-800 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
           <DragDropContext onDragEnd={handleDragAndDrop}>
             <Droppable droppableId="ROOT" direction="horizontal" type="column">
               {(provided) =>
                 <div
-                  className='flex items-start py-2'
+                  className='flex items-start py-4'
                   {...provided.droppableProps}
                   ref={provided.innerRef}>{
                     cols.map((column:Column, index) => {
