@@ -11,7 +11,6 @@ type Props = {
   innerRef: any;
   draggableProps: any;
   draggableHandleProps: any;
-  deleteCard:(id:string) => void;
 }
 
 function TodoCard({
@@ -21,13 +20,12 @@ function TodoCard({
   innerRef,
   draggableProps,
   draggableHandleProps,
-  deleteCard
 }: Props) {
 
   const [icon, showIcon] = useState(false)
   const [openModal] = useModalStore((state) => [state.openModal]);
   const [setCurrCard] = useCardStore((state) => [state.setCurrentCard]);
-  
+
   const handleCardClick = () => {
     setCurrCard(card)
     openModal()

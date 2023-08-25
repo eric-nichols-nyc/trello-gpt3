@@ -13,6 +13,7 @@ import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
 import Loader from './Loader'
 import Modal from './Modal'
 import { useModalStore } from '@/store/ModalStore'
+import { useCardStore } from '@/store/CardStore'
 
 function Board() {
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -26,14 +27,21 @@ function Board() {
   const [items, setItems] = useState<Card[]>()
 
   const [isOpen] = useModalStore((state) => [state.isOpen]);
-
-
+  const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
+  // setCards();
   // revalidate cards
   useEffect(() => {
+    if(!allCards) return
+    console.log('add cards to board', allCards)
     if(!cards) return
     const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
     setItems(sorted)
-  }, [cards])
+  }, [cards, allCards])
+
+  useEffect(() => {
+    setCards();
+  }, [setCards])
+  
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async(column:Column) => {
@@ -203,17 +211,11 @@ function Board() {
 
   };
 
-  const test = () => {
-    console.log('test')
-  }
-
   if (!cols || !items ) return <Loader/>;
   
   return (
     <>
-      <Modal
-        deleteCard={test}
-      />
+      <Modal />
     <div className="h-full bg-slate-800 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
@@ -236,7 +238,7 @@ function Board() {
                         index={index}
                         deleteColumn={deleteColumnInDB}
                         addCard={addNewCardToDB}
-                        deleteCard={deleteCard}
+                        //deleteCard={deleteCard}
                       />
                   })
                   }

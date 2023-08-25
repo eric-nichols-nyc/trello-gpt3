@@ -9,22 +9,25 @@ import { LiaCommentSolid } from 'react-icons/lia';
 import { LuText } from 'react-icons/lu';
 import ReactDOM from 'react-dom';
 import Avatar from 'react-avatar';
+import { useDeleteCard } from '@/hooks/useDeleteCard';
 
 interface Props {
   deleteCard: () => void;
 }
 
-const Modal = ({ deleteCard }:Props) => {
+const Modal = () => {
 const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal]);
-const [currentCard] = useCardStore((state) => [state.currentCard]);
+  const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
+  const deleteCardFromDB = useDeleteCard('/api/cards');
 
 useEffect(() => {
   if (!currentCard) return
   console.log('Current Card from db = ',currentCard)
 }, [currentCard])
 
-const handleDeleteCard = () => {
-  deleteCard()
+const handleDeleteCard = async() => {
+ const deleted = await deleteCardFromDB(currentCard._id)
+ console.log('deleted', deleted)
   closeModal()
 }
 
@@ -64,7 +67,6 @@ const handleDeleteCard = () => {
                     placeholder='Write a comment...' />
                 </div>
              </div>
-    
         </div>  
         <div className="modal__options w-1/3 flex justify-end">
            <ul className="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
