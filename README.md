@@ -21,5 +21,9 @@ add new columns:
  - cards are created using a form like createListForm component
  - Board => Column => createCard({columnId}) => api/cards/
 
+  MODAL - lets you view, edit or delete a card from db
+    VIEW A CARD - card item => set current card from zusatand store => modal mounts => gets current card from state
+    DELETE A CARD
+      - delete btn => CardsStore => api/cards/delete => mutate the api with swr => return the cards
 
 

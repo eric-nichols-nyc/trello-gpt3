@@ -12,7 +12,6 @@ import axios from 'axios'
 import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
 import Loader from './Loader'
 import Modal from './Modal'
-import useModal from '@/hooks/useModal'
 import { useModalStore } from '@/store/ModalStore'
 
 function Board() {

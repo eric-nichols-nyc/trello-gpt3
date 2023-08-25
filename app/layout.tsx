@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import AuthProvider from '@/context/AuthProvider'
 
 import { Inter } from 'next/font/google'
-import { UserProvider } from '@/components/UserContext'
+import { UserProvider } from '@/context/UserContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

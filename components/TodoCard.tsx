@@ -1,8 +1,8 @@
 'use client'
-import { XCircleIcon } from '@heroicons/react/24/solid';
+import { MdEdit } from 'react-icons/md';
 import React, { useState } from 'react'
-import useModal from '@/hooks/useModal'
 import { useModalStore } from '@/store/ModalStore'
+import { useCardStore } from '@/store/CardStore'
 
 type Props = {
   card: Card;
@@ -26,7 +26,12 @@ function TodoCard({
 
   const [icon, showIcon] = useState(false)
   const [openModal] = useModalStore((state) => [state.openModal]);
-
+  const [setCurrCard] = useCardStore((state) => [state.setCurrentCard]);
+  
+  const handleCardClick = () => {
+    setCurrCard(card)
+    openModal()
+  }
   return (
     <div
       {...draggableProps}
@@ -40,17 +45,12 @@ function TodoCard({
       text-slate-50'
         onMouseEnter={() => showIcon(true)}
         onMouseLeave={() => showIcon(false)}
-        onClick={openModal}
+        onClick={handleCardClick}
         >
         <p>{card.title}</p>
         {
           icon && (
-            <button>
-              <XCircleIcon
-                className='h-5 w-5 text-red-400'
-                onClick={() => { deleteCard(card._id) }}
-              />
-            </button>
+              <MdEdit />
           )
         }
    
