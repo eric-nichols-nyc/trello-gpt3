@@ -25,10 +25,8 @@ function Board() {
   const { data: cols } = useData('columns') as { data: Column[] };
 
   const [items, setItems] = useState<Card[]>()
-  const [modal, setModal] = useState<boolean>(false)// modal hook
 
-  const { isShowing, toggle } = useModal();
-  const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal]);
+  const [isOpen] = useModalStore((state) => [state.isOpen]);
 
 
   // revalidate cards
@@ -37,11 +35,6 @@ function Board() {
     const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
     setItems(sorted)
   }, [cards])
-
-  useEffect(() => {
-    console.log('fsdf',isOpen)
-  }, [isOpen])
-
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async(column:Column) => {
@@ -222,7 +215,6 @@ function Board() {
       <Modal
         deleteCard={test}
       />
-      <button onClick={toggle}>button</button>
     <div className="h-full bg-slate-800 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
