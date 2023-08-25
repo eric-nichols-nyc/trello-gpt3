@@ -28,7 +28,6 @@ export default function RootLayout({
           </UserProvider>
         </AuthProvider>
       </body>
-      <Modal />
     </html>
   )
 }
