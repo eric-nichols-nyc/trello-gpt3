@@ -1,6 +1,8 @@
 'use client'
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react'
+import useModal from '@/hooks/useModal'
+import { useModalStore } from '@/store/ModalStore'
 
 type Props = {
   card: Card;
@@ -23,6 +25,7 @@ function TodoCard({
 }: Props) {
 
   const [icon, showIcon] = useState(false)
+  const [openModal] = useModalStore((state) => [state.openModal]);
 
   return (
     <div
@@ -37,6 +40,7 @@ function TodoCard({
       text-slate-50'
         onMouseEnter={() => showIcon(true)}
         onMouseLeave={() => showIcon(false)}
+        onClick={openModal}
         >
         <p>{card.title}</p>
         {
