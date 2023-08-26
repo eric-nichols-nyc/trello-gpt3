@@ -4,6 +4,13 @@ interface Board {
 
 type TypedColumn = 'todo' | 'inprogress' | 'done';
 
+interface Comment {
+  _id: string;
+  cardId: string;
+  creatorId: string;
+  comment: string;
+}
+
 interface Column {
   _id: string;
   columnName: string;

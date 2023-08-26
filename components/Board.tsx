@@ -26,7 +26,7 @@ function Board() {
 
   const [items, setItems] = useState<Card[]>()
 
-  // const [isOpen] = useModalStore((state) => [state.isOpen]);
+  const [isOpen] = useModalStore((state) => [state.isOpen]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
   // setCards();
   // revalidate cards
@@ -215,7 +215,10 @@ function Board() {
   
   return (
     <>
-      <Modal />
+    {
+        isOpen && (<Modal />)
+    }
+      
     <div className="h-full bg-slate-800 overflow-hidden flex items-start justify-center px-5">
       <div className="bg-blue w-full h-full font-sans">
         <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">

@@ -11,8 +11,18 @@ import ReactDOM from 'react-dom';
 import Avatar from 'react-avatar';
 import { useDeleteCard } from '@/hooks/useDeleteCard';
 import { useUpdateCard } from '@/hooks/useUpdateCard';
+import { useSession } from 'next-auth/react';
+import useSWR from 'swr';
+import {fetcher} from '@/lib/fetch';
+import Comment from './Comment'
 
 const Modal = () => {
+  const {data: session} = useSession()
+  const { data: comments } = useSWR('/api/cards/t64e7e77a78a59d00fe068a95/comments', fetcher)
+
+  if (session?.user) {
+    console.log('session for modal = ', session.user)
+  }
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
   const [description, setDescription] = useState<string | undefined>(undefined)
@@ -102,21 +112,32 @@ const Modal = () => {
                 save
               </button>
             </div>
+            {/* ========= Comments ======= */}
             <div className="comments flex items-center">
               <LiaCommentSolid className="mr-2" />
               <h4 className="mb-2">Comments</h4>
             </div>
+         
             <div className="comment__list">
               <div className="comment__item flex">
                 <Avatar
                   size="40"
                 />
                 <input
-                  className="p-2 w-full"
+                  className="p-2 w-full text-gray-600"
                   type="text"
                   placeholder='Write a comment...' />
               </div>
             </div>
+            {
+              comments && (
+              <div>
+                  {comments.map((c:Comment) => <div  key={c._id}>
+                    {/* <Comment /> */}
+                    <p>{c.comment}</p>
+                    </div>)}
+              </div>)
+            }
           </div>
           <div className="modal__options w-1/3 flex justify-end">
             <ul className="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
