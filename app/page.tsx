@@ -4,6 +4,7 @@
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { Header, Home } from '@/components'
+import { useAuth } from '@/context/UserContext'
 
 export default function Aoo() {
   const { data: session } = useSession({
@@ -14,7 +15,7 @@ export default function Aoo() {
     }
   })
   if(session?.user){
-    // console.log('session fsadf= ', session)
+    console.log('session fsadf= ', session)
     redirect('board')
   }
 

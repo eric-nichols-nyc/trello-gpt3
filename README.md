@@ -25,5 +25,8 @@ add new columns:
     VIEW A CARD - card item => set current card from zusatand store => modal mounts => gets current card from state
     DELETE A CARD
       - modal delete btn => useDeleteCard hook => api/cards/delete => mutate the api with swr => return the cards
+    UPDATE A CARD
+      - modal => useUpdateCard hook => api/cards/id
+    ADD COMMENT TO CARD
 
 
