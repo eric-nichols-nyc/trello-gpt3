@@ -43,7 +43,7 @@ export const useCardStore = create<CardState>((set) => ({
 
       if(!response.ok) throw new Error('Failed to delete card');
 
-      set({allCards: []});
+      // set({allCards: []});
     }
 }));
 

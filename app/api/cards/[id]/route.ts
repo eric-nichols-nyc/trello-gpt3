@@ -7,9 +7,12 @@ import Card from '@/models/Card';
 
 export async function PUT(request: NextRequest, { params }: any) {
   const { id } = params;
+  console.log('params = ', params)
+
   try {
     const body = await request.json();
     // console.log('PUT ', body.order)
+    console.log('body = ', body);
     await connectDB();
     await Card.updateOne(
       {
@@ -19,6 +22,8 @@ export async function PUT(request: NextRequest, { params }: any) {
         $set: {
           order: body.order,
           columnId: body.columnId,
+          description: body.description,
+          title: body.title,
         },
       }
     );

@@ -2,7 +2,6 @@ import Modal from '@/components/Modal'
 import './globals.css'
 import type { Metadata } from 'next'
 import AuthProvider from '@/context/AuthProvider'
-
 import { Inter } from 'next/font/google'
 import { UserProvider } from '@/context/UserContext'
 const inter = Inter({ subsets: ['latin'] })

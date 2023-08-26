@@ -20,7 +20,7 @@ interface Card {
   boardId?: string;
   title?: string;
   image?: string;
-  deacription?: string;
+  description?: string;
 }
 
 interface Image {

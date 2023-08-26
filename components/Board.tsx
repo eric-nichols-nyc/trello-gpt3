@@ -26,7 +26,7 @@ function Board() {
 
   const [items, setItems] = useState<Card[]>()
 
-  const [isOpen] = useModalStore((state) => [state.isOpen]);
+  // const [isOpen] = useModalStore((state) => [state.isOpen]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
   // setCards();
   // revalidate cards
