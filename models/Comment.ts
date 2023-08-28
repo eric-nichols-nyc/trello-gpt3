@@ -14,6 +14,10 @@ const CommentSchema = new Schema({
   comment:{
     type: String,
     required: true,
+  },
+  creatorName:{
+    required: true,
+    type: String,
   }
 });
 

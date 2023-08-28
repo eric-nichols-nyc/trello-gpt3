@@ -21,6 +21,7 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
+  console.log(body);
   const comments = new Comment(body);
   try {
     await connectDB();

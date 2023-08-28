@@ -28,6 +28,6 @@ add new columns:
     UPDATE A CARD
       - modal => useUpdateCard hook => api/cards/id
     ADD COMMENT TO CARD
-     Mondal => commentForm = api/comments/cardId, creatorId, comment
+     Mondal => commentForm = api/comments/cardId, creatorId, creattorName, comment
 
 

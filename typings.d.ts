@@ -4,11 +4,13 @@ interface Board {
 
 type TypedColumn = 'todo' | 'inprogress' | 'done';
 
-interface Comment {
+interface IComment {
   _id: string;
   cardId: string;
   creatorId: string;
+  creatorName: string;
   comment: string;
+  createdAt: string;
 }
 
 interface Column {

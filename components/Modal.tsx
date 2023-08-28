@@ -8,21 +8,18 @@ import { MdClose, MdDelete, MdShare, MdOutlineMoveDown, MdOutlineSubtitles, MdSh
 import { LiaCommentSolid } from 'react-icons/lia';
 import { LuText } from 'react-icons/lu';
 import ReactDOM from 'react-dom';
-import Avatar from 'react-avatar';
 import { useDeleteCard } from '@/hooks/useDeleteCard';
 import { useUpdateCard } from '@/hooks/useUpdateCard';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import {fetcher} from '@/lib/fetch';
 import Comment from './Comment'
+import CreateCommentForm from './CreateCommentForm';
 
 const Modal = () => {
   const {data: session} = useSession()
-  const { data: comments } = useSWR('/api/cards/t64e7e77a78a59d00fe068a95/comments', fetcher)
 
-  if (session?.user) {
-    console.log('session for modal = ', session.user)
-  }
+
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
   const [description, setDescription] = useState<string | undefined>(undefined)
@@ -30,6 +27,8 @@ const Modal = () => {
   // zustand state
   const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal]);
   const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
+  // get comments from db
+  const { data: comments } = useSWR(`/api/cards/${currentCard._id}/comments`, fetcher)
   // hook to delete card from DB
   const deleteCardFromDB = useDeleteCard('/api/cards');
   // hook to update card in DB
@@ -119,22 +118,13 @@ const Modal = () => {
             </div>
          
             <div className="comment__list">
-              <div className="comment__item flex">
-                <Avatar
-                  size="40"
-                />
-                <input
-                  className="p-2 w-full text-gray-600"
-                  type="text"
-                  placeholder='Write a comment...' />
-              </div>
+              <CreateCommentForm id={currentCard._id} creatorId={session?.user.id!}/>
             </div>
             {
               comments && (
-              <div>
-                  {comments.map((c:Comment) => <div  key={c._id}>
-                    {/* <Comment /> */}
-                    <p>{c.comment}</p>
+              <div className="mt-4">
+                  {comments.map((c: IComment) => <div  key={c._id}>
+                    <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt}/>
                     </div>)}
               </div>)
             }
