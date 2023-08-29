@@ -2,6 +2,7 @@ import { set } from 'mongoose';
 import React, { FormEvent } from 'react'
 import { MdAdd } from "react-icons/md";
 import { XCircleIcon } from '@heroicons/react/24/solid';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 
 interface Props {
   id: string;
@@ -28,12 +29,18 @@ function CreateCardForm({ addCard, id }: Props) {
     const target = event.target as HTMLInputElement;
     setTitle(target.value);
   }
+
+  const hideInput = () => {
+    setOpen(false)
+  }
+
+  const ref = useDetectClickOutside({ onTriggered: hideInput });
   return (
 
     <div className="p-2 w-72 shrink-0">
       {
         open ? (
-          <div className="bg-gray-800 p-2 rounded w-full">
+          <div className="bg-gray-800 p-2 rounded w-full" ref={ref}>
             <input
               autoFocus
               type="text"

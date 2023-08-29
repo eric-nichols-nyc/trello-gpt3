@@ -4,7 +4,7 @@ import { XCircleIcon } from '@heroicons/react/24/solid';
 import { mutate } from 'swr';
 import Avatar from 'react-avatar';
 import { useCardStore } from '@/store/CardStore'
-
+import { useDetectClickOutside } from 'react-detect-click-outside';
 interface Props {
   id: string;
   creatorId: string;
@@ -12,11 +12,19 @@ interface Props {
 
 // Create a new comment 
 function CreateCommenForm({ id, creatorId }: Props) {
+
   // global state
   const [currentCard] = useCardStore((state) => [state.currentCard]);
   // local state
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
+
+  const hideInput = () => {
+    setOpen(false)
+  }
+
+  const ref = useDetectClickOutside({ onTriggered: hideInput });
+
   // create new comment in database and mutate
   const createComment = async () => {
     if (!title) return
@@ -37,7 +45,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
       })
       setTitle('')
       mutate(`/api/cards/${id}/comments`)
-      console.log('Comment was created = ', responae)
     }catch(error){
       console.error(error)
     }
@@ -50,9 +57,11 @@ function CreateCommenForm({ id, creatorId }: Props) {
     const target = event.target as HTMLInputElement;
     setTitle(target.value);
   }
+
+
   return (
 
-    <div className="w-full shrink-0 mb-4">
+    <div className="w-full shrink-0 mb-4" ref={ref}>
       {
         open ? (
           <div className="rounded w-full flex border border-sky-200">

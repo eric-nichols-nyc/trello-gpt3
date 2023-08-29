@@ -68,7 +68,6 @@ const Modal = () => {
   }
 
   return isOpen ? ReactDOM.createPortal(
-    // const [newTask, setNewTask] = useBoardStore((state) => [state.newTask, state.setNewTask]);
     <div className="modal h-full w-full fixed flex  top-0 left-0
     items-center justify-center bg-black bg-opacity-30">
       <div className="flex flex-col p-4 relative w-[768px] min-h-[600px] bg-gray-700 text-slate-100 rounded-lg">
