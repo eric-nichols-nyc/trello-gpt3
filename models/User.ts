@@ -13,6 +13,8 @@ const UserSchema = new Schema({
   image: {
     type: String,
   },
+  backgroundImage: { type: String },
+  backgroundColor: { type: String },
 });
 
 const User = models.User || model('User', UserSchema);

@@ -21,7 +21,7 @@ const ColumnMenu = () => {
 
    return (
      showMenu ? (
-       <div className="absolute right-0 top-0 bottom-0 bg-slate-700 text-slate-100 shadow-sm text-sm rounded w-[300px] px-2">
+       <div className="absolute right-0 top-0 bottom-0 bg-slate-700 text-slate-100 shadow-sm text-sm rounded w-[300px] px-2 drop-shadow-lg">
          <div className="flex items-center justify-center p-3 relative">
            <p>Menu</p>
            <AiOutlineClose
