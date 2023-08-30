@@ -11,23 +11,23 @@ interface BoardState {
   updateTodoInDB: (card: Card, columnId: string) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
-  newTask: string;
-  setNewTask: (task: string) => void;
-  newTaskType: string;
-  setNewTaskType: (columnId: string) => void;
+  bgColor: string;
+  setBGColor: (color: string) => void;
+  showMenu: boolean;
+  setShowMenu: (showMenu: boolean) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
   board: {
-    columns: []
+    columns: [],
   },
 
-  getBoard: async() => {
+  getBoard: async () => {
     // const board = await getTodosGroupedByColumn() as Board;
     // set({board});
   },
 
-  setBoardState: (board: Board) => set({board}),
+  setBoardState: (board: Board) => set({ board }),
 
   updateTodoInDB: async (card: Card, columnId: string) => {
     await databases.updateDocument(
@@ -38,18 +38,17 @@ export const useBoardStore = create<BoardState>((set) => ({
         title: card.title,
         status: columnId,
       }
-    )
+    );
   },
 
   searchString: '',
-  setSearchString: (searchString: string) => set({searchString}),
-  newTask: '',
-  setNewTask(task) {
-    set({newTask: task});
+  setSearchString: (searchString: string) => set({ searchString }),
+  bgColor: 'bg-slate-800',
+  setBGColor(color) {
+    set({ bgColor: color });
   },
-
-  newTaskType: 'todo',
-  setNewTaskType(taskType) {
-    set({newTaskType: taskType});
-  },
+  showMenu: false,
+  setShowMenu(showMenu) {
+    set({ showMenu });
+  }
 }));

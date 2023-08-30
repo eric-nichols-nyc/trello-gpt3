@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-randomColor {
+  background-color: rgb(
+      /* Generate random values for R, G, and B channels */
+      random(0, 255),
+      random(0, 255),
+      random(0, 255));
+}

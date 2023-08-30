@@ -8,8 +8,8 @@ interface Props {
   closeMenu: any;
   deleteColumn: (id:string) => void;
 } 
-
-const ColumnMenu = ({
+// right column menu
+const ColumnOptions = ({
   id,
   show,
   closeMenu,
@@ -53,4 +53,4 @@ const ColumnMenu = ({
   )
 }
 
-export default ColumnMenu
+export default ColumnOptions

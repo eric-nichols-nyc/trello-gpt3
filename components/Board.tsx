@@ -2,10 +2,10 @@
 * This component is the main board of the application. It will contain all the columns and cards.
 */
 'use client'
-import { useBoardStore } from '@/store/BoardStore'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './column/Column'
+import BoardSideMenu from './BoardSideMenu'
 import CreateListForm from './CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
@@ -14,10 +14,13 @@ import Loader from './Loader'
 import Modal from './Modal'
 import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
+import { useBoardStore } from '@/store/BoardStore'
+import { BsThreeDots } from 'react-icons/bs'
 
 function Board() {
+  // board state from zuustand
+  const [bgColor, setShowMenu, setBGColor] = useBoardStore((state) => [state.bgColor, state.setShowMenu, state.setBGColor]);
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
-
   function useData(id: string) {
     return useSWR(`/api/${id}`, fetcher);
   }
@@ -42,6 +45,9 @@ function Board() {
     setCards();
   }, [setCards])
 
+ useEffect(() => {
+   setBGColor('bg-slate-800')
+ }, [setBGColor])
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
@@ -108,18 +114,6 @@ function Board() {
   const updateCardInDB = async (card: Card) => {
     // update card by id
     const res = await axios.put(`/api/cards/${card._id}`, card)
-    if (!res.data) {
-      console.log('error')
-      return
-    }
-    // revalidate cards
-    mutate('/api/cards');
-  }
-
-  // DELETE CARD IN DATABASE
-  const deleteCard = async (id: string) => {
-    // delete card by id
-    const res = await axios.delete(`/api/cards/${id}`)
     if (!res.data) {
       console.log('error')
       return
@@ -211,7 +205,7 @@ function Board() {
 
   };
 
-  if (!cols || !items) return <Loader />;
+  if (!cols || !items || !bgColor) return <Loader />;
 
   return (
     <>
@@ -219,8 +213,18 @@ function Board() {
         isOpen && (<Modal />)
       }
 
-      <div className="h-full bg-slate-800 overflow-hidden flex items-start justify-center px-5">
-        <div className="bg-blue w-full h-full font-sans">
+      <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
+        {/* Header */}
+        <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
+          <div>Welcome Board</div>
+          <div><BsThreeDots
+          size={30}
+          className="cursor-pointer hover:bg-slate-500 p-1 rounded"
+            onClick={() => setShowMenu(true)} 
+          /></div>
+        </div>
+        {/* Main Content */}
+        <div className="bg-blue w-full h-full font-sans px-5 relative">
           <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
             <DragDropContext onDragEnd={handleDragAndDrop}>
               <Droppable droppableId="ROOT" direction="horizontal" type="column">
@@ -241,7 +245,6 @@ function Board() {
                           index={index}
                           deleteColumn={deleteColumnInDB}
                           addCard={addNewCardToDB}
-                        //deleteCard={deleteCard}
                         />
                       })
                     }
@@ -253,6 +256,7 @@ function Board() {
             <CreateListForm addColumn={addNewColumnToDB} />
           </div>
         </div>
+        <BoardSideMenu />
       </div>
     </>
   )

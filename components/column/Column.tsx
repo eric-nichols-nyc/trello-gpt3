@@ -6,9 +6,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from '../TodoCard'
 import { BsThreeDots } from 'react-icons/bs'
 import CreateCardForm from '../CreateCardForm'
-import ColumnMenu from './ColumnMenu'
-// import { useBoardStore } from '@/store/BoardStore'
-// import { useModalStore } from '@/store/ModalStore'
+import ColumnMenu from './ColumnOptions'
 
 type Props = {
   id: string,
