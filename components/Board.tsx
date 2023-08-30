@@ -202,7 +202,6 @@ function Board() {
     setItems(cardsCopy)
     // 7. reordering the cards in the database
     updateCardInDB(card)
-
   };
 
   if (!cols || !items || !bgColor) return <Loader />;
@@ -212,7 +211,6 @@ function Board() {
       {
         isOpen && (<Modal />)
       }
-
       <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
