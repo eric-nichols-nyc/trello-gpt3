@@ -4,7 +4,6 @@ import { XCircleIcon } from '@heroicons/react/24/solid';
 import { mutate } from 'swr';
 import Avatar from 'react-avatar';
 import { useCardStore } from '@/store/CardStore'
-import { useDetectClickOutside } from 'react-detect-click-outside';
 
 interface Props {
   id: string;
@@ -26,8 +25,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
     }
   }
 
-  const ref = useDetectClickOutside({ onTriggered: hideInput });
-
   // create new comment in database and mutate
   const createComment = async () => {
     if (!title) return
@@ -39,7 +36,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
     }
     // 
     try{
-      const responae = await fetch(`/api/cards/${currentCard._id}/comments`, {
+        await fetch(`/api/cards/${currentCard._id}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

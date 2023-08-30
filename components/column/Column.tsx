@@ -3,9 +3,10 @@
  */
 import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
-import TodoCard from './TodoCard'
-import { MinusCircleIcon } from '@heroicons/react/24/solid'
-import CreateCardForm from './CreateCardForm'
+import TodoCard from '../TodoCard'
+import { BsThreeDots } from 'react-icons/bs'
+import CreateCardForm from '../CreateCardForm'
+import ColumnMenu from './ColumnMenu'
 // import { useBoardStore } from '@/store/BoardStore'
 // import { useModalStore } from '@/store/ModalStore'
 
@@ -19,6 +20,7 @@ type Props = {
 }
 
 function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
+  const [showExtras, setShowExtras] = React.useState<boolean>(false)
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -27,7 +29,7 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`rounded mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
+          className={`relative rounded mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           {/* render droppable todos */}
           <Droppable droppableId={id} type="card">
@@ -37,9 +39,10 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                 ref={provided.innerRef}
                 className='bg-slate-950 shrink-0 w-72 text-slate-100 rounded flex flex-col'
               >
-                <div className='flex justify-between'>
+                <div className='flex justify-between items-center'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
-                  <MinusCircleIcon className='h-6 w-6 text-gray-400' onClick={() => deleteColumn(id)} />
+                  <BsThreeDots className='h-6 w-6 text-gray-400 mr-2 cursor-pointer' onClick={() => setShowExtras(!showExtras)} />
+                  <ColumnMenu id={id} show={showExtras} closeMenu={setShowExtras} deleteColumn={deleteColumn}/>
                 </div>
 
                 <div className="mx-2 list">
@@ -58,10 +61,10 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                     </Draggable>
                   })}
                   {provided.placeholder}
-             
+
                 </div>
-                  {/* send information to board to add to db */}
-                <CreateCardForm id={id} addCard={addCard}/>
+                {/* send information to board to add to db */}
+                <CreateCardForm id={id} addCard={addCard} />
               </div>
             )}
           </Droppable>
