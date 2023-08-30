@@ -1,13 +1,12 @@
 'use client'
-import { Fragment, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom';
+import { useEffect, useState } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useBoardStore } from '@/store/BoardStore';
 import { useCardStore } from '@/store/CardStore'
-import TaskTypeRadioGroup from './TaskTypeRadioGroup';
 import { MdClose, MdDelete, MdShare, MdOutlineMoveDown, MdOutlineSubtitles, MdShortText } from 'react-icons/md';
 import { LiaCommentSolid } from 'react-icons/lia';
 import { LuText } from 'react-icons/lu';
-import ReactDOM from 'react-dom';
 import { useDeleteCard } from '@/hooks/useDeleteCard';
 import { useUpdateCard } from '@/hooks/useUpdateCard';
 import { useSession } from 'next-auth/react';
@@ -18,7 +17,6 @@ import CreateCommentForm from './CreateCommentForm';
 
 const Modal = () => {
   const {data: session} = useSession()
-
 
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
