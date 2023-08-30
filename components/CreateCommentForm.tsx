@@ -5,6 +5,7 @@ import { mutate } from 'swr';
 import Avatar from 'react-avatar';
 import { useCardStore } from '@/store/CardStore'
 import { useDetectClickOutside } from 'react-detect-click-outside';
+
 interface Props {
   id: string;
   creatorId: string;
@@ -20,7 +21,9 @@ function CreateCommenForm({ id, creatorId }: Props) {
   const [title, setTitle] = React.useState('')
 
   const hideInput = () => {
-    setOpen(false)
+    if(open){
+      setOpen(false)
+    }
   }
 
   const ref = useDetectClickOutside({ onTriggered: hideInput });
@@ -48,9 +51,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
     }catch(error){
       console.error(error)
     }
-
-    // unlike list form this form does not auto close
-    // setOpen(false)
   }
   // handle event
   function handleChangeEvent(event: FormEvent<HTMLTextAreaElement>) {
@@ -60,17 +60,16 @@ function CreateCommenForm({ id, creatorId }: Props) {
 
 
   return (
-
-    <div className="w-full shrink-0 mb-4" ref={ref}>
+    <div className="w-full shrink-0 mb-4">
       {
         open ? (
-          <div className="rounded w-full flex border border-sky-200">
+          <div className="rounded w-full flex">
             <Avatar size="30"/>
             <div className="rounded w-full">
               <textarea
                 autoFocus
                 placeholder="Write a comment"
-                className="w-full bg-gray-800 py-3 px-2 rounded text-xs border-gray-400 outline-blue-500 mb-2"
+                className="w-full bg-gray-800 py-3 px-2 rounded text-xs outline-blue-500 mb-2"
                 name="title"
                 onChange={(event) => handleChangeEvent(event)}
                 value={title}
@@ -94,7 +93,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
         ) : <div
           onClick={() => setOpen(true)}
           className="flex items-center px-4 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
-          <p className="ml-2 text-xs text-white">Write a comment</p>
+            <p className="ml-2 text-xs text-white">Write a comment</p>
         </div>
       }
     </div>
