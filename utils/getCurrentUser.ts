@@ -1,7 +1,20 @@
-import { getSession } from "next-auth/react";
-import { NextApiRequest } from "next/types";
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './auth';
 
-export const getCurrentUser = async (req: NextApiRequest) => {
-  const session = await getSession({ req });
-  return session?.user;
+export async function getSession(){
+  return await getServerSession(authOptions);
 }
+
+export default async function getCurrentUser() {
+  try {
+      const session:any = await getSession();
+      if(session){
+        return session.user;
+      } else {    
+        return null;
+      }
+
+  } catch (error) {
+    
+  }
+};

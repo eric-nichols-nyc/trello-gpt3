@@ -101,7 +101,7 @@ export const authOptions: any = {
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/',
   }
 };
 

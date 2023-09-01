@@ -189,16 +189,13 @@ function Board() {
       (card) => card.columnId === destinationColumn._id
     );
     // new order for the card = 
-    console.log('cardsInTargetColumn', cardsInTargetColumn)
-    // 4. get a new order for the card
+     // 4. get a new order for the card
     const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if (!order) throw new Error('Error: order is undefined');
-    console.log('new card order = ', order)
     // 5. update the card with the new column and order
     card.columnId = destinationColumn._id;
     card.order = order;
     // 6. update the state immediately with swr
-    console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
     // update the local state with the new order
     cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
     setItems(cardsCopy)
@@ -210,9 +207,9 @@ function Board() {
 
   return (
     <>
-      {
+      {/* {
         isOpen && (<Modal />)
-      }
+      } */}
       <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
