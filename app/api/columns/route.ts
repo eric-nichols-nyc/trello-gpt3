@@ -32,7 +32,7 @@ export const POST = async (req: any) => {
     ...body,
     };
   const newColumn = new Column(column);
-  // console.log('newColumn ======= ', newColumn)
+  console.log('newColumn ======= ', newColumn)
 
   try {
     await connectDB();

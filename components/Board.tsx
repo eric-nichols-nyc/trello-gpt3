@@ -199,6 +199,8 @@ function Board() {
     card.order = order;
     // 6. update the state immediately with swr
     console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
+    // update the local state with the new order
+    cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
     setItems(cardsCopy)
     // 7. reordering the cards in the database
     updateCardInDB(card)

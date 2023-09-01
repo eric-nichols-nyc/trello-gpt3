@@ -5,7 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectDB } from '@/db/database';
 import clientPromise from './client';
 import User from '@/models/User';
-
+import axios from 'axios';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
 
@@ -74,7 +74,7 @@ export const authOptions: any = {
             image: profile.picture,
           });
         }
-        return true;
+       return true;
       } catch (err) {
         console.log(err);
         return false;
