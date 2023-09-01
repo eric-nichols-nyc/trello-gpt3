@@ -214,9 +214,10 @@ function Board() {
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
           <div>Welcome Board</div>
-          <div><BsThreeDots
+          <div>
+            <BsThreeDots
           size={30}
-          className="cursor-pointer hover:bg-slate-500 p-1 rounded"
+          className="cursor-pointer bg-slate-600 hover:bg-slate-500 p-1 rounded"
             onClick={() => setShowMenu(true)} 
           /></div>
         </div>

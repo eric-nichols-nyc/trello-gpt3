@@ -20,14 +20,30 @@ const ColumnMenu = () => {
   ]
 
    return (
-     showMenu ? (
-       <div className="absolute right-0 top-0 bottom-0 bg-slate-700 text-slate-100 shadow-sm text-sm rounded w-[300px] px-2 drop-shadow-lg">
+       <div className={`
+         absolute 
+        right-0 
+        top-0 
+        bottom-0 
+        bg-slate-700 
+        text-slate-100 
+        shadow-sm 
+        text-sm 
+        rounded 
+        w-[300px] 
+        px-2 
+        drop-shadow-xl
+        transition-all
+        ease-in-out duration-300
+        ${showMenu ? "translate-x-0 " : "translate-x-full"}
+       `}
+     >
          <div className="flex items-center justify-center p-3 relative">
            <p>Menu</p>
            <AiOutlineClose
              size={25}
              onClick={() => setShowMenu(false)}
-             className="absolute right-3 p-1 hover:bg-slate-600 cursor-pointer" />
+             className="absolute right-3 p-1 text-red-100 hover:bg-slate-600 cursor-pointer" />
          </div>
          <hr />
          <div className=" w-full">
@@ -47,8 +63,6 @@ const ColumnMenu = () => {
            </div>
          </div>
        </div> 
-    )  : null
-   
   )
 }
 

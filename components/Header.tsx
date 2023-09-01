@@ -51,7 +51,7 @@ function Header({ user }: Props) {
 
         <div className="flex items-center space-x-5 flex-1 justify-end w-full relative">
           {
-            session ?
+            session && user &&
               <>
                 <div className="flex flex-col items-end z-10" ref={ref}>
                   <Avatar
@@ -86,12 +86,6 @@ function Header({ user }: Props) {
                   }
                 </div>
               </>
-              : <button
-                onClick={() => signIn()}
-                className="bg-blue-500 py-2 px-4 hover:bg-blue-700 text-white"
-              >
-                Login
-              </button>
           }
         </div>
       </div>

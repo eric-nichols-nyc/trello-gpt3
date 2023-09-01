@@ -11,8 +11,12 @@ export default function BoardPage() {
     required: true,
     onUnauthenticated() {
       redirect('/api/auth/signin?callbackUrl=/board')
-    }
+    },
+
   })
+  if(session?.user){
+    redirect(`/board/${session.user.id}`)
+  }
 
   return (
     <section className="flex flex-col h-full">
