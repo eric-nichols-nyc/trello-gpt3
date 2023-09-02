@@ -6,6 +6,8 @@ import { Inter } from 'next/font/google'
 import { UserProvider } from '@/context/UserContext'
 import Modals from '@/components/modals/Modals'
 import getCurrentUser from '@/utils/getCurrentUser'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,12 +26,23 @@ export default async function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <AuthProvider>
-          <UserProvider>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          {/* Same as */}
             <main className='h-screen'>
               <Modals user={user} />
               {children}
             </main>
-          </UserProvider>
         </AuthProvider>
       </body>
     </html>
