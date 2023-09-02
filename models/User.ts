@@ -15,6 +15,7 @@ const UserSchema = new Schema({
   },
   backgroundImage: { type: String },
   backgroundColor: { type: String },
+  onboarded: { type: Boolean, default: false },
 });
 
 const User = models.User || model('User', UserSchema);

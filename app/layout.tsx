@@ -1,4 +1,4 @@
-import Modal from '@/components/Modal'
+import Modal from '@/components/modals/BoardModal'
 import './globals.css'
 import type { Metadata } from 'next'
 import AuthProvider from '@/context/AuthProvider'
@@ -20,14 +20,13 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const user = await getCurrentUser()
-  console.log('USER + ', user)
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <AuthProvider>
           <UserProvider>
             <main className='h-screen'>
-              <Modals user={user}/>
+              <Modals user={user} />
               {children}
             </main>
           </UserProvider>

@@ -6,11 +6,13 @@ import Header from '@/components/Header'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
-export default function ClientPage() {
+export default function ClientPage({params}: {params: {id: string}}) {
+  const { id } = params  
+
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/api/auth/signin?callbackUrl=/board')
+      redirect('/')
     }
   })
   if (session?.user) {
@@ -20,7 +22,7 @@ export default function ClientPage() {
   return (
     <section className="flex flex-col h-full">
       <Header user={session?.user} />
-      <Board />
+      <Board id={id}/>
     </section>
   )
 }

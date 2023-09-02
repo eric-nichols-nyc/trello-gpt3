@@ -20,7 +20,6 @@ const ColumnSchema = new Schema({
   order: {
     type: String,
     required: [true, 'Column Order is required'],
-    unique: [true, 'Column Order already exists'],
   },
 });
 ColumnSchema.set('timestamps', true);

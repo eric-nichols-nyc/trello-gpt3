@@ -3,12 +3,10 @@
  */
 import { create } from 'zustand';
 // import {getTodosGroupedByColumn} from "../lib/getTodosGroupedByColumn";
-import { databases } from '@/appwrite';
 interface BoardState {
   board: Board;
   getBoard: () => void;
   setBoardState: (board: Board) => void;
-  updateTodoInDB: (card: Card, columnId: string) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
   bgColor: string;
@@ -28,19 +26,6 @@ export const useBoardStore = create<BoardState>((set) => ({
   },
 
   setBoardState: (board: Board) => set({ board }),
-
-  updateTodoInDB: async (card: Card, columnId: string) => {
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID as string,
-      card._id,
-      {
-        title: card.title,
-        status: columnId,
-      }
-    );
-  },
-
   searchString: '',
   setSearchString: (searchString: string) => set({ searchString }),
   bgColor: 'bg-slate-800',

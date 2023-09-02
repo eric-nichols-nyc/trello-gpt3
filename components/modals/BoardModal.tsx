@@ -7,16 +7,16 @@ import { useCardStore } from '@/store/CardStore'
 import { MdClose, MdDelete, MdShare, MdOutlineMoveDown, MdOutlineSubtitles, MdShortText } from 'react-icons/md';
 import { LiaCommentSolid } from 'react-icons/lia';
 import { LuText } from 'react-icons/lu';
-import { useDeleteCard } from '@/hooks/useDeleteCard';
-import { useUpdateCard } from '@/hooks/useUpdateCard';
+import { useDeleteCard } from '@/hooks/useColumn';
+import { useUpdateCard } from '@/hooks/useBoard';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
-import {fetcher} from '@/lib/fetch';
-import Comment from './Comment'
-import CreateCommentForm from './CreateCommentForm';
+import { fetcher } from '@/lib/fetch';
+import Comment from '../Comment'
+import CreateCommentForm from '../CreateCommentForm';
 
 const Modal = () => {
-  const {data: session} = useSession()
+  const { data: session } = useSession()
 
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
@@ -75,17 +75,17 @@ const Modal = () => {
           <div className='flex flex-col w-2/3'>
             {
               !showInput ? (
-                <div 
-                onClick={() => setShowInput(!showInput)}
-                className="text-xl font-semibold">{currentCard.title}</div>
-              ) : 
-              <input
-                type="text"
-                className="w-full p-2 text-gray-600"
-                defaultValue={currentCard.title}
-                onChange={(e) => setTitle(e.target.value)}
-                onBlur={handleUpdateCardName}
-              />
+                <div
+                  onClick={() => setShowInput(!showInput)}
+                  className="text-xl font-semibold">{currentCard.title}</div>
+              ) :
+                <input
+                  type="text"
+                  className="w-full p-2 text-gray-600"
+                  defaultValue={currentCard.title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  onBlur={handleUpdateCardName}
+                />
             }
           </div>
         </div>
@@ -113,17 +113,17 @@ const Modal = () => {
               <LiaCommentSolid className="mr-2" />
               <h4 className="mb-2">Comments</h4>
             </div>
-         
+
             <div className="comment__list">
-              <CreateCommentForm id={currentCard._id} creatorId={session?.user.id!}/>
+              <CreateCommentForm id={currentCard._id} creatorId={session?.user.id!} />
             </div>
             {
               comments && (
-              <div className="mt-4">
-                  {comments.map((c: IComment) => <div  key={c._id}>
-                    <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt}/>
-                    </div>)}
-              </div>)
+                <div className="mt-4">
+                  {comments.map((c: IComment) => <div key={c._id}>
+                    <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt} />
+                  </div>)}
+                </div>)
             }
           </div>
           <div className="modal__options w-1/3 flex justify-end">

@@ -7,6 +7,7 @@ interface IButton {
   icon?:IconType;
   outline?:boolean;
 }
+
 const Button = ({
   label,
   outline,
