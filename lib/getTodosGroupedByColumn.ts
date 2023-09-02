@@ -1,7 +1,7 @@
 /**
  * util to get documents from database
  */
-import { databases } from '../appwrite';
+// import { databases } from '../appwrite';
 
 // export const getTodosGroupedByColumn = async () => {
 //   const data = await databases.listDocuments(
