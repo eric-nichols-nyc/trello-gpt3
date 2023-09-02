@@ -16,6 +16,7 @@ import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
+import {toast} from 'react-toastify';
 
 function Board() {
   // board state from zuustand
@@ -31,7 +32,6 @@ function Board() {
 
   const [isOpen] = useModalStore((state) => [state.isOpen]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
-  // setCards();
   // revalidate cards
   useEffect(() => {
     if (!allCards) return
@@ -80,6 +80,7 @@ function Board() {
       name,
       order: cols && cols.length ? getNewOrder(cols, cols?.length - 1, cols?.length - 1)! : "m",
     }
+    
     const res = await axios.post('/api/columns', col)
     if (!res.data) {
       console.log('error')

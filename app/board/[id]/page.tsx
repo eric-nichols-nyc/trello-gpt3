@@ -22,7 +22,7 @@ export default function ClientPage({params}: {params: {id: string}}) {
   return (
     <section className="flex flex-col h-full">
       <Header user={session?.user} />
-      <Board id={id}/>
+      <Board />
     </section>
   )
 }

@@ -5,11 +5,6 @@ const CardSchema = new Schema({
     type: String,
     required: [true, 'User ID is required'],
   },
-  boardId: {
-    type: Schema.Types.ObjectId,
-    ref: 'board',
-    required: [true, 'Board id is required'],
-  },
   columnId: {
     type: Schema.Types.ObjectId,
     ref: 'column',
