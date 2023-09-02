@@ -3,19 +3,20 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
-import { ObjectId } from 'mongodb';
 import Column from '@/models/Column';
-import { getSession } from 'next-auth/react';
-import { getAuthSession } from '@/utils/auth';
-import { getServerSession } from 'next-auth/next';
-import {authOptions} from '@/utils/auth';
-import { getToken } from 'next-auth/jwt';
+import User from '@/models/User';
+import getCurrentUser from '@/utils/getCurrentUser';
 
 export const GET = async (request: NextRequest) => {
   try {
-    let client = await connectDB();
+    await connectDB();
     // get all cards and return sorted by order key
-    const columns = await Column.find().sort({ order: 1 });
+    const user = await getCurrentUser();
+    const [userId] = await User.find({ email: user.email });
+    const id = userId._id;
+    const columns = await Column.find({
+      creatorId: id,
+    }).sort({ order: 1 });
 
     return NextResponse.json(columns, { status: 200 });
   } catch (error) {
@@ -26,13 +27,19 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
+// Add a new column
 export const POST = async (req: any) => {
   const body = await req.json();
+  const user = await getCurrentUser();
+  const [userId] = await User.find({ email: user.email });
+  const id = userId._id;
   const column = {
     ...body,
-    };
+    creatorId: id,
+    boardId: id,
+  };
   const newColumn = new Column(column);
-  console.log('newColumn ======= ', newColumn)
+  console.log('newColumn ======= ', newColumn);
 
   try {
     await connectDB();

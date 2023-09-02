@@ -3,7 +3,7 @@
 */
 'use client'
 import React, { use, useEffect, useState } from 'react'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from './column/Column'
 import BoardSideMenu from './BoardSideMenu'
 import CreateListForm from './CreateListForm'
@@ -11,14 +11,13 @@ import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
 import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
 import Loader from './Loader'
+// import Modal from './Modal'
+import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
 
-interface IBoard {
-  id: string;
-}
-function Board({ id }: IBoard) {
+function Board() {
   // board state from zuustand
   const [bgColor, setShowMenu, setBGColor] = useBoardStore((state) => [state.bgColor, state.setShowMenu, state.setBGColor]);
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -26,10 +25,11 @@ function Board({ id }: IBoard) {
     return useSWR(`/api/${id}`, fetcher);
   }
   const { data: cards } = useData('cards') as { data: Card[] };
-  const { data: cols } = useData(`board/${id}/columns`) as { data: Column[] };
+  const { data: cols } = useData('columns') as { data: Column[] };
 
   const [items, setItems] = useState<Card[]>()
 
+  const [isOpen] = useModalStore((state) => [state.isOpen]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
   // setCards();
   // revalidate cards
@@ -45,9 +45,9 @@ function Board({ id }: IBoard) {
     setCards();
   }, [setCards])
 
- useEffect(() => {
-   setBGColor('bg-slate-800')
- }, [setBGColor])
+  useEffect(() => {
+    setBGColor('bg-slate-800')
+  }, [setBGColor])
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
@@ -79,7 +79,6 @@ function Board({ id }: IBoard) {
       columnName: name,
       name,
       order: cols && cols.length ? getNewOrder(cols, cols?.length - 1, cols?.length - 1)! : "m",
-      cards: [],
     }
     const res = await axios.post('/api/columns', col)
     if (!res.data) {
@@ -96,8 +95,6 @@ function Board({ id }: IBoard) {
       title,
       columnId: id,
       order: cards && cards.length ? getNewOrder(cards, cards?.length - 1, cards?.length - 1)! : "m",
-      boardId: process.env.NEXT_PUBLIC_BOARD,
-      userId: process.env.NEXT_PUBLIC_USER,
     }
     const res = await axios.post('/api/cards', card)
     if (!res.data) {
@@ -143,13 +140,16 @@ function Board({ id }: IBoard) {
       // 3. remove col from array
       let changedCol = reorderedCols[colSourceIndex];
 
+      console.log('changedCol', changedCol)
       const order = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
       if (order) {
         changedCol.order = order;
+        console.log('changedCol', changedCol)
       } else {
         throw new Error('Error: order is undefined')
       }
       reorderedCols.sort((a, b) => a.order.localeCompare(b.order));
+      console.log('reorder = ', reorderedCols)
       // 4. update the state immediately with swr
       mutate('/api/columns', reorderedCols, false);
       // 5. reordering the cols in the database
@@ -171,22 +171,29 @@ function Board({ id }: IBoard) {
     );
 
     const destinationColumn = cols && cols[colDestinationIndex];
+    console.log('draggableId', draggableId)
+    console.log('destinationColumn', destinationColumn)
+    console.log('cardDestinationIndex', cardDestinationIndex)
     const cardsCopy = [...cards];
     // 3. get the card id and get find the destination column and index
     const card = cardsCopy?.find((card) => card._id === draggableId);
+    console.log('card', card)
     if (!card) return;
     // find the cards in the target column
     const cardsInTargetColumn = cardsCopy?.filter(
       (card) => card.columnId === destinationColumn._id
     );
     // new order for the card = 
-     // 4. get a new order for the card
+    console.log('cardsInTargetColumn', cardsInTargetColumn)
+    // 4. get a new order for the card
     const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if (!order) throw new Error('Error: order is undefined');
+    console.log('new card order = ', order)
     // 5. update the card with the new column and order
     card.columnId = destinationColumn._id;
     card.order = order;
     // 6. update the state immediately with swr
+    console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
     // update the local state with the new order
     cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
     setItems(cardsCopy)
@@ -197,15 +204,18 @@ function Board({ id }: IBoard) {
   if (!cols || !items || !bgColor) return <Loader />;
 
   return (
+    <>
+      {/* {
+        isOpen && (<Modal />)
+      } */}
       <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
           <div>Welcome Board</div>
-          <div>
-            <BsThreeDots
-          size={30}
-          className="cursor-pointer bg-slate-600 hover:bg-slate-500 p-1 rounded"
-            onClick={() => setShowMenu(true)} 
+          <div><BsThreeDots
+            size={30}
+            className="cursor-pointer hover:bg-slate-500 p-1 rounded"
+            onClick={() => setShowMenu(true)}
           /></div>
         </div>
         {/* Main Content */}
@@ -243,6 +253,7 @@ function Board({ id }: IBoard) {
         </div>
         <BoardSideMenu />
       </div>
+    </>
   )
 }
 

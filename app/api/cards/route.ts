@@ -4,6 +4,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
 import Card from '@/models/Card';
+import User from '@/models/User';
+import getCurrentUser from '@/utils/getCurrentUser';
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -21,7 +23,15 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
-  const newCard = new Card(body);
+  const user = await getCurrentUser();
+  const [userId] = await User.find({ email: user.email });
+  const {_id} = userId;
+  const card = {
+    ...body,
+    userId: _id,
+    boardId: _id,
+  };
+  const newCard = new Card(card);
   try {
     await connectDB();
     await newCard.save();
