@@ -10,18 +10,27 @@ const LoginModal = () => {
       flex
       flex-col
       gap-4
+      bg-white
+      p-4
     ">
-      <div>Login</div>
+      <div className="text-2xl text-center font-bold">Login</div>
       <Button 
         outline
         label='Continue with Google'
         onClick={() => signIn('google')}
         icon={FcGoogle}
       />
+      <hr />
+
       <Button 
         outline
+        disabled={true}
         label='Continue with Github'
-        onClick={() => signIn('github')}
+        onClick={() => {
+          signIn('github',
+            { callbackUrl: '/board' }
+          )
+        }}
         icon={AiFillGithub}
       />
     </div>

@@ -2,6 +2,7 @@
 import { useModalStore } from "@/store/ModalStore"
 import LoginModal from "./LoginModal";
 import { IoMdClose } from 'react-icons/io'
+import { useDetectClickOutside } from 'react-detect-click-outside';
 
 interface IModal {
   user: User | null,
@@ -9,6 +10,9 @@ interface IModal {
 
 const Modals = ({user}:IModal) => {
   const {isOpen, openModal, closeModal} = useModalStore((state) => state)
+
+  const ref = useDetectClickOutside({ onTriggered: closeModal });
+
   if(!isOpen) return null
   return (
     <div className="
@@ -23,7 +27,9 @@ const Modals = ({user}:IModal) => {
       z-50
       bg-neutral-900/70
     ">
-      <div className="
+      <div 
+      ref={ref}
+      className="
          relative 
           w-full
           md:w-4/6
@@ -34,7 +40,8 @@ const Modals = ({user}:IModal) => {
           h-full 
           lg:h-auto
           md:h-auto
-          border-2
+          bg-slate-600
+          rounded-md
       ">
         <div className="
           flex
