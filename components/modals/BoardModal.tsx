@@ -14,6 +14,7 @@ import useSWR from 'swr';
 import { fetcher } from '@/lib/fetch';
 import Comment from '../Comment'
 import CreateCommentForm from '../CreateCommentForm';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 
 const Modal = () => {
   const { data: session } = useSession()
@@ -23,7 +24,7 @@ const Modal = () => {
   const [description, setDescription] = useState<string | undefined>(undefined)
   const [showInput, setShowInput] = useState<boolean>(false)
   // zustand state
-  const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal]);
+  const [closeModal] = useModalStore((state) => [state.closeModal]);
   const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
   // get comments from db
   const { data: comments } = useSWR(`/api/cards/${currentCard._id}/comments`, fetcher)
@@ -31,6 +32,7 @@ const Modal = () => {
   const deleteCardFromDB = useDeleteCard('/api/cards');
   // hook to update card in DB
   const updateCardInDB = useUpdateCard('/api/cards');
+  const ref = useDetectClickOutside({ onTriggered: closeModal });
 
   useEffect(() => {
     if (!currentCard) return
@@ -65,10 +67,13 @@ const Modal = () => {
     }
   }
 
-  return isOpen ? ReactDOM.createPortal(
-    <div className="modal h-full w-full fixed flex  top-0 left-0
+  return (
+    <div 
+    className="modal flex
     items-center justify-center bg-black bg-opacity-30">
-      <div className="flex flex-col p-4 relative w-[768px] min-h-[600px] bg-gray-700 text-slate-100 rounded-lg">
+      <div 
+        ref={ref}
+        className="flex flex-col p-4 relative w-[768px] min-h-[600px] bg-gray-700 text-slate-100 rounded-lg">
         {/* ====== Title ===== */}
         <div className="flex items-center mb-5">
           <MdOutlineSubtitles className="mr-2" />
@@ -154,12 +159,9 @@ const Modal = () => {
             </ul>
           </div>
         </div>
-        <MdClose
-          className="absolute top-2 right-2 h-6 w-6 text-slate-500 cursor-pointer"
-          onClick={closeModal} />
       </div>
-    </div>, document.body
-  ) : <div />
+    </div>
+  )
 }
 
 export default Modal;

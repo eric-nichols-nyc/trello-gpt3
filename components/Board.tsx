@@ -152,12 +152,10 @@ function Board() {
       const order = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
       if (order) {
         changedCol.order = order;
-        console.log('changedCol', changedCol)
       } else {
         throw new Error('Error: order is undefined')
       }
       reorderedCols.sort((a, b) => a.order.localeCompare(b.order));
-      console.log('reorder = ', reorderedCols)
       // 4. update the state immediately with swr
       mutate('/api/columns', reorderedCols, false);
       // 5. reordering the cols in the database
@@ -191,8 +189,6 @@ function Board() {
     const cardsInTargetColumn = cardsCopy?.filter(
       (card) => card.columnId === destinationColumn._id
     );
-    // new order for the card = 
-    console.log('cardsInTargetColumn', cardsInTargetColumn)
     // 4. get a new order for the card
     const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if (!order) throw new Error('Error: order is undefined');
@@ -213,9 +209,6 @@ function Board() {
 
   return (
     <>
-      {/* {
-        isOpen && (<Modal />)
-      } */}
       <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">

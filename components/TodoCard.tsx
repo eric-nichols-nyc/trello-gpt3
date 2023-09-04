@@ -23,11 +23,12 @@ function TodoCard({
 }: Props) {
 
   const [icon, showIcon] = useState(false)
-  const [openModal] = useModalStore((state) => [state.openModal]);
+  const [openModal, setType] = useModalStore((state) => [state.openModal, state.setType]);
   const [setCurrCard] = useCardStore((state) => [state.setCurrentCard]);
 
   const handleCardClick = () => {
     setCurrCard(card)
+    setType('CARD')
     openModal()
   }
   return (

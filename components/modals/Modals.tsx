@@ -2,6 +2,8 @@
 import { useEffect } from "react";
 import { useModalStore } from "@/store/ModalStore"
 import LoginModal from "./LoginModal";
+import BoardModal from "./BoardModal"
+import TestlModal from "./TestlModal";
 import { IoMdClose } from 'react-icons/io'
 
 interface IModal {
@@ -9,12 +11,12 @@ interface IModal {
 }
 
 const Modals = ({user}:IModal) => {
-  const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal])
+  const [type, isOpen, closeModal] = useModalStore((state) => [state.type, state.isOpen, state.closeModal])
 
 
   useEffect(() => {
-    console.log(isOpen)
-  }, [isOpen])
+    console.log(isOpen, type)
+  }, [isOpen,type])
   
 
   if(!isOpen) return null
@@ -55,7 +57,16 @@ const Modals = ({user}:IModal) => {
         ">
           <button onClick={closeModal}><IoMdClose /></button>
         </div>
-         <LoginModal />
+        {(() => {
+          switch (type) {
+            case 'LOGIN':
+              return <LoginModal />
+            case 'CARD':
+              return <BoardModal />
+            default:
+              return null
+          }
+        })()}
       </div>
     </div>
   )
