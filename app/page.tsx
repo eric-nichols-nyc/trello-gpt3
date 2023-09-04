@@ -4,7 +4,8 @@
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { Header, Home } from '@/components'
-import { useAuth } from '@/context/UserContext'
+
+
 
 export default function  App() {
   const { data: session } = useSession({
@@ -14,7 +15,7 @@ export default function  App() {
     }
   })
   if(session?.user){
-    redirect(`/board/${session.user.id}`)
+    redirect('/board')
   }
 
   return (

@@ -15,10 +15,7 @@ export default function ClientPage({params}: {params: {id: string}}) {
       redirect('/')
     }
   })
-  if (session?.user) {
-    // console.log('session fsadf= ', session)
-    // redirect(`/board/${session?.user.id}`)
-  }
+
   return (
     <section className="flex flex-col h-full">
       <Header user={session?.user} />

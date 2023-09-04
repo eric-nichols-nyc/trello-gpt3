@@ -80,7 +80,7 @@ function Board() {
       name,
       order: cols && cols.length ? getNewOrder(cols, cols?.length - 1, cols?.length - 1)! : "m",
     }
-    
+
     const res = await axios.post('/api/columns', col)
     if (!res.data) {
       console.log('error')
@@ -141,7 +141,6 @@ function Board() {
       // 3. remove col from array
       let changedCol = reorderedCols[colSourceIndex];
 
-      console.log('changedCol', changedCol)
       const order = getNewOrder(reorderedCols, colSourceIndex, colDestinatonIndex);
       if (order) {
         changedCol.order = order;

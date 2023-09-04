@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { useModalStore } from "@/store/ModalStore"
 import LoginModal from "./LoginModal";
 import { IoMdClose } from 'react-icons/io'
@@ -9,9 +10,14 @@ interface IModal {
 }
 
 const Modals = ({user}:IModal) => {
-  const {isOpen, openModal, closeModal} = useModalStore((state) => state)
+  const [isOpen, closeModal] = useModalStore((state) => [state.isOpen, state.closeModal])
 
-  const ref = useDetectClickOutside({ onTriggered: closeModal });
+  //const ref = useDetectClickOutside({ onTriggered: closeModal });
+
+  useEffect(() => {
+    console.log(isOpen)
+  }, [isOpen])
+  
 
   if(!isOpen) return null
   return (
@@ -28,7 +34,7 @@ const Modals = ({user}:IModal) => {
       bg-neutral-900/70
     ">
       <div 
-      ref={ref}
+      // ref={ref}
       className="
          relative 
           w-full

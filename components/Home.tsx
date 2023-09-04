@@ -7,7 +7,7 @@ import getCurrentUser from '@/utils/getCurrentUser'
 const Home = () => {
   const [openModal] = useModalStore((state) => [state.openModal])
   return (
-    <div className="flex max-w-6xl py-10 mx-auto">
+    <div className="flex max-w-6xl py-10 px-4 mx-auto">
       <div className="flex flex-col flex-1">
         <h1 className="text-5xl font-bold">Trello AI brings all your tasks, teammates, and tools together</h1>
         <button 
