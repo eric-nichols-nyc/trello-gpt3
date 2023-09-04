@@ -38,9 +38,11 @@ interface Image {
 }
 
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   image: string;
   token: string;
+  backgroundColor?: string;
+  backgroundImage?: string;
 }

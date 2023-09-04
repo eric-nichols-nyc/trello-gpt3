@@ -1,10 +1,13 @@
+/**
+ * Card detail view
+ */
 'use client'
 import ReactDOM from 'react-dom';
 import { useEffect, useState } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useBoardStore } from '@/store/BoardStore';
 import { useCardStore } from '@/store/CardStore'
-import { MdClose, MdDelete, MdShare, MdOutlineMoveDown, MdOutlineSubtitles, MdShortText } from 'react-icons/md';
+import { MdDelete, MdShare, MdOutlineMoveDown, MdOutlineSubtitles, MdShortText } from 'react-icons/md';
 import { LiaCommentSolid } from 'react-icons/lia';
 import { LuText } from 'react-icons/lu';
 import { useDeleteCard } from '@/hooks/useColumn';
@@ -114,7 +117,7 @@ const Modal = () => {
             </div>
 
             <div className="comment__list">
-              <CreateCommentForm id={currentCard._id} creatorId={session?.user.id!} />
+              <CreateCommentForm id={currentCard._id} creatorId={session?.user._id!} />
             </div>
             {
               comments && (

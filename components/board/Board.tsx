@@ -4,33 +4,35 @@
 'use client'
 import React, { use, useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
-import Column from './column/Column'
+import Column from '../column/Column'
 import BoardSideMenu from './BoardSideMenu'
-import CreateListForm from './CreateListForm'
+import CreateListForm from '../CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
 import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
-import Loader from './Loader'
+import Loader from '../Loader'
 // import Modal from './Modal'
 import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function Board() {
   // board state from zuustand
   const [bgColor, setShowMenu, setBGColor] = useBoardStore((state) => [state.bgColor, state.setShowMenu, state.setBGColor]);
+  //local state
+  const [background, setBackground] = useState<string | undefined>(undefined)
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
   function useData(id: string) {
     return useSWR(`/api/${id}`, fetcher);
   }
   const { data: cards } = useData('cards') as { data: Card[] };
   const { data: cols } = useData('columns') as { data: Column[] };
+  const { data: user } = useData('auth/users') as { data: User[] };
 
   const [items, setItems] = useState<Card[]>()
 
-  const [isOpen] = useModalStore((state) => [state.isOpen]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
   // revalidate cards
   useEffect(() => {
@@ -48,6 +50,11 @@ function Board() {
   useEffect(() => {
     setBGColor('bg-slate-800')
   }, [setBGColor])
+
+  useEffect(() => {
+    console.log('user = ', user)
+  }, [user])
+
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
@@ -78,6 +85,12 @@ function Board() {
     const order = getNewOrder(arr, arr?.length - 1, arr?.length)
     console.log('order', order)
     return order
+  }
+  // return user background from db or default color
+  const getUserBg = () => {
+    if (!user) return 'bg-slate-800'
+    if (!user[0].backgroundColor) return 'bg-slate-800'
+    return user[0].backgroundColor
   }
 
   // ADD NEW COLUMN TO DATABASE
@@ -205,11 +218,11 @@ function Board() {
     updateCardInDB(card)
   };
 
-  if (!cols || !items || !bgColor) return <Loader />;
+  if (!cols || !items || !bgColor || !user) return <Loader />;
 
   return (
     <>
-      <div className={`h-full ${bgColor} overflow-hidden flex flex-col items-start justify-center relative`}>
+      <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
           <div>Welcome Board</div>
@@ -253,7 +266,9 @@ function Board() {
             <CreateListForm addColumn={addNewColumnToDB} />
           </div>
         </div>
-        <BoardSideMenu />
+        <BoardSideMenu 
+         user={user[0]}
+        />
       </div>
     </>
   )
