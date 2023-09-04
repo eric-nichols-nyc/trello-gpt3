@@ -13,11 +13,12 @@ type Props = {
   name: string,
   cards: Card[],
   index: number,
+  order: string,
   deleteColumn: (id: string) => void
   addCard: (title: string, id: string) => void
 }
 
-function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
+function Column({ id, cards, name, index, order, deleteColumn, addCard }: Props) {
   const [showExtras, setShowExtras] = React.useState<boolean>(false)
 
   return (
@@ -38,7 +39,7 @@ function Column({ id, cards, name, index, deleteColumn, addCard }: Props) {
                 className='bg-slate-950 shrink-0 w-72 text-slate-100 rounded flex flex-col'
               >
                 <div className='flex justify-between items-center'>
-                  <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
+                  <h3 className='flex justify-between font-bold text-sm p-2'>{name} {order}</h3>
                   <BsThreeDots className='h-6 w-6 text-gray-400 mr-2 cursor-pointer' onClick={() => setShowExtras(!showExtras)} />
                   <ColumnMenu id={id} show={showExtras} closeMenu={setShowExtras} deleteColumn={deleteColumn}/>
                 </div>

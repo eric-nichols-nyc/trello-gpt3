@@ -72,13 +72,21 @@ function Board() {
     mutate('/api/columns');
   }
 
+  const getItemOrder = (arr: Column[] | Card[]) => {
+    if (!arr) return 'm'
+    // new order for the column should be last
+    const order = getNewOrder(arr, arr?.length - 1, arr?.length)
+    console.log('order', order)
+    return order
+  }
+
   // ADD NEW COLUMN TO DATABASE
   const addNewColumnToDB = async (name: string) => {
     // create obj add new column to db
     const col = {
       columnName: name,
       name,
-      order: cols && cols.length ? getNewOrder(cols, cols?.length - 1, cols?.length - 1)! : "m",
+      order: getItemOrder(cols),
     }
 
     const res = await axios.post('/api/columns', col)
@@ -95,7 +103,7 @@ function Board() {
     const card = {
       title,
       columnId: id,
-      order: cards && cards.length ? getNewOrder(cards, cards?.length - 1, cards?.length - 1)! : "m",
+      order: getItemOrder(cards),
     }
     const res = await axios.post('/api/cards', card)
     if (!res.data) {
@@ -229,12 +237,13 @@ function Board() {
                     {...provided.droppableProps}
                     ref={provided.innerRef}>{
                       cols.map((column: Column, index) => {
-                        const { _id, columnName } = column
+                        const { _id, columnName, order } = column
                         // match the cards to the column
                         const arr = items.filter((card: Card) => card.columnId === _id);
                         return <Column
                           key={_id}
                           id={_id}
+                          order={order}
                           name={columnName}
                           cards={arr}
                           index={index}

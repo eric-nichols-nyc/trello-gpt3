@@ -50,6 +50,7 @@ export const getNewOrder = (
   // if position is first, get point between first and second
   let newOrder;
   if(!items.length) {
+    console.log('no items');
     return midString('', 'a');
   }
   if (destinationIndex === 0) {

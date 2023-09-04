@@ -3,10 +3,18 @@ import Button from '@/components/Button'
 import { signIn } from 'next-auth/react'
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { useDetectClickOutside } from 'react-detect-click-outside';
+import { useModalStore } from "@/store/ModalStore"
 
 const LoginModal = () => {
+  const [closeModal] = useModalStore((state) => [state.closeModal])
+
+  const ref = useDetectClickOutside({ onTriggered: closeModal });
+
   return (
-    <div className="
+    <div 
+    ref={ref}
+    className="
       flex
       flex-col
       gap-4
