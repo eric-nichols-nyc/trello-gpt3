@@ -2,7 +2,7 @@
 * This component is the main board of the application. It will contain all the columns and cards.
 */
 'use client'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from '../column/Column'
 import BoardSideMenu from './BoardSideMenu'
@@ -11,18 +11,14 @@ import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
 import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
 import Loader from '../Loader'
-// import Modal from './Modal'
-import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
-import { toast } from 'react-toastify';
 
 function Board() {
   // board state from zuustand
   const [bgColor, setShowMenu, setBGColor] = useBoardStore((state) => [state.bgColor, state.setShowMenu, state.setBGColor]);
   //local state
-  const [background, setBackground] = useState<string | undefined>(undefined)
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
   function useData(id: string) {
     return useSWR(`/api/${id}`, fetcher);
@@ -51,11 +47,6 @@ function Board() {
     setBGColor('bg-slate-800')
   }, [setBGColor])
 
-  useEffect(() => {
-    console.log('user = ', user)
-  }, [user])
-
-
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
     // update column by id
@@ -79,11 +70,10 @@ function Board() {
     mutate('/api/columns');
   }
 
-  const getItemOrder = (arr: Column[] | Card[]) => {
+  // new order for the column should be last
+  const getNewItemOrder = (arr: Column[] | Card[]) => {
     if (!arr) return 'm'
-    // new order for the column should be last
     const order = getNewOrder(arr, arr?.length - 1, arr?.length)
-    console.log('order', order)
     return order
   }
   // return user background from db or default color
@@ -99,7 +89,7 @@ function Board() {
     const col = {
       columnName: name,
       name,
-      order: getItemOrder(cols),
+      order: getNewItemOrder(cols),
     }
 
     const res = await axios.post('/api/columns', col)
@@ -116,7 +106,7 @@ function Board() {
     const card = {
       title,
       columnId: id,
-      order: getItemOrder(cards),
+      order: getNewItemOrder(cards),
     }
     const res = await axios.post('/api/cards', card)
     if (!res.data) {
@@ -153,7 +143,7 @@ function Board() {
     //=============== HANDLE COLUMN DRAG AND DROP =================
     if (type === "column") {
       if (!cols) return;
-      // copy to cols array
+      // copy cols array
       let reorderedCols = [...cols];
       // 1. find the target column
       // 2. find index of source and destination
@@ -190,13 +180,9 @@ function Board() {
     );
 
     const destinationColumn = cols && cols[colDestinationIndex];
-    console.log('draggableId', draggableId)
-    console.log('destinationColumn', destinationColumn)
-    console.log('cardDestinationIndex', cardDestinationIndex)
     const cardsCopy = [...cards];
     // 3. get the card id and get find the destination column and index
     const card = cardsCopy?.find((card) => card._id === draggableId);
-    console.log('card', card)
     if (!card) return;
     // find the cards in the target column
     const cardsInTargetColumn = cardsCopy?.filter(
@@ -205,12 +191,10 @@ function Board() {
     // 4. get a new order for the card
     const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if (!order) throw new Error('Error: order is undefined');
-    console.log('new card order = ', order)
     // 5. update the card with the new column and order
     card.columnId = destinationColumn._id;
     card.order = order;
     // 6. update the state immediately with swr
-    console.log('cardsCopy', JSON.stringify(cardsCopy, null, 2))
     // update the local state with the new order
     cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
     setItems(cardsCopy)
@@ -218,7 +202,7 @@ function Board() {
     updateCardInDB(card)
   };
 
-  if (!cols || !items || !bgColor || !user) return <Loader />;
+  if (!cols || !items || !user) return <Loader />;
 
   return (
     <>

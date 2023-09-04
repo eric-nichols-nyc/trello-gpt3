@@ -6,9 +6,7 @@ import { connectDB } from '@/db/database';
 import clientPromise from './client';
 import User from '@/models/User';
 import Column from '@/models/Column';
-import axios from 'axios';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { redirect } from 'next/navigation';
 
 declare module 'next-auth' {
   interface Session {
@@ -16,8 +14,8 @@ declare module 'next-auth' {
   }
 }
 
-export const authOptions: any = {
-  adapter: MongoDBAdapter(clientPromise),
+export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise) as any,
   session: {
     strategy: 'jwt',
   },
@@ -102,7 +100,6 @@ export const authOptions: any = {
       }
     },
     async session({ session, token }: any) {
-      // console.log('token = ', token);
       if (session) {
         session = Object.assign({}, session, {
           user: token,
