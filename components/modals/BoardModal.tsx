@@ -34,12 +34,6 @@ const Modal = () => {
   const updateCardInDB = useUpdateCard('/api/cards');
   const ref = useDetectClickOutside({ onTriggered: closeModal });
 
-  useEffect(() => {
-    if (!currentCard) return
-    console.log('Current Card from db = ', currentCard)
-  }, [currentCard])
-
-
   const handleDeleteCard = async () => {
     const deleted = await deleteCardFromDB(currentCard._id)
     console.log('deleted', deleted)

@@ -10,7 +10,7 @@ interface ModalState {
 }
 
 export const useModalStore = create<ModalState>((set) => ({
-  type: 'CARD',
+  type: 'LOGIN',
   isOpen: false,
   openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false }),
