@@ -50,11 +50,11 @@ function CreateCommenForm({ id, creatorId }: Props) {
 
 
   return (
-    <div className="w-full shrink-0 mb-4">
+    <div className="w-full shrink-0 mb-4 flex gap-2">
+      <Avatar name={creatorId} size="30" round={true}/>
       {
         open ? (
           <div className="rounded w-full flex">
-            <Avatar size="30"/>
             <div className="rounded w-full">
               <textarea
                 autoFocus
@@ -82,7 +82,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
           </div>
         ) : <div
           onClick={() => setOpen(true)}
-          className="flex items-center px-4 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
+          className="w-full flex items-center px-4 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
             <p className="ml-2 text-xs text-white">Write a comment</p>
         </div>
       }

@@ -1,9 +1,7 @@
 "use client";
-import { useEffect } from "react";
 import { useModalStore } from "@/store/ModalStore"
 import LoginModal from "./LoginModal";
 import BoardModal from "./BoardModal"
-import TestlModal from "./TestlModal";
 import { IoMdClose } from 'react-icons/io'
 
 interface IModal {
@@ -13,18 +11,10 @@ interface IModal {
 const Modals = ({user}:IModal) => {
   const [type, isOpen, closeModal] = useModalStore((state) => [state.type, state.isOpen, state.closeModal])
 
-
-  useEffect(() => {
-    console.log(isOpen, type)
-  }, [isOpen,type])
-  
-
   if(!isOpen) return null
   return (
     <div className="
       flex
-      justify-center
-      items-center
       overflow-x-hidden
       overflow-y-auto
       fixed
@@ -35,18 +25,16 @@ const Modals = ({user}:IModal) => {
     ">
       <div 
       className="
-         relative 
-          w-full
+          relative 
           md:w-4/6
-          lg:w-3/6
-          xl:w-2/5
+          lg:w-4/6
+          xl:w-3/5
           my-6
           mx-auto 
-          h-full 
           lg:h-auto
           md:h-auto
-          bg-slate-600
           rounded-md
+          w-[768px] 
       ">
         <div className="
           flex
@@ -54,6 +42,8 @@ const Modals = ({user}:IModal) => {
           justify-end
           right-0
           text-neutral-100
+          w-full
+          mt-10
         ">
           <button onClick={closeModal}><IoMdClose /></button>
         </div>
