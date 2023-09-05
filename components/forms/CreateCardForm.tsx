@@ -1,3 +1,4 @@
+"use client";
 import { useState, FormEvent } from 'react'
 import { MdAdd } from "react-icons/md";
 import { XCircleIcon } from '@heroicons/react/24/solid';

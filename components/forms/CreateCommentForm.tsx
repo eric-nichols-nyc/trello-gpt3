@@ -1,3 +1,4 @@
+"use client";
 import React, { FormEvent } from 'react'
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { mutate } from 'swr';
