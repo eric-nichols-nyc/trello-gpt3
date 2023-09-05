@@ -65,6 +65,7 @@ function Header({ user }: Props) {
                     onClick={() => {}}
                     className="cursor-pointer text-slate-200"
                     size="20"
+                    name='notifications'
                 />
                   <BsQuestionSquare
                     onClick={() => { }}
