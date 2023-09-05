@@ -47,7 +47,10 @@ function CreateCardForm({ addCard, id }: Props) {
               placeholder="Enter card title"
               className="w-full bg-gray-800 py-3 px-2 rounded text-xs border-gray-400 outline-blue-500 mb-2"
               name="title"
-              onChange={(event) => handleChangeEvent(event)}
+              onChange={(e) => handleChangeEvent(e)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') createCard()
+              }}
               value={title}
             />
             <div className="flex items-center">
