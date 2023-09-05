@@ -1,7 +1,7 @@
 /**
  * Dragable column component
  */
-import React from 'react'
+import {useState} from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from '../TodoCard'
 import { BsThreeDots } from 'react-icons/bs'
@@ -18,8 +18,17 @@ type Props = {
   addCard: (title: string, id: string) => void
 }
 
-function Column({ id, cards, name, index, order, deleteColumn, addCard }: Props) {
-  const [showExtras, setShowExtras] = React.useState<boolean>(false)
+function Column({ 
+  id, 
+  cards, 
+  name, 
+  index, 
+  order, 
+  deleteColumn, 
+  addCard 
+}: Props) {
+  // local state
+  const [showExtras, setShowExtras] = useState<boolean>(false)
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -28,7 +37,7 @@ function Column({ id, cards, name, index, order, deleteColumn, addCard }: Props)
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`relative rounded mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
+          className={`relative rounded-lg mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           {/* render droppable todos */}
           <Droppable droppableId={id} type="card">
@@ -36,7 +45,7 @@ function Column({ id, cards, name, index, order, deleteColumn, addCard }: Props)
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className='bg-slate-950 shrink-0 w-72 text-slate-100 rounded flex flex-col'
+                className='bg-slate-900 shrink-0 w-72 text-slate-100 rounded-lg flex flex-col'
               >
                 <div className='flex justify-between items-center'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>

@@ -2,6 +2,9 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Avatar from 'react-avatar'
+import Searchbar from './forms/Searchbar'
+import { IoNotificationsOutline } from 'react-icons/io5'
+import { BsQuestionSquare } from 'react-icons/bs'
 import { useBoardStore } from '@/store/BoardStore'
 import { useSession, signOut, signIn } from 'next-auth/react'
 import { useDetectClickOutside } from 'react-detect-click-outside';
@@ -54,6 +57,21 @@ function Header({ user }: Props) {
             session && user &&
               <>
                 <div className="flex flex-col items-end z-10" ref={ref}>
+                  <div className="flex flex-row items-center gap-2">
+                  <div>
+                    <Searchbar />
+                  </div>
+                  <IoNotificationsOutline
+                    onClick={() => {}}
+                    className="cursor-pointer text-slate-200"
+                    size="20"
+                />
+                  <BsQuestionSquare
+                    onClick={() => { }}
+                    className="cursor-pointer text-slate-200"
+                    name={user?.name!}
+                    size="20"
+                />
                   <Avatar
                     onClick={() => showUserMenu(!userMenu)}
                     className="cursor-pointer"
@@ -61,6 +79,8 @@ function Header({ user }: Props) {
                     size="30"
                     round={true}
                   />
+                  </div>
+      
                   {
                     userMenu && (
                       <div className="flex flex-col w-[200px] bg-slate-600 text-slate-200 rounded-lg absolute top-10 right-0 drop-shadow-md">

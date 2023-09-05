@@ -23,9 +23,6 @@ const SideBar = ({
     setBgColor(color)
     // update user bg in database
     mutate('/api/auth/users')
-    // mutate user in swr
-
-  // local state
   }
 
   const colors =[
@@ -50,8 +47,8 @@ const SideBar = ({
         shadow-sm 
         text-sm 
         rounded 
-        w-[300px] 
-        px-2 
+        w-[350px] 
+        px-4 
         drop-shadow-xl
         transition-all
         ease-in-out duration-300
@@ -63,7 +60,14 @@ const SideBar = ({
            <AiOutlineClose
              size={25}
              onClick={() => setShowMenu(false)}
-             className="absolute right-3 p-1 text-red-100 hover:bg-slate-600 cursor-pointer" />
+             className="
+             absolute 
+             right-3 
+             p-1 
+             text-red-100 
+             hover:bg-slate-600 
+             cursor-pointer
+             " />
          </div>
          <hr />
          <div className=" w-full">

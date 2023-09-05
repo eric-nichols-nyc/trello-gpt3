@@ -52,9 +52,9 @@ function CreateListForm({ addColumn }: Props) {
           </div>
         ) : <div
           onClick={() => setOpen(true)}
-          className="flex items-center px-4 h-full transition-all duration-200 bg-blue-500 hover:bg-blue-400 py-2 cursor-pointer rounded-md">
+          className="flex items-center px-4 h-full transition-all duration-200 bg-neutral-500/50 hover:bg-blue-400 py-2 cursor-pointer rounded-md">
           <MdAdd color="white" size={24} />
-          <p className="ml-2 text-xs text-white">Create new list</p>
+          <p className="ml-2 text-xs text-white">Add another list</p>
         </div>
       }
     </div>

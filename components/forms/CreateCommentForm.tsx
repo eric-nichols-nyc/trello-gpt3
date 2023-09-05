@@ -82,8 +82,8 @@ function CreateCommenForm({ id, creatorId }: Props) {
           </div>
         ) : <div
           onClick={() => setOpen(true)}
-          className="w-full flex items-center px-4 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
-            <p className="ml-2 text-xs text-white">Write a comment</p>
+          className="w-full flex items-center px-2 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
+            <p className="text-xs text-white">Write a comment</p>
         </div>
       }
     </div>

@@ -66,7 +66,7 @@ function CreateCardForm({ addCard, id }: Props) {
           </div>
         ) : <div
           onClick={() => setOpen(true)}
-          className="flex items-center px-4 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
+          className="flex items-center px-4 h-full transition-all duration-200 bg-transparent hover:bg-gray-700 py-2 cursor-pointer rounded-md">
           <MdAdd color="white" size={24} />
           <p className="ml-2 text-xs text-white">Add a card</p>
         </div>

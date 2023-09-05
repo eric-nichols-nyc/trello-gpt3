@@ -144,31 +144,34 @@ const Modal = () => {
             }
           </div>
           <div className="modal__options w-1/3 flex justify-end ml-4">
-            <ul className="w-48 text-sm font-medium text-gray-900 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <li className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
-                <button
-                  className='flex items-center disabled:text-slate-500'
-                  disabled
-                ><MdOutlineMoveDown className="mr-2" />
-                  Move
-                </button>
-              </li>
-              <li className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
-                <button
-                  disabled
-                  className='flex items-center disabled:text-slate-500'
-                ><span><MdCopyAll className="mr-2" /></span>
-                  Copy
-                </button>
-              </li>
-              <li className="flex w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
-                <button
-                  className='flex items-center'
-                  onClick={handleDeleteCard}><span><MdDelete className="mr-2" /></span>
-                  Delete
-                </button>
-              </li>
-            </ul>
+            <div className="flex flex-col">
+              <p className="text-sm mb-2">Actions</p>
+              <ul className="w-48 text-sm font-medium text-gray-900 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
+                  <button
+                    className='flex items-center disabled:text-slate-500'
+                    disabled
+                  ><MdOutlineMoveDown className="mr-2" />
+                    Move
+                  </button>
+                </li>
+                <li className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
+                  <button
+                    disabled
+                    className='flex items-center disabled:text-slate-500'
+                  ><span><MdCopyAll className="mr-2" /></span>
+                    Copy
+                  </button>
+                </li>
+                <li className="flex w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
+                  <button
+                    className='flex items-center'
+                    onClick={handleDeleteCard}><span><MdDelete className="mr-2" /></span>
+                    Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
