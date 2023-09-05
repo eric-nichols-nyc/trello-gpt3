@@ -17,7 +17,7 @@ import { BsThreeDots } from 'react-icons/bs'
 
 function Board() {
   // board state from zuustand
-  const [bgColor, setShowMenu, setBGColor] = useBoardStore((state) => [state.bgColor, state.setShowMenu, state.setBGColor]);
+  const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
   //local state
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
   function useData(id: string) {
@@ -33,7 +33,6 @@ function Board() {
   // revalidate cards
   useEffect(() => {
     if (!allCards) return
-    console.log('add cards to board', allCards)
     if (!cards) return
     const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
     setItems(sorted)
@@ -43,9 +42,6 @@ function Board() {
     setCards();
   }, [setCards])
 
-  useEffect(() => {
-    setBGColor('bg-slate-800')
-  }, [setBGColor])
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
@@ -76,7 +72,7 @@ function Board() {
     const order = getNewOrder(arr, arr?.length - 1, arr?.length)
     return order
   }
-  // return user background from db or default color
+  // return user background from user in db or default color
   const getUserBg = () => {
     if (!user) return 'bg-slate-800'
     if (!user[0].backgroundColor) return 'bg-slate-800'

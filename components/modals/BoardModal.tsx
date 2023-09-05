@@ -69,7 +69,6 @@ const Modal = () => {
     className="modal flex
     items-center justify-center bg-black bg-opacity-30">
       <div 
-        ref={ref}
         className="flex flex-col p-4 relative w-[768px] min-h-[600px] bg-gray-700 text-slate-100 rounded-lg">
         {/* ====== Title ===== */}
         <div className="flex items-center mb-5">
