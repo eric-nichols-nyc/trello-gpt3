@@ -1,8 +1,8 @@
 import Home from "./Home";
 import Header from "./Header";
-import CreateCardForm from "./CreateCardForm";
+import CreateCardForm from "./forms/CreateCardForm";
 
-export { 
+export {
   Home,
   Header,
   CreateCardForm

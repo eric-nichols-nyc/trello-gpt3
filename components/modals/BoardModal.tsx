@@ -2,7 +2,6 @@
  * Card detail view
  */
 'use client'
-import ReactDOM from 'react-dom';
 import { useEffect, useState } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useBoardStore } from '@/store/BoardStore';
@@ -16,7 +15,7 @@ import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetch';
 import Comment from '../Comment'
-import CreateCommentForm from '../CreateCommentForm';
+import CreateCommentForm from '../forms/CreateCommentForm';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 
 const Modal = () => {
@@ -116,13 +115,14 @@ const Modal = () => {
             </div>
 
             <div className="comment__list">
-              <CreateCommentForm id={currentCard._id} creatorId={session?.user._id!} />
+              <CreateCommentForm id={currentCard._id} creatorId={session?.user.name!} />
             </div>
             {
               comments && (
                 <div className="mt-4">
                   {comments.map((c: IComment) => <div key={c._id}>
                     <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt} />
+                    {/* <pre>{JSON.stringify(c,null,2)}</pre> */}
                   </div>)}
                 </div>)
             }

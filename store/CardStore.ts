@@ -32,7 +32,6 @@ export const useCardStore = create<CardState>((set) => ({
   setCards: async () => {
     const response = await fetch('/api/cards');
     const cards = await response.json();
-    console.log(cards);
     set({ allCards: cards });
   },
 

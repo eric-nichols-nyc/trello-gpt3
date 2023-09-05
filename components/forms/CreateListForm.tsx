@@ -19,10 +19,8 @@ function CreateListForm({ addColumn }: Props) {
   function handleChangeEvent(event: FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
     setTitle(target.value);
-    console.log(target.value);
   }
   return (
-
     <div className="py-4 w-72 shrink-0">
       {
         open ? (
@@ -34,6 +32,9 @@ function CreateListForm({ addColumn }: Props) {
               className="w-full py-3 px-2 rounded text-xs border-slate-400 outline-blue-500 mb-2"
               name="title"
               onChange={(event) => handleChangeEvent(event)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') createList()
+              }}
             />
             <div className="flex items-center">
               <button

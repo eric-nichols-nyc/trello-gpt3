@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react'
-import { MdAdd } from "react-icons/md";
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { mutate } from 'swr';
 import Avatar from 'react-avatar';
@@ -19,19 +18,13 @@ function CreateCommenForm({ id, creatorId }: Props) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
 
-  const hideInput = () => {
-    if(open){
-      setOpen(false)
-    }
-  }
-
   // create new comment in database and mutate
   const createComment = async () => {
     if (!title) return
     const obj = {
       cardId: currentCard._id,
       comment: title,
-      creatorName: 'test',
+      creatorName: creatorId,
       creatorId: creatorId,
     }
     // 

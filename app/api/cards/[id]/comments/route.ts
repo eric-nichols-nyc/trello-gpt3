@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
     // get all comments
-    const comments = await Comment.find();
+    const comments = await Comment.find().sort({ createdAt: -1});
     return NextResponse.json(comments, { status: 200 });
   } catch (error) {
     return NextResponse.json(

@@ -5,7 +5,7 @@ import React from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TodoCard from '../TodoCard'
 import { BsThreeDots } from 'react-icons/bs'
-import CreateCardForm from '../CreateCardForm'
+import CreateCardForm from '../forms/CreateCardForm'
 import ColumnMenu from './ColumnOptions'
 
 type Props = {
@@ -41,7 +41,7 @@ function Column({ id, cards, name, index, order, deleteColumn, addCard }: Props)
                 <div className='flex justify-between items-center'>
                   <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
                   <BsThreeDots className='h-6 w-6 text-gray-400 mr-2 cursor-pointer' onClick={() => setShowExtras(!showExtras)} />
-                  <ColumnMenu id={id} show={showExtras} closeMenu={setShowExtras} deleteColumn={deleteColumn}/>
+                  <ColumnMenu id={id} show={showExtras} closeMenu={setShowExtras} deleteColumn={deleteColumn} />
                 </div>
 
                 <div className="mx-2 list">

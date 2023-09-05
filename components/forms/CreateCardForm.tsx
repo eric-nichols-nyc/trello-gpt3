@@ -1,5 +1,4 @@
-import { set } from 'mongoose';
-import React, { FormEvent } from 'react'
+import { useState, FormEvent } from 'react'
 import { MdAdd } from "react-icons/md";
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { useDetectClickOutside } from 'react-detect-click-outside';
@@ -13,16 +12,14 @@ interface Props {
 // card is sent to database
 // swr hook updates the UI
 function CreateCardForm({ addCard, id }: Props) {
-  const [open, setOpen] = React.useState(false)
-  const [title, setTitle] = React.useState('')
+  const [open, setOpen] = useState(false)
+  const [title, setTitle] = useState('')
   // create new list column in database
   const createCard = () => {
     if (!title) return
     // 
     addCard(title, id)
     setTitle('')
-    // unlike list form this form does not auto close
-    // setOpen(false)
   }
   // handle event
   function handleChangeEvent(event: FormEvent<HTMLInputElement>) {
