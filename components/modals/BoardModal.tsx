@@ -2,12 +2,12 @@
  * Card detail view
  */
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useModalStore } from '@/store/ModalStore'
-import { useBoardStore } from '@/store/BoardStore';
 import { useCardStore } from '@/store/CardStore'
 import { MdDelete,  MdOutlineMoveDown, MdOutlineSubtitles, MdCopyAll } from 'react-icons/md';
 import { LiaCommentSolid } from 'react-icons/lia';
+import { IoMdClose } from 'react-icons/io'
 import { LuText } from 'react-icons/lu';
 import { useDeleteCard } from '@/hooks/useColumn';
 import { useUpdateCard } from '@/hooks/useBoard';
@@ -86,6 +86,13 @@ const Modal = () => {
          rounded-lg
           w-full
          ">
+        <div className="
+          absolute
+          right-2
+          text-neutral-100
+        ">
+          <button onClick={closeModal}><IoMdClose /></button>
+        </div>
         {/* ====== Title ===== */}
         <div className="w-full flex items-center mb-5">
           <MdOutlineSubtitles className="mr-2" />

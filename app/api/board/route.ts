@@ -6,7 +6,7 @@ import { connectDB } from '@/db/database';
 import { ObjectId } from 'mongodb';
 import Board from '@/models/Board';
 
-export const GET = async (request: NextRequest) => {
+export const GET = async () => {
   try {
     await connectDB();
     // get all cards and return sorted by order key

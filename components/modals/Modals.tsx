@@ -36,17 +36,7 @@ const Modals = ({user}:IModal) => {
           rounded-md
           w-[768px] 
       ">
-        <div className="
-          flex
-          p-2
-          justify-end
-          right-0
-          text-neutral-100
-          w-full
-          mt-10
-        ">
-          <button onClick={closeModal}><IoMdClose /></button>
-        </div>
+   
         {(() => {
           switch (type) {
             case 'LOGIN':

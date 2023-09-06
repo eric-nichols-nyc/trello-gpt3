@@ -118,9 +118,6 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user };
     },
   },
-  pages: {
-    signIn: '/',
-  },
 };
 
 // get user credentials in server side components

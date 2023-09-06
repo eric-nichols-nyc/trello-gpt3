@@ -74,7 +74,7 @@ function Board() {
   }
   // return user background from user in db or default color
   const getUserBg = () => {
-    if (!user) return 'bg-slate-800'
+    if (!user || !user[0]) return 'bg-slate-800'
     if (!user[0].backgroundColor) return 'bg-slate-800'
     return user[0].backgroundColor
   }
