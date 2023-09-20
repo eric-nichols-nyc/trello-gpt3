@@ -1,33 +1,55 @@
-TRELLO-GPT
-NEXT, TAILWIND, TYPESCRIPT, SWR
-https://trello-gpt3.vercel.app
+# Build and Deploy: Trello clone with React, Tailwind, Next, Mongo, NextAuth & Vercel (2023)
 
-NEXT AUTH
-- homepage => auth => board
-- Google and Github login at auth/signin
-
-DRAG AND DROP COLUMNS => DB
-add new columns:
-- call post api/colums and pass in the user along with the content
-- GET NEW COLUMN ORDER
- - columns are sorted by an order key as a string
- - use getItemOrder util to get to new order after each drop
- - get the new column order and set it in the database
-
- CREATE NEW COLUMN BUTTON
- - Board => CreateListForm(addColumn) => api/columns/{userid, form data}
-
- CREATE CARDS FOR COLUMNS
- - cards are created using a form like createListForm component
- - Board => Column => createCard({columnId}) => api/cards/
-
-  MODAL - lets you view, edit or delete a card from db
-    VIEW A CARD - card item => set current card from zusatand store => modal mounts => gets current card from state
-    DELETE A CARD
-      - modal delete btn => useDeleteCard hook => api/cards/delete => mutate the api with swr => return the cards
-    UPDATE A CARD
-      - modal => useUpdateCard hook => api/cards/id
-    ADD COMMENT TO CARD
-     Mondal => commentForm = api/comments/cardId, creatorId, creattorName, comment
+![Fullstack Trello Clone](/docs/images/board.png)
 
 
+This is a repository for a FullStack Trello clone tutorial using React, NextJS, TailwindCSS & Prisma.
+
+funcionalities include:
+
+- MongoDB
+- Next JS Authentication system
+- Create a list, update list title, and delete a list.
+- Create a card, update card title and description, and delete a card.
+- Vercel Deployment
+
+### Prerequisites
+
+**Node version 16.x**
+
+### Cloning the repository
+
+```shell
+git clone https://github.com/eric-nichols-nyc/trello-gpt3.git
+```
+
+### Install packages
+
+```shell
+npm i
+```
+
+### Setup .env file
+
+
+```js
+MONGODB_URI=
+NEXT_PUBLIC_NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+### Start the app
+
+```shell
+npm run dev
+```
+
+## Available commands
+
+Running commands with npm `npm run [command]`
+
+| command         | description                              |
+| :-------------- | :--------------------------------------- |
+| `dev`           | Starts a development instance of the app |
