@@ -13,27 +13,47 @@ type Props = {
 }
 
 // user profile component avatar, name, email
-const UserProfile = ({user}:Props) => {
+const UserProfile = ({ user }: Props) => {
   return (
-    <section 
+    <section
       className="
         h-screen
         flex 
-        flex-col 
-        gap-3 
         items-center 
-        pt-10 
         bg-[#071e34] 
         text-slate-100
       ">
-      <h1>user profile</h1>
-      <Avatar 
-        name={user?.name!}
-        size="100"
-        round={true}
-      />
-      <p>{user?.name}</p>
-      <p>{user?.email}</p>
+      <section
+        className="
+          flex
+          flex-col
+          items-center
+          gap-3
+          w-64 
+          mx-auto
+          bg-[#20354b] 
+          rounded-2xl 
+          px-8 py-6
+          shadow-lg
+      ">
+        <Avatar
+          name={user?.name!}
+          size="100"
+          round={true}
+        />
+        {/* <p>{user?.name}</p> */}
+        <div className="mt-8">
+          <h2 className="
+          text-white 
+          font-bold 
+          text-2xl 
+          tracking-wide
+        ">
+          {user?.name}
+        </h2>
+        </div>
+        <p>{user?.email}</p>
+      </section>
     </section>
   )
 }
