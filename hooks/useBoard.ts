@@ -6,8 +6,7 @@ export const useUpdateCard = (path:string) => {
 
     const updateCardInDB = async(id:string, obj: unknown) => {
       try {
-        const response = await axios.put(`${path}/${id}`, obj)
-        console.log('response = ', response)
+        await axios.put(`${path}/${id}`, obj)
         mutate();
         return {message: 'Update successful'}
       } catch (error) {

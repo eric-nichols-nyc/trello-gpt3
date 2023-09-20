@@ -1,12 +1,12 @@
-/**
- * @api {get} /cards Get all cards
- */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
 import Column from '@/models/Column';
 import User from '@/models/User';
 import getCurrentUser from '@/utils/getCurrentUser';
-
+/**
+ * @api {get} /cards Get all columns by user
+ */
 export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
@@ -27,7 +27,9 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-// Add a new column
+/**
+ * @api {post} /add a new column
+ */
 export const POST = async (req: any) => {
   const body = await req.json();
   const user = await getCurrentUser();

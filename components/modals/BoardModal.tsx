@@ -1,6 +1,3 @@
-/**
- * Card detail view
- */
 'use client'
 import { useState } from 'react'
 import { useModalStore } from '@/store/ModalStore'
@@ -19,6 +16,9 @@ import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 
+/**
+ * Card detail view in modal
+ */
 const Modal = () => {
   const router = useRouter()
   const { data: session } = useSession()

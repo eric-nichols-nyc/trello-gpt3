@@ -1,10 +1,9 @@
-/**
- * @api {get} /cards Update column order by ID
- */
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
 import Column from '@/models/Column';
-
+/**
+ * @api {put} /cards Update column order by ID
+ */
 export async function PUT(request: NextRequest, { params }: any) {
   const { id } = params;
   try {
@@ -33,7 +32,9 @@ export async function PUT(request: NextRequest, { params }: any) {
     );
   }
 }
-
+/**
+ * @api {delete} /delete column by ID
+ */
 export const DELETE = async (request: NextRequest, { params }: any) => {
   const { id } = params;
   try {

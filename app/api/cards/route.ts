@@ -1,12 +1,11 @@
-/**
- * @api {get} /cards Get all cards
- */
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
 import Card from '@/models/Card';
 import User from '@/models/User';
 import getCurrentUser from '@/utils/getCurrentUser';
-
+/**
+ * @api {get} /cards Get all cards
+ */
 export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
@@ -20,7 +19,9 @@ export const GET = async (request: NextRequest) => {
     );
   }
 };
-
+/**
+ * @api {post} /add new card
+ */
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
   const user = await getCurrentUser();

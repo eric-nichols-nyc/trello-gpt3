@@ -1,11 +1,11 @@
-/**
- * @api {get} /cards Get all cards
- */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/db/database';
 import { ObjectId } from 'mongodb';
 import Board from '@/models/Board';
-
+/**
+ * @api {get} Get all boards
+ */
 export const GET = async () => {
   try {
     await connectDB();
@@ -20,13 +20,10 @@ export const GET = async () => {
     );
   }
 };
-
+/**
+ * @api {post} create user board
+ */
 export const POST = async (request: NextRequest) => {
-    // const session = await getServerSession();
-    // if (!session) {
-    //   console.log('no session');
-    // }
-    // console.log('session = ', session);
   const body = await request.json();
   const test = {
     ...body,

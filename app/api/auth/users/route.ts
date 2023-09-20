@@ -27,20 +27,17 @@ export const PUT = async (
 ) => {
   // update user backgroud color
   const body = await request.json();
-  console.log('req.body ======= ', body);
-  console.log('params ======= ', params);
   // connect to DB
   await connectDB();
   // find user from session
-  const user = await getCurrentUser();
+  const session = await getCurrentUser();
   // get user from DB
   try {
     // update user background color
-    const test = await User.findOneAndUpdate(
-      { email: user.email },
+    const user = await User.findOneAndUpdate(
+      { email: session.email },
       { $set: { backgroundColor: body.backgroundColor } }
     );
-    console.log('user updated', test);
     return NextResponse.json(
       { message: 'Update was a success' },
       { status: 200 }

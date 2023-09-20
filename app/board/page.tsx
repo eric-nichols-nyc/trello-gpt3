@@ -6,18 +6,19 @@ import { getAuthSession } from '@/utils/auth'
 import { redirect } from 'next/navigation'
 
 
-export default async function ClientPage({ params }: { params: { id: string } }) {
+// Board page
+export default async function BoardPage({ params }: { params: { id: string } }) {
   const session = await getAuthSession()
   console.log(session?.user)
   if (!session?.user) {
     redirect('/')
   }
 
-
-
   return (
     <section className="flex flex-col h-full">
-      <Header user={session?.user} />
+      <Header 
+        user={session?.user} 
+      />
       <Board />
     </section>
   )
