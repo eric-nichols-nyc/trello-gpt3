@@ -1,6 +1,3 @@
-/*
-* This component is the main board of the application. It will contain all the columns and cards.
-*/
 'use client'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
@@ -9,12 +6,15 @@ import BoardSideMenu from './BoardSideMenu'
 import CreateListForm from '../forms/CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
-import { getNewOrder, getNewCardOrder } from '@/utils/getItemOrder'
+import { getNewOrder } from '@/utils/getItemOrder'
 import Loader from '../Loader'
 import { useCardStore } from '@/store/CardStore'
 import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
-
+/*
+* This component is the main board of the application. 
+  It will contain all the columns and cards.
+*/
 function Board() {
 
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
@@ -32,6 +32,11 @@ function Board() {
   const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
 
+  //set cards in zustand
+  // useEffect(() => {
+  //   setCards();
+  // }, [setCards])
+
   // revalidate cards
   useEffect(() => {
     if (!allCards) return
@@ -40,9 +45,8 @@ function Board() {
     setItems(sorted)
   }, [cards, allCards])
 
-  useEffect(() => {
-    setCards();
-  }, [setCards])
+
+
 
 
   // UPDATE COLUMN IN DATABASE
@@ -187,7 +191,7 @@ function Board() {
       (card) => card.columnId === destinationColumn._id
     );
     // 4. get a new order for the card
-    const order = getNewCardOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
+    const order = getNewOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
     if (!order) throw new Error('Error: order is undefined');
     // 5. update the card with the new column and order
     card.columnId = destinationColumn._id;
