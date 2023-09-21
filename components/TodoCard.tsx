@@ -5,6 +5,7 @@ import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { BsTextLeft } from 'react-icons/bs';
 import { FaRegComment } from 'react-icons/fa';
+import { useSearchParams } from 'next/navigation';
 
 type Props = {
   card: Card;
@@ -23,6 +24,8 @@ function TodoCard({
   draggableHandleProps,
   comments
 }: Props) {
+  const params = useSearchParams()
+  console.log('params', params.get('c'))
   // lcoal state
   const [icon, showIcon] = useState(false)
   const [cardComments, setCardComments] = useState<Comment[]>(comments)

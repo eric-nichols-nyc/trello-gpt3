@@ -15,6 +15,7 @@ import CreateCommentForm from '../forms/CreateCommentForm';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
+import { toast } from 'react-toastify';
 
 /**
  * Card detail view in modal
@@ -44,6 +45,7 @@ const Modal = () => {
   const handleDeleteCard = async () => {
     const deleted = await deleteCardFromDB(currentCard._id)
     console.log('deleted', deleted)
+    toast('Card deleted successfully')
     closeModal()
   }
   // update card name is db

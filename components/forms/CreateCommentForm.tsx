@@ -38,6 +38,9 @@ function CreateCommenForm({ id, creatorId }: Props) {
         body: JSON.stringify(obj)
       })
       setTitle('')
+      // update all comments
+      mutate('/api/comments')
+      // update comments for the current card in modal
       mutate(`/api/cards/${id}/comments`)
     }catch(error){
       console.error(error)

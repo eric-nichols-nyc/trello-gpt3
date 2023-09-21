@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Avatar from 'react-avatar'
-import Searchbar from './forms/Searchbar'
+import Searchbar from './search/Searchbar'
 import { IoNotificationsOutline } from 'react-icons/io5'
 import { useBoardStore } from '@/store/BoardStore'
 import { signOut } from 'next-auth/react'
@@ -66,7 +66,7 @@ function Header({ user }: Props) {
             user && currentuser &&
             <>
               <div className="flex flex-col items-end z-10" ref={ref}>
-                <div className="flex flex-row items-center gap-2">
+                <div className="w-full flex flex-row items-center gap-2">
                   <div>
                     <Searchbar />
                   </div>
