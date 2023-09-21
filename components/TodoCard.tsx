@@ -66,7 +66,10 @@ function TodoCard({
             }
             {
               cardComments.length > 0 && (
-                <FaRegComment />
+                <>
+                  <FaRegComment />
+                  <span className="text-xs">{cardComments.length}</span>
+                </>
               )
             }
           </div>

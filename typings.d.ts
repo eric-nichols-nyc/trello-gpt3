@@ -35,7 +35,10 @@ interface Card {
 interface Comment {
   _id: string;
   cardId: string;
+  creatorId: string;
+  creatorName: string;
   comment: string;
+  createdAt: string;
 }
 
 interface Image {

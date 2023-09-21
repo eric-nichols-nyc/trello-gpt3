@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
 import { MdDelete,  MdOutlineMoveDown, MdOutlineSubtitles, MdCopyAll } from 'react-icons/md';
@@ -23,10 +23,6 @@ const Modal = () => {
   const router = useRouter()
   const { data: session } = useSession()
 
-  //local state
-  const [title, setTitle] = useState<string | undefined>(undefined)
-  const [description, setDescription] = useState<string | undefined>(undefined)
-  const [showInput, setShowInput] = useState<boolean>(false)
   // zustand state
   const [closeModal] = useModalStore((state) => [state.closeModal]);
   const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
@@ -37,6 +33,13 @@ const Modal = () => {
   // hook to update card in DB
   const updateCardInDB = useUpdateCard('/api/cards');
   const ref = useDetectClickOutside({ onTriggered: closeModal });
+
+  //local state
+  const [title, setTitle] = useState<string | undefined>(undefined)
+  const [description, setDescription] = useState<string | undefined>(undefined)
+  const [showInput, setShowInput] = useState<boolean>(false)
+  const [cardComments, setCardComments] = useState<Comment[]>(comments)
+
 
   const handleDeleteCard = async () => {
     const deleted = await deleteCardFromDB(currentCard._id)
@@ -64,6 +67,13 @@ const Modal = () => {
       console.error(error)
     }
   }
+
+  // TODO: aggregate comments by card id in db
+  useEffect(() => {
+    if(!comments) return
+    setCardComments(comments.filter((comment: Comment) => comment.cardId === currentCard._id))
+  }, [comments, currentCard._id])
+
 
   return (
     <div 
@@ -142,9 +152,9 @@ const Modal = () => {
               <CreateCommentForm id={currentCard._id} creatorId={session?.user.name!} />
             </div>
             {
-              comments && (
+              cardComments && (
                 <div className="mt-4">
-                  {comments.map((c: IComment) => <div key={c._id}>
+                  {cardComments.map((c: Comment) => <div key={c._id}>
                     <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt} />
                   </div>)}
                 </div>)
