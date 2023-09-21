@@ -5,7 +5,7 @@ import Avatar from 'react-avatar'
 import Searchbar from './forms/Searchbar'
 import { IoNotificationsOutline } from 'react-icons/io5'
 import { useBoardStore } from '@/store/BoardStore'
-import { useSession, signOut, signIn } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
@@ -13,6 +13,7 @@ import useCurrentUser from '@/hooks/useCurrentUser'
 import Button from './Button'
 import { MdOutlineLogout } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
+
 type User = {
   name?: string | null | undefined;
   email?: string | null | undefined;
@@ -83,7 +84,6 @@ function Header({ user }: Props) {
                     round={true}
                   />
                 </div>
-
                 {
                   userMenu && (
                     <div className="flex flex-col w-[200px] bg-slate-600 text-slate-200 rounded-lg absolute top-10 right-0 drop-shadow-md">

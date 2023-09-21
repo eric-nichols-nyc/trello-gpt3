@@ -40,7 +40,7 @@ export default async function RootLayout({
           />
           {/* Same as */}
             <main className='h-screen'>
-              <Modals user={user} />
+              {/* <Modals user={user} /> */}
               {children}
             </main>
         </AuthProvider>
