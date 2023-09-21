@@ -10,6 +10,7 @@ funcionalities include:
 - MongoDB
 - Next JS Authentication system
 - Create a list, update list title, and delete a list.
+- Drag and Drop between lists and columns
 - Create a card, update card title and description, and delete a card.
 - Vercel Deployment
 
