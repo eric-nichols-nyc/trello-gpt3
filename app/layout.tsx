@@ -1,12 +1,10 @@
-import Modal from '@/components/modals/BoardModal'
 import './globals.css'
 import type { Metadata } from 'next'
 import AuthProvider from '@/context/AuthProvider'
 import { Inter } from 'next/font/google'
-import { UserProvider } from '@/context/UserContext'
 import Modals from '@/components/modals/Modals'
 import getCurrentUser from '@/utils/getCurrentUser'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] })
