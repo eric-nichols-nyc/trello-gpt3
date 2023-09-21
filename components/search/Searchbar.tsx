@@ -4,6 +4,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import useSWR from 'swr';
 import SearchResultItem from './SearchResultItem';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 
 // Searchbar component to filter cards
 const Searchbar = () => {
@@ -12,6 +13,7 @@ const Searchbar = () => {
   // local state
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Card[]>([]);
+  const ref = useDetectClickOutside({ onTriggered: () => setSearchTerm('') });
 
   const getResults = useCallback((search:string) => {
     // if input is empty, return
@@ -24,12 +26,6 @@ const Searchbar = () => {
     setSearchResults(results)
   },[data])
 
-  function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    setSearchTerm(e.target.value);
-    // filter cards by title
-  
-  }
-
   useEffect(() => {
     getResults(searchTerm);
   }, [searchTerm, getResults])
@@ -41,6 +37,7 @@ const Searchbar = () => {
         <BiSearch className="text-gray-400 absolute top-1" />
       </div>
       <input
+        ref={ref}
         placeholder='Search'
         type="text"
         className="
@@ -55,10 +52,9 @@ const Searchbar = () => {
           outline-blue-500
         "
         value={searchTerm}
-        onBlur={() => setSearchTerm('')}
-        onChange={(e) => handleOnChange(e)}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div className="absolute top-[34px]">
+      <div className="absolute top-[37px]">
         {
           searchResults.map((card: Card) => (
            <SearchResultItem
