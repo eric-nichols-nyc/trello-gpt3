@@ -11,6 +11,8 @@ interface CardState {
   allCards: Card[];
   setCards: () => void;
   deleteCard(cardId: string): void;
+  comments: Comment[];
+  setComments:() => void;
 }
 
 export const useCardStore = create<CardState>((set) => ({
@@ -44,4 +46,10 @@ export const useCardStore = create<CardState>((set) => ({
 
     // set({allCards: []});
   },
+  comments: [],
+  setComments: async () => {
+    const response = await fetch('/api/comments')
+    const comments = await response.json();
+    set({ comments });
+  }
 }));

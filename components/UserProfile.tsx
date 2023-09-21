@@ -29,7 +29,7 @@ const UserProfile = ({ user }: Props) => {
           flex-col
           items-center
           gap-3
-          w-64 
+          w-[500px] 
           mx-auto
           bg-[#20354b] 
           rounded-2xl 
@@ -41,7 +41,6 @@ const UserProfile = ({ user }: Props) => {
           size="100"
           round={true}
         />
-        {/* <p>{user?.name}</p> */}
         <div className="mt-8">
           <h2 className="
           text-white 

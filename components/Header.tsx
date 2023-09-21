@@ -26,9 +26,9 @@ type Props = {
 // Top header component searchbar/user menu
 function Header({ user }: Props) {
   // get current user from db
-  const { data } = useCurrentUser()
   const router = useRouter()
-  const { data: session } = useSession();
+  const { data: currentuser } = useCurrentUser()
+
   const [board] = useBoardStore((state) => [
     state.board,
     state.searchString,
@@ -62,7 +62,7 @@ function Header({ user }: Props) {
 
         <div className="flex items-center space-x-5 flex-1 justify-end w-full relative">
           {
-            session && user &&
+            user && currentuser &&
             <>
               <div className="flex flex-col items-end z-10" ref={ref}>
                 <div className="flex flex-row items-center gap-2">
@@ -101,7 +101,7 @@ function Header({ user }: Props) {
                           className="w-full p-2"
                         >
                           <Link
-                            href={`/profile/${data._id}`}>
+                            href={`/profile/${currentuser._id}`}>
                             <Button
                               label="Profile"
                               outline

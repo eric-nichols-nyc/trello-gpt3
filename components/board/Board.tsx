@@ -16,20 +16,22 @@ import { useBoardStore } from '@/store/BoardStore'
 import { BsThreeDots } from 'react-icons/bs'
 
 function Board() {
-  // board state from zuustand
-  const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
-  //local state
+
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
   function useData(id: string) {
     return useSWR(`/api/${id}`, fetcher);
   }
+  // swr state
   const { data: cards } = useData('cards') as { data: Card[] };
   const { data: cols } = useData('columns') as { data: Column[] };
   const { data: user } = useData('auth/users') as { data: User[] };
-
+  const { data: comments } = useData('comments') as {data: Comment[]};
+  // local state
   const [items, setItems] = useState<Card[]>()
-
+  // zustand
+  const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
+
   // revalidate cards
   useEffect(() => {
     if (!allCards) return
@@ -235,6 +237,7 @@ function Board() {
                           index={index}
                           deleteColumn={deleteColumnInDB}
                           addCard={addNewCardToDB}
+                          comments={comments}
                         />
                       })
                     }

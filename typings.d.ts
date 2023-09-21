@@ -32,6 +32,12 @@ interface Card {
   description?: string;
 }
 
+interface Comment {
+  _id: string;
+  cardId: string;
+  comment: string;
+}
+
 interface Image {
   bucketId: string;
   fildId: string;

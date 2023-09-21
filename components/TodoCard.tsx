@@ -1,8 +1,10 @@
 'use client'
 import { MdEdit } from 'react-icons/md';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
+import { BsTextLeft } from 'react-icons/bs';
+import { FaRegComment } from 'react-icons/fa';
 
 type Props = {
   card: Card;
@@ -11,18 +13,20 @@ type Props = {
   innerRef: any;
   draggableProps: any;
   draggableHandleProps: any;
+  comments: Comment[];
 }
 
 function TodoCard({
   card,
-  index,
-  id,
   innerRef,
   draggableProps,
   draggableHandleProps,
+  comments
 }: Props) {
-
+  // lcoal state
   const [icon, showIcon] = useState(false)
+  const [cardComments, setCardComments] = useState<Comment[]>(comments)
+  // zustan
   const [openModal, setType] = useModalStore((state) => [state.openModal, state.setType]);
   const [setCurrCard] = useCardStore((state) => [state.setCurrentCard]);
 
@@ -31,6 +35,12 @@ function TodoCard({
     setType('CARD')
     openModal()
   }
+
+  // TODO: aggregate comments by card id in db
+  useEffect(() => {
+   setCardComments(comments.filter((comment) => comment.cardId === card._id))
+  }, [comments, card._id])
+
   return (
     <div
       {...draggableProps}
@@ -46,15 +56,27 @@ function TodoCard({
         onMouseLeave={() => showIcon(false)}
         onClick={handleCardClick}
         >
-        <p>{card.title}</p>
+          <div className="flex flex-col">
+          <p>{card.title}</p>
+          <div className="icons mt-2 flex gap-2">
+            {
+              card.description && (
+                <BsTextLeft />
+              )
+            }
+            {
+              cardComments.length > 0 && (
+                <FaRegComment />
+              )
+            }
+          </div>
+          </div>
         {
           icon && (
               <MdEdit />
           )
         }
-   
       </div>
-      {/* Add image here */}
     </div>
   )
 }

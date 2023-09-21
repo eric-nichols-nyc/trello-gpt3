@@ -16,6 +16,7 @@ type Props = {
   order: string,
   deleteColumn: (id: string) => void
   addCard: (title: string, id: string) => void
+  comments: Comment[]
 }
 
 function Column({ 
@@ -25,7 +26,8 @@ function Column({
   index, 
   order, 
   deleteColumn, 
-  addCard 
+  addCard,
+  comments
 }: Props) {
   // local state
   const [showExtras, setShowExtras] = useState<boolean>(false)
@@ -64,6 +66,7 @@ function Column({
                           innerRef={provided.innerRef}
                           draggableProps={provided.draggableProps}
                           draggableHandleProps={provided.dragHandleProps}
+                          comments={comments}
                         />
                       )}
                     </Draggable>
