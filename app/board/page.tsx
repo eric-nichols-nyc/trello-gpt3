@@ -19,8 +19,7 @@ export default async function BoardPage() {
       <Header 
         user={session?.user} 
       />
-      {/* <Board /> */}
-      <div>Hello</div>
+      <Board />
     </section>
   )
 }
