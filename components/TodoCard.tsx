@@ -10,11 +10,11 @@ import { useSearchParams } from 'next/navigation';
 type Props = {
   card: Card;
   index: number;
-  id: string;
   innerRef: any;
   draggableProps: any;
   draggableHandleProps: any;
   comments: Comment[];
+  isDragging: boolean;
 }
 
 function TodoCard({
@@ -22,10 +22,11 @@ function TodoCard({
   innerRef,
   draggableProps,
   draggableHandleProps,
-  comments
+  comments,
+  isDragging = false,
 }: Props) {
   const params = useSearchParams()
-  console.log('params', params.get('c'))
+  console.log('comments', comments)
   // lcoal state
   const [icon, showIcon] = useState(false)
   const [cardComments, setCardComments] = useState<Comment[]>(comments)
@@ -44,6 +45,11 @@ function TodoCard({
    setCardComments(comments.filter((comment) => comment.cardId === card._id))
   }, [comments, card._id])
 
+  useEffect(() => {
+    console.log('cardComments', cardComments)
+  }, [cardComments])
+
+
   return (
     <div
       {...draggableProps}
@@ -51,10 +57,13 @@ function TodoCard({
       ref={innerRef}
       className='text-sm mt-2"'>
       <div 
-      className='bg-gray-800 hover:bg-gray-600 p-2 
+      className={`bg-gray-800 
+      hover:bg-gray-600 p-2 
       rounded mt-1 cursor-pointer 
       flex justify-between
-      text-slate-50'
+      text-slate-50
+      ${isDragging && 'rotate-4'}
+      `}
         onMouseEnter={() => showIcon(true)}
         onMouseLeave={() => showIcon(false)}
         onClick={handleCardClick}

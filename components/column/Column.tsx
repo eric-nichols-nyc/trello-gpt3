@@ -27,7 +27,7 @@ function Column({
   order, 
   deleteColumn, 
   addCard,
-  comments
+  comments,
 }: Props) {
   // local state
   const [showExtras, setShowExtras] = useState<boolean>(false)
@@ -39,8 +39,9 @@ function Column({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
-          className={`relative rounded-lg mr-2 shadow-sm ${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
+          className={`relative rounded-lg mr-2 shadow-sm ${snapshot.isDragging && 'rotate-4'}`}
         >
+          
           {/* render droppable todos */}
           <Droppable droppableId={id} type="card">
             {(provided, snapshot) => (
@@ -56,21 +57,25 @@ function Column({
                 </div>
 
                 <div className="mx-2 list">
-                  {cards.map((card, index) => {
-                    return <Draggable key={card._id} draggableId={card._id} index={index}>
-                      {(provided) => (
-                        <TodoCard
-                          card={card}
-                          index={index}
-                          id={id}
-                          innerRef={provided.innerRef}
-                          draggableProps={provided.draggableProps}
-                          draggableHandleProps={provided.dragHandleProps}
-                          comments={comments}
-                        />
+                  {cards.map((card, index) => (
+                    <Draggable 
+                              key={card._id} 
+                              draggableId={card._id} 
+                              index={index}
+                            >
+                      {(provided,snapshot) => (
+                          <TodoCard
+                            card={card}
+                            index={index}
+                            innerRef={provided.innerRef}
+                            draggableProps={provided.draggableProps}
+                            draggableHandleProps={provided.dragHandleProps}
+                            comments={comments}
+                            isDragging={snapshot.isDragging}
+                          />
                       )}
                     </Draggable>
-                  })}
+                  ))}
                   {provided.placeholder}
 
                 </div>

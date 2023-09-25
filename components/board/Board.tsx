@@ -32,11 +32,6 @@ function Board() {
   const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
   const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
 
-  //set cards in zustand
-  // useEffect(() => {
-  //   setCards();
-  // }, [setCards])
-
   // revalidate cards
   useEffect(() => {
     if (!allCards) return
@@ -44,10 +39,6 @@ function Board() {
     const sorted = cards.sort((a, b) => a.order.localeCompare(b.order))
     setItems(sorted)
   }, [cards, allCards])
-
-
-
-
 
   // UPDATE COLUMN IN DATABASE
   const updateColumnInDB = async (column: Column) => {
@@ -207,7 +198,6 @@ function Board() {
   if (!cols || !items || !user) return <Loader />;
 
   return (
-    <>
       <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
         <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
@@ -223,7 +213,7 @@ function Board() {
           <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
             <DragDropContext onDragEnd={handleDragAndDrop}>
               <Droppable droppableId="ROOT" direction="horizontal" type="column">
-                {(provided) =>
+                {(provided,snapshot) =>
                   <div
                     className='flex items-start py-4'
                     {...provided.droppableProps}
@@ -257,7 +247,6 @@ function Board() {
          user={user[0]}
         />
       </div>
-    </>
   )
 }
 
