@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 
 
 // Board page
-export default async function BoardPage({ params }: { params: { id: string } }) {
+export default async function BoardPage() {
   const session = await getAuthSession()
   console.log(session?.user)
   if (!session?.user) {
@@ -19,7 +19,8 @@ export default async function BoardPage({ params }: { params: { id: string } }) 
       <Header 
         user={session?.user} 
       />
-      <Board />
+      {/* <Board /> */}
+      <div>Hello</div>
     </section>
   )
 }
