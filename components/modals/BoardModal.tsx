@@ -12,46 +12,39 @@ import { useSession } from 'next-auth/react';
 import { fetcher } from '@/lib/fetch';
 import Comment from '../Comment'
 import CreateCommentForm from '../forms/CreateCommentForm';
+import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useRouter } from 'next/navigation';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { toast } from 'react-toastify';
-import { EditorState, ContentState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { convertToHTML } from 'draft-convert';
-import htmlToDraft from 'html-to-draftjs';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 /**
  * Card detail view in modal
  */
-const BoardModal = () => {
+const Modal = () => {
   const router = useRouter()
   const { data: session } = useSession()
 
   // zustand state
   const [closeModal] = useModalStore((state) => [state.closeModal]);
-  const [currentCard, setCurrentCard] = useCardStore((state) => [state.currentCard, state.setCurrentCard]);
+  const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
   // get comments from db
   const { data: comments } = useSWR(`/api/cards/${currentCard._id}/comments`, fetcher)
   // hook to delete card from DB
   const deleteCardFromDB = useDeleteCard('/api/cards');
   // hook to update card in DB
   const updateCardInDB = useUpdateCard('/api/cards');
-  // swr
-  const { data: cards } = useSWR('/api/cards', fetcher)
+  const ref = useDetectClickOutside({ onTriggered: closeModal });
 
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
+  const [description, setDescription] = useState<string | undefined>(undefined)
   const [showInput, setShowInput] = useState<boolean>(false)
   const [cardComments, setCardComments] = useState<Comment[]>(comments)
 
-  // rte
-  const [editorState, setEditorState] = useState(
-    () => EditorState.createEmpty(),
-  );
-  const [convertedContent, setConvertedContent] = useState<any>(null);
 
   const handleDeleteCard = async () => {
     const deleted = await deleteCardFromDB(currentCard._id)
+    console.log('deleted', deleted)
     toast('Card deleted successfully')
     closeModal()
   }
@@ -61,55 +54,27 @@ const BoardModal = () => {
     if (!title || title === currentCard.title) return
     try {
       const updated = await updateCardInDB(currentCard._id, { title })
-      mutate('/api/cards')
-      toast('Card name updated successfully')
-      router.refresh()
+      console.log('name was updated = ', updated)
     } catch (error) {
       console.error(error)
     }
   }
   // update descriptoin in db
   const handleUpdateDescription = async () => {
-    if (!convertedContent) {
-      console.error('ERROR: Please write a description...')
-    }
+    if (!description) return
     try {
-      await updateCardInDB(currentCard._id, { convertedContent })
+      const updated = await updateCardInDB(currentCard._id, { description })
       router.refresh()
-      toast('Card description updated successfully')
     } catch (error) {
       console.error(error)
-      toast('There was an error')
     }
   }
-
-  useEffect(() => {
-    const target = cards?.find((c: Card) => c._id === currentCard._id)
-    if (!target) return
-    setCurrentCard(target)
-  }, [cards, currentCard._id,setCurrentCard]);
-
-  useEffect(() => {
-    let html = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(html);
-  }, [editorState]);
 
   // TODO: aggregate comments by card id in db
   useEffect(() => {
     if(!comments) return
     setCardComments(comments.filter((comment: Comment) => comment.cardId === currentCard._id))
   }, [comments, currentCard._id])
-
-  // set initial state for editor
-  useEffect(() => {
-    if(!currentCard.description) return
-    const html = currentCard.description;
-    const contentBlock = htmlToDraft(html);
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      setEditorState(EditorState.createWithContent(contentState));
-    }
-  }, [currentCard.description])
 
 
   return (
@@ -141,8 +106,8 @@ const BoardModal = () => {
           <button onClick={closeModal}><IoMdClose /></button>
         </div>
         {/* ====== Title ===== */}
-        <div className="w-full flex mb-5">
-          <MdOutlineSubtitles className="mr-2 mt-1" />
+        <div className="w-full flex items-center mb-5">
+          <MdOutlineSubtitles className="mr-2" />
           <div className='flex flex-col w-2/3'>
             {
               !showInput ? (
@@ -168,15 +133,11 @@ const BoardModal = () => {
               <h4>Description</h4>
             </div>
             <div>
-              <Editor
-                toolbar={{
-                  options: ['inline'],
-                }}
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                editorClassName="bg-gray-800 py-3 px-2 rounded text-xs outline-blue-500 mb-2"
-                toolbarClassName="bg-gray-800"
-              />
+              <textarea
+                defaultValue={currentCard?.description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder='Write a more detailed description...'
+                className="w-full p-2 text-gray-600" />
               <button
                 className="bg-blue-500 py-1 px-4 rounded-md mt-1 mb-10"
                 onClick={handleUpdateDescription}>
@@ -237,4 +198,4 @@ const BoardModal = () => {
   )
 }
 
-export default BoardModal;
+export default Modal;
