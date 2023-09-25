@@ -26,7 +26,6 @@ function TodoCard({
   isDragging = false,
 }: Props) {
   const params = useSearchParams()
-  console.log('comments', comments)
   // lcoal state
   const [icon, showIcon] = useState(false)
   const [cardComments, setCardComments] = useState<Comment[]>(comments)
@@ -45,9 +44,9 @@ function TodoCard({
    setCardComments(comments.filter((comment) => comment.cardId === card._id))
   }, [comments, card._id])
 
-  useEffect(() => {
-    console.log('cardComments', cardComments)
-  }, [cardComments])
+  // useEffect(() => {
+  //   console.log('cardComments', cardComments)
+  // }, [cardComments])
 
 
   return (

@@ -1,9 +1,13 @@
 "use client";
-import React, { FormEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { mutate } from 'swr';
 import Avatar from 'react-avatar';
 import { useCardStore } from '@/store/CardStore'
+import { EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToHTML } from 'draft-convert';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 interface Props {
   id: string;
@@ -17,14 +21,27 @@ function CreateCommenForm({ id, creatorId }: Props) {
   const [currentCard] = useCardStore((state) => [state.currentCard]);
   // local state
   const [open, setOpen] = React.useState(false)
-  const [title, setTitle] = React.useState('')
+
+  const [editorState, setEditorState] = useState(
+    () => EditorState.createEmpty(),
+  );
+  const [convertedContent, setConvertedContent] = useState<any>(null);
+
+  useEffect(() => {
+    let html = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(html);
+  }, [editorState]);
+
 
   // create new comment in database and mutate
   const createComment = async () => {
-    if (!title) return
+    if (!editorState) {
+      console.log('Please write a comment...')
+    }
+
     const obj = {
       cardId: currentCard._id,
-      comment: title,
+      comment: convertedContent,
       creatorName: creatorId,
       creatorId: creatorId,
     }
@@ -37,7 +54,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
         },
         body: JSON.stringify(obj)
       })
-      setTitle('')
       // update all comments
       mutate('/api/comments')
       // update comments for the current card in modal
@@ -46,12 +62,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
       console.error(error)
     }
   }
-  // handle event
-  function handleChangeEvent(event: FormEvent<HTMLTextAreaElement>) {
-    const target = event.target as HTMLInputElement;
-    setTitle(target.value);
-  }
-
 
   return (
     <div className="w-full shrink-0 mb-4 flex gap-2">
@@ -60,13 +70,14 @@ function CreateCommenForm({ id, creatorId }: Props) {
         open ? (
           <div className="rounded w-full flex">
             <div className="rounded w-full">
-              <textarea
-                autoFocus
-                placeholder="Write a comment"
-                className="w-full bg-gray-800 py-3 px-2 rounded text-xs outline-blue-500 mb-2"
-                name="title"
-                onChange={(event) => handleChangeEvent(event)}
-                value={title}
+              <Editor
+                toolbar={{
+                  options: ['inline'],
+                }}
+                defaultEditorState={editorState}
+                onEditorStateChange={setEditorState}
+                editorClassName="bg-gray-800 py-3 px-2 rounded text-xs outline-blue-500 mb-2"
+                toolbarClassName="bg-gray-800"
               />
               <div className="flex items-center">
                 <button

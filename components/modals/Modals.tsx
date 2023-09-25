@@ -27,8 +27,7 @@ const Modals = ({user}:IModal) => {
       className="
           relative 
           md:w-4/6
-          lg:w-4/6
-          xl:w-3/5
+          lg:w-3/6
           my-6
           mx-auto 
           lg:h-auto
