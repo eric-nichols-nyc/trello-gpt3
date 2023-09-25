@@ -20,7 +20,6 @@ import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { set } from 'mongoose';
 /**
  * Card detail view in modal
  */
@@ -53,7 +52,6 @@ const BoardModal = () => {
 
   const handleDeleteCard = async () => {
     const deleted = await deleteCardFromDB(currentCard._id)
-    console.log('deleted', deleted)
     toast('Card deleted successfully')
     closeModal()
   }
@@ -64,7 +62,6 @@ const BoardModal = () => {
     try {
       const updated = await updateCardInDB(currentCard._id, { title })
       mutate('/api/cards')
-      console.log('name was updated = ', updated)
       toast('Card name updated successfully')
       router.refresh()
     } catch (error) {
