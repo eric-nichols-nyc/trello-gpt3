@@ -12,7 +12,7 @@ interface Props {
 }
 // display user comment and avatar
 const UserComment = ({ creatorName, comment, date, id }: Props) => {
-  const deleteCommentFromDB = useDeleteComment('/api/comments')
+const deleteCommentFromDB = useDeleteComment('/api/comments')
 
   return (
     <div className="flex mb-4">

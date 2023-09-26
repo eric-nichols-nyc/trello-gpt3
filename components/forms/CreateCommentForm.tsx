@@ -30,7 +30,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
     }
     // 
     try{
-        await fetch(`/api/cards/${currentCard._id}/comments`, {
+        await fetch(`/api/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,7 +41,6 @@ function CreateCommenForm({ id, creatorId }: Props) {
       // update all comments
       mutate('/api/comments')
       // update comments for the current card in modal
-      mutate(`/api/cards/${id}/comments`)
     }catch(error){
       console.error(error)
     }
