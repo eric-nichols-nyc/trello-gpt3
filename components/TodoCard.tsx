@@ -54,7 +54,7 @@ function TodoCard({
       {...draggableProps}
       {...draggableHandleProps}
       ref={innerRef}
-      className='text-sm mt-2"'>
+      className='text-sm mt-2 relative'>
       <div 
       className={`
       bg-gray-800 
@@ -79,6 +79,9 @@ function TodoCard({
             {
               cardComments.length > 0 && (
                 <>
+                <div>
+                  
+                </div>
                   <FaRegComment />
                   <span className="text-xs">{cardComments.length}</span>
                 </>
@@ -88,7 +91,9 @@ function TodoCard({
           </div>
         {
           icon && (
+            <div className="absolute right-2 p-1 w-6 h-6 bg-slate-800/80">
               <MdEdit />
+            </div>
           )
         }
       </div>
