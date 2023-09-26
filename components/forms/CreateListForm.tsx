@@ -21,7 +21,7 @@ function CreateListForm({ addColumn }: Props) {
     setTitle(target.value);
   }
   return (
-    <div className="py-4 w-72 shrink-0">
+    <div className="create_list_form">
       {
         open ? (
           <div className="bg-slate-300 p-2 rounded w-full">
@@ -29,7 +29,7 @@ function CreateListForm({ addColumn }: Props) {
               autoFocus
               type="text"
               placeholder="Enter list title"
-              className="w-full py-3 px-2 rounded text-xs border-slate-400 outline-blue-500 mb-2"
+              className="create_list_form_input"
               name="title"
               onChange={(event) => handleChangeEvent(event)}
               onKeyDown={(event) => {
@@ -39,7 +39,7 @@ function CreateListForm({ addColumn }: Props) {
             <div className="flex items-center">
               <button
                 onClick={createList}
-                className="px-3 py-3 rounded font-sans text-xs font-semibold outline-black mr-2 bg-blue-700 text-white"
+                className="create_list_form_input_addbutton"
               >
                 Add list
               </button>
@@ -51,8 +51,8 @@ function CreateListForm({ addColumn }: Props) {
             </div>
           </div>
         ) : <div
-          onClick={() => setOpen(true)}
-          className="flex items-center px-4 h-full transition-all duration-200 bg-neutral-500/50 hover:bg-blue-400 py-2 cursor-pointer rounded-md">
+            onClick={() => setOpen(true)}
+            className="create_list_form_copybutton">
           <MdAdd color="white" size={24} />
           <p className="ml-2 text-xs text-white">Add another list</p>
         </div>

@@ -9,7 +9,6 @@ import { redirect } from 'next/navigation'
 // Board page
 export default async function BoardPage() {
   const session = await getAuthSession()
-  console.log(session?.user)
   if (!session?.user) {
     redirect('/')
   }

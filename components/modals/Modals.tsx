@@ -13,29 +13,9 @@ const Modals = ({user}:IModal) => {
 
   if(!isOpen) return null
   return (
-    <div className="
-      flex
-      overflow-x-hidden
-      overflow-y-auto
-      fixed
-      inset-0
-      focus:outline-none
-      z-50
-      bg-neutral-900/70
-    ">
+    <div className="modal bg-neutral-900/70">
       <div 
-      className="
-          relative 
-          md:w-4/6
-          lg:w-3/6
-          my-6
-          mx-auto 
-          lg:h-auto
-          md:h-auto
-          rounded-md
-          w-[768px] 
-      ">
-   
+        className="modal_content">
         {(() => {
           switch (type) {
             case 'LOGIN':

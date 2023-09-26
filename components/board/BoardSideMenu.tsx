@@ -38,20 +38,7 @@ const SideBar = ({
 
    return (
        <div className={`
-         absolute 
-        right-0 
-        top-0 
-        bottom-0 
-        bg-slate-700 
-        text-slate-100 
-        shadow-sm 
-        text-sm 
-        rounded 
-        w-[350px] 
-        px-4 
-        drop-shadow-xl
-        transition-all
-        ease-in-out duration-300
+        board-sidemenu
         ${showMenu ? "translate-x-0 " : "translate-x-full"}
        `}
      >
@@ -60,14 +47,7 @@ const SideBar = ({
            <AiOutlineClose
              size={25}
              onClick={() => setShowMenu(false)}
-             className="
-             absolute 
-             right-3 
-             p-1 
-             text-red-100 
-             hover:bg-slate-600 
-             cursor-pointer
-             " />
+             className="board-sidemenu_close" />
          </div>
          <hr />
          <div className=" w-full">

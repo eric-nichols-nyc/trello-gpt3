@@ -200,7 +200,7 @@ function Board() {
   return (
       <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
         {/* Header */}
-        <div className="flex w-full items-center justify-between text-slate-100 bg-opacity-50 text-xl font-semibold bg-slate-600 p-4">
+        <div className="header">
           <div>Welcome Board</div>
           <div><BsThreeDots
             size={30}
@@ -209,8 +209,8 @@ function Board() {
           /></div>
         </div>
         {/* Main Content */}
-        <div className="bg-blue w-full h-full font-sans px-5 relative">
-          <div className="flex px-4 pb-8 items-start overflow-x-auto flex-1 h-full">
+      <div className="header_main">
+          <div className="header_main_content">
             <DragDropContext onDragEnd={handleDragAndDrop}>
               <Droppable droppableId="ROOT" direction="horizontal" type="column">
                 {(provided,snapshot) =>

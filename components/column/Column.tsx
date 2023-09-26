@@ -48,10 +48,11 @@ function Column({
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className='bg-slate-900 shrink-0 w-72 text-slate-100 rounded-lg flex flex-col'
+                className='column'
+                
               >
-                <div className='flex justify-between items-center'>
-                  <h3 className='flex justify-between font-bold text-sm p-2'>{name}</h3>
+                <div className='column_items'>
+                  <h3 className='column_items_h3'>{name}</h3>
                   <BsThreeDots className='h-6 w-6 text-gray-400 mr-2 cursor-pointer' onClick={() => setShowExtras(!showExtras)} />
                   <ColumnMenu id={id} show={showExtras} closeMenu={setShowExtras} deleteColumn={deleteColumn} />
                 </div>

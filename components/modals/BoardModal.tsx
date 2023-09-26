@@ -79,30 +79,10 @@ const Modal = () => {
 
   return (
     <div 
-    className="
-    modal 
-    flex
-    items-center 
-    justify-center
-    w-full
-    ">
+    className="modal_board">
       <div 
-        className="
-        flex 
-        flex-col 
-        p-4 
-        relative
-         min-h-[600px] 
-         bg-gray-700 
-         text-slate-100 
-         rounded-lg
-          w-full
-         ">
-        <div className="
-          absolute
-          right-2
-          text-neutral-100
-        ">
+        className="modal_board_content">
+        <div className="modal_board_closebutton">
           <button onClick={closeModal}><IoMdClose /></button>
         </div>
         {/* ====== Title ===== */}
@@ -139,7 +119,7 @@ const Modal = () => {
                 placeholder='Write a more detailed description...'
                 className="w-full p-2 text-gray-600" />
               <button
-                className="bg-blue-500 py-1 px-4 rounded-md mt-1 mb-10"
+                className="modal_board_savebutton"
                 onClick={handleUpdateDescription}>
                 save
               </button>
@@ -162,10 +142,10 @@ const Modal = () => {
                 </div>)
             }
           </div>
-          <div className="modal__options w-1/3 flex justify-end ml-4">
+          <div className="modal_board_options w-1/3">
             <div className="flex flex-col">
               <p className="text-sm mb-2">Actions</p>
-              <ul className="w-48 text-sm font-medium text-gray-900 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <ul className="modal_board_options_list">
                 <li className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600">
                   <button
                     className='flex items-center disabled:text-slate-500'

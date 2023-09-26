@@ -16,15 +16,15 @@ export default async function HomePage() {
       flex 
       flex-col 
       h-full
-      ">
+    ">
       <Header user={session?.user} />
       <div 
         className="
         flex
-      flex-col 
-      h-full
-      justify-center
-        ">
+        flex-col 
+        h-full
+        justify-center
+      ">
       <Home />
       </div>
     </section>

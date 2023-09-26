@@ -54,7 +54,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
 
 
   return (
-    <div className="w-full shrink-0 mb-4 flex gap-2">
+    <div className="w-full shrink-0 mb-4 flex gap-2 items-center">
       <Avatar name={creatorId} size="30" round={true}/>
       {
         open ? (
@@ -63,7 +63,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
               <textarea
                 autoFocus
                 placeholder="Write a comment"
-                className="w-full bg-gray-800 py-3 px-2 rounded text-xs outline-blue-500 mb-2"
+                className="create_comment_form_textarea"
                 name="title"
                 onChange={(event) => handleChangeEvent(event)}
                 value={title}
@@ -71,7 +71,7 @@ function CreateCommenForm({ id, creatorId }: Props) {
               <div className="flex items-center">
                 <button
                   onClick={createComment}
-                  className="px-3 py-3 rounded font-sans text-xs font-semibold outline-black mr-2 bg-blue-700 text-white"
+                  className="create_card_form_commentbutton"
                 >
                   Save
                 </button>
@@ -84,10 +84,11 @@ function CreateCommenForm({ id, creatorId }: Props) {
             </div>
 
           </div>
-        ) : <div
+        ) : 
+        <div
           onClick={() => setOpen(true)}
-          className="w-full flex items-center px-2 h-full transition-all duration-200 bg-gray-800 hover:bg-gray-400 py-2 cursor-pointer rounded-md">
-            <p className="text-xs text-white">Write a comment</p>
+          className="w-full">
+            <p className="text-xs text-white bg-slate-800 p-2 rounded-md w-full">Write a comment</p>
         </div>
       }
     </div>

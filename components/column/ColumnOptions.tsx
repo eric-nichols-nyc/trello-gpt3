@@ -28,24 +28,24 @@ const ColumnOptions = ({
   const ref = useDetectClickOutside({ onTriggered: hideInput });
    return (
      show ? 
-       <div className="absolute right-0 top-10 bg-slate-700 shadow-sm text-sm rounded w-[300px]" ref={ref}>
-         <div className="flex items-center justify-center p-3 relative">
+       <div className="column_options" ref={ref}>
+         <div className="column_options_actions">
           <p>List actions</p>
            <AiOutlineClose 
            size={25}
              onClick={() => close()}
-             className="absolute right-3 p-1 hover:bg-slate-600 cursor-pointer"/> 
+             className="column_options_actions_close"/> 
          </div>
         <ul className="text-slate-100 w-full">
-           <li className="p-2 rounded cursor-pointer hover:bg-slate-500 w-full">
+           {/* <li className="column_options_actions_li">
             Add card...
           </li>
-           <li className="p-2 rounded cursor-pointer hover:bg-slate-500 w-full">
+           <li className="column_options_actions_li">
             Copy list...
-          </li>
+          </li> */}
            <li 
            onClick={() => deleteColumn(id)}
-           className="p-2 rounded cursor-pointer hover:bg-slate-500 w-full">
+           className="column_options_actions_li">
             Archive this list
           </li>
         </ul>

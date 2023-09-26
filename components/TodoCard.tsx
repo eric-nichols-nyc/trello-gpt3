@@ -56,7 +56,8 @@ function TodoCard({
       ref={innerRef}
       className='text-sm mt-2"'>
       <div 
-      className={`bg-gray-800 
+      className={`
+      bg-gray-800 
       hover:bg-gray-600 p-2 
       rounded mt-1 cursor-pointer 
       flex justify-between

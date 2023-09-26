@@ -14,14 +14,7 @@ const LoginModal = () => {
   return (
     <div
       ref={ref}
-      className="
-      flex
-      flex-col
-      items-center
-      justify-center
-      w-full
-      h-full
-    ">
+      className="modal-login">
 
       <div className="
       w-[400px] 
