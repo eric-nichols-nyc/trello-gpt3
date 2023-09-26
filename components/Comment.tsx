@@ -13,7 +13,6 @@ interface Props {
 // display user comment and avatar
 const UserComment = ({ creatorName, comment, date, id }: Props) => {
 const deleteCommentFromDB = useDeleteComment('/api/comments')
-
   return (
     <div className="flex mb-4">
       <Avatar className="cursor-pointer mr-2" name={creatorName} size="30" round={true} />
@@ -26,6 +25,7 @@ const deleteCommentFromDB = useDeleteComment('/api/comments')
             className="cursor-pointer ml-2"
             onClick={() => deleteCommentFromDB(id)}
             size={20} />
+
         </div>
       </div>
     </div>

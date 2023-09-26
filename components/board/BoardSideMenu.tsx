@@ -26,14 +26,15 @@ const SideBar = ({
   }
 
   const colors =[
-    'bg-red-500',
-    'bg-blue-500',
-    'bg-green-500',
-    'bg-yellow-500',
-    'bg-pink-500',
-    'bg-purple-500',
-    'bg-indigo-500',
-    'bg-blue-600',
+    'bg-gradient-to-r from-fuchsia-600 to-purple-600',
+    'bg-gradient-to-r from-blue-200 to-cyan-200',
+    'bg-gradient-to-r from-emerald-500 to-emerald-900',
+    'bg-gradient-to-r from-blue-800 to-indigo-900',
+    'bg-gradient-to-r from-amber-200 to-yellow-500',
+    'bg-gradient-to-r from-slate-900 to-slate-700',
+    'bg-gradient-to-r from-red-500 to-orange-500',
+    'bg-gradient-to-r from-teal-200 to-teal-500',
+    'bg-gradient-to-r from-rose-900 to-rose-600'
   ]
 
    return (

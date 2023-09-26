@@ -1,10 +1,10 @@
 import useSWR from 'swr';
 import axios from 'axios';
 
-export const useUpdateCard = (path:string) => {
+export const useUpdateBoard = (path:string) => {
   const { mutate } = useSWR(path);
 
-    const updateCardInDB = async(id:string, obj: unknown) => {
+    const updateBoardInDB = async(id:string, obj: unknown) => {
       try {
         await axios.put(`${path}/${id}`, obj)
         mutate();
@@ -14,5 +14,5 @@ export const useUpdateCard = (path:string) => {
       }
     }
 
-    return updateCardInDB;
+    return updateBoardInDB;
 }
