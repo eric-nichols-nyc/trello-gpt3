@@ -2,17 +2,16 @@
 import { useState, useEffect } from 'react'
 import { useModalStore } from '@/store/ModalStore'
 import { useCardStore } from '@/store/CardStore'
-import { MdDelete,  MdOutlineMoveDown, MdOutlineSubtitles, MdCopyAll } from 'react-icons/md';
+import { MdDelete, MdOutlineMoveDown, MdOutlineSubtitles, MdCopyAll } from 'react-icons/md';
 import { LiaCommentSolid } from 'react-icons/lia';
 import { IoMdClose } from 'react-icons/io'
 import { LuText } from 'react-icons/lu';
 import { useDeleteCard } from '@/hooks/useColumn';
-import { useUpdateCard } from '@/hooks/useBoard';
+import { useUpdateCard } from '@/hooks/useCard';
 import { useSession } from 'next-auth/react';
 import { fetcher } from '@/lib/fetch';
 import Comment from '../Comment'
 import CreateCommentForm from '../forms/CreateCommentForm';
-import { useDetectClickOutside } from 'react-detect-click-outside';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { toast } from 'react-toastify';
@@ -26,14 +25,15 @@ const Modal = () => {
 
   // zustand state
   const [closeModal] = useModalStore((state) => [state.closeModal]);
-  const [currentCard, deleteCard] = useCardStore((state) => [state.currentCard, state.deleteCard]);
-  // get comments from db
-  const { data: comments } = useSWR(`/api/cards/${currentCard._id}/comments`, fetcher)
+  const [currentCard, setCurrentCard] = useCardStore((state) => [state.currentCard, state.setCurrentCard]);
+  // swr cache
+  const { data: comments } = useSWR('/api/comments', fetcher)
+  const { data: cards } = useSWR('/api/cards', fetcher)
+
   // hook to delete card from DB
   const deleteCardFromDB = useDeleteCard('/api/cards');
   // hook to update card in DB
   const updateCardInDB = useUpdateCard('/api/cards');
-  const ref = useDetectClickOutside({ onTriggered: closeModal });
 
   //local state
   const [title, setTitle] = useState<string | undefined>(undefined)
@@ -41,10 +41,9 @@ const Modal = () => {
   const [showInput, setShowInput] = useState<boolean>(false)
   const [cardComments, setCardComments] = useState<Comment[]>(comments)
 
-
+  // delete card name is db
   const handleDeleteCard = async () => {
-    const deleted = await deleteCardFromDB(currentCard._id)
-    console.log('deleted', deleted)
+    await deleteCardFromDB(currentCard._id)
     toast('Card deleted successfully')
     closeModal()
   }
@@ -72,16 +71,19 @@ const Modal = () => {
 
   // TODO: aggregate comments by card id in db
   useEffect(() => {
-    if(!comments) return
+    if (!comments) return
     setCardComments(comments.filter((comment: Comment) => comment.cardId === currentCard._id))
   }, [comments, currentCard._id])
-
+  // reset current card when a card is upated
+  useEffect(() => {
+    const target = cards?.find((c: Card) => c._id === currentCard._id)
+    if (!target) return
+    setCurrentCard(target)
+  }, [cards, currentCard._id, setCurrentCard]);
 
   return (
-    <div 
-    className="modal_board">
-      <div 
-        className="modal_board_content">
+    <div className="modal_board">
+      <div className="modal_board_content">
         <div className="modal_board_closebutton">
           <button onClick={closeModal}><IoMdClose /></button>
         </div>
@@ -129,7 +131,6 @@ const Modal = () => {
               <LiaCommentSolid className="mr-2" />
               <h4>Comments</h4>
             </div>
-
             <div className="comment__list">
               <CreateCommentForm id={currentCard._id} creatorId={session?.user.name!} />
             </div>
@@ -137,7 +138,7 @@ const Modal = () => {
               cardComments && (
                 <div className="mt-4">
                   {cardComments.map((c: Comment) => <div key={c._id}>
-                    <Comment creatorName={c.creatorName} comment={c.comment} date={c.createdAt} />
+                    <Comment id={c._id} creatorName={c.creatorName} comment={c.comment} date={c.createdAt} />
                   </div>)}
                 </div>)
             }
