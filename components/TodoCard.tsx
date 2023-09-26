@@ -56,14 +56,7 @@ function TodoCard({
       ref={innerRef}
       className='text-sm mt-2 relative'>
       <div 
-      className={`
-      bg-gray-800 
-      hover:bg-gray-600 p-2 
-      rounded mt-1 cursor-pointer 
-      flex justify-between
-      text-slate-50
-      ${isDragging && 'rotate-4'}
-      `}
+        className={`card_contents ${isDragging && 'rotate-4'}`}
         onMouseEnter={() => showIcon(true)}
         onMouseLeave={() => showIcon(false)}
         onClick={handleCardClick}

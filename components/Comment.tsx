@@ -20,7 +20,6 @@ const deleteCommentFromDB = useDeleteComment('/api/comments')
         <p className="text-sm mb-1"><span>{creatorName}  </span><span className="text-xs text-slate-400">{format(new Date(date), 'MMMM do')}</span></p>
         <div className="flex justify-between items-center w-full">
           <p className="text-sm mb-1 bg-slate-800 p-2 rounded-md w-full">{comment}</p>
-            {/* <span className="cursor-pointer underline">edit</span> */}
           <MdDelete
             className="cursor-pointer ml-2"
             onClick={() => deleteCommentFromDB(id)}

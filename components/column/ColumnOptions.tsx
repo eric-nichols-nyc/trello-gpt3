@@ -37,12 +37,6 @@ const ColumnOptions = ({
              className="column_options_actions_close"/> 
          </div>
         <ul className="text-slate-100 w-full">
-           {/* <li className="column_options_actions_li">
-            Add card...
-          </li>
-           <li className="column_options_actions_li">
-            Copy list...
-          </li> */}
            <li 
            onClick={() => deleteColumn(id)}
            className="column_options_actions_li">

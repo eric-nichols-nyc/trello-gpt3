@@ -16,41 +16,17 @@ type Props = {
 const UserProfile = ({ user }: Props) => {
   return (
     <section
-      className="
-        h-screen
-        flex 
-        items-center 
-        bg-[#071e34] 
-        text-slate-100
-      ">
+      className="profile">
       <section
-        className="
-          flex
-          flex-col
-          items-center
-          gap-3
-          w-[500px] 
-          mx-auto
-          bg-[#20354b] 
-          rounded-2xl 
-          px-8 py-6
-          shadow-lg
-      ">
+        className="profile_content">
         <Avatar
           name={user?.name!}
           size="100"
           round={true}
         />
-        <div className="mt-8">
-          <h2 className="
-          text-white 
-          font-bold 
-          text-2xl 
-          tracking-wide
-        ">
+          <h2 className="mt-8 profile_content_name">
           {user?.name}
         </h2>
-        </div>
         <p>{user?.email}</p>
       </section>
     </section>

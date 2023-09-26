@@ -20,17 +20,7 @@ const SearchResultItem = ({
   }
   return (
     <div 
-    className="
-    bg-gray-800
-    w-[250px]
-    flex
-    gap-2
-    py-2
-    px-4
-    cursor-pointer
-    hover:bg-gray-700
-    justify-start
-    "
+      className="searchresult_item"
       onClick={handleCardClick}
     >
       <div>

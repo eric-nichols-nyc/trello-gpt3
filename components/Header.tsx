@@ -46,7 +46,7 @@ function Header({ user }: Props) {
 
   return (
     <header>
-      <div className="flex flex-col md:flex-row items-center px-5 py-2 bg-slate-800 rounder-b-2xl">
+      <div className="topheader rounder-b-2xl">
         <div
           onClick={() => router.push('/board')}
           onMouseEnter={() => setLogo('/images/logoanimated.gif')}
@@ -61,7 +61,7 @@ function Header({ user }: Props) {
           />
         </div>
 
-        <div className="flex items-center space-x-5 flex-1 justify-end w-full relative">
+        <div className="topheader_user">
           {
             user && currentuser &&
             <>
@@ -86,7 +86,7 @@ function Header({ user }: Props) {
                 </div>
                 {
                   userMenu && (
-                    <div className="flex flex-col w-[200px] bg-slate-600 text-slate-200 rounded-lg absolute top-10 right-0 drop-shadow-md">
+                    <div className="topheader_user_menu">
                       <div className="mb-2 p-2">Account</div>
                       <hr />
                       <div className="flex flex-col items-center mt-2 mb-2">
@@ -97,9 +97,7 @@ function Header({ user }: Props) {
                             <p className="text-sm">{user?.email!}</p>
                           </div>
                         </div>
-                        <div
-                          className="w-full p-2"
-                        >
+                        <div className="w-full p-2">
                           <Link
                             href={`/profile/${currentuser._id}`}>
                             <Button

@@ -25,7 +25,7 @@ function Board() {
   const { data: cards } = useData('cards') as { data: Card[] };
   const { data: cols } = useData('columns') as { data: Column[] };
   const { data: user } = useData('auth/users') as { data: User[] };
-  const { data: comments } = useData('comments') as {data: Comment[]};
+  const { data: comments } = useData('comments') as { data: Comment[] };
   // local state
   const [items, setItems] = useState<Card[]>()
   // zustand
@@ -198,55 +198,55 @@ function Board() {
   if (!cols || !items || !user) return <Loader />;
 
   return (
-      <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
-        {/* Header */}
-        <div className="header">
-          <div>Welcome Board</div>
-          <div><BsThreeDots
-            size={30}
-            className="cursor-pointer hover:bg-slate-500 p-1 rounded"
-            onClick={() => setShowMenu(true)}
-          /></div>
-        </div>
-        {/* Main Content */}
-      <div className="header_main">
-          <div className="header_main_content">
-            <DragDropContext onDragEnd={handleDragAndDrop}>
-              <Droppable droppableId="ROOT" direction="horizontal" type="column">
-                {(provided,snapshot) =>
-                  <div
-                    className='flex items-start py-4'
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}>{
-                      cols.map((column: Column, index) => {
-                        const { _id, columnName, order } = column
-                        // match the cards to the column
-                        const arr = items.filter((card: Card) => card.columnId === _id);
-                        return <Column
-                          key={_id}
-                          id={_id}
-                          order={order}
-                          name={columnName}
-                          cards={arr}
-                          index={index}
-                          deleteColumn={deleteColumnInDB}
-                          addCard={addNewCardToDB}
-                          comments={comments}
-                        />
-                      })
-                    }
-                    {provided.placeholder}
-                  </div>
-                }
-              </Droppable>
-            </DragDropContext>
-            <CreateListForm addColumn={addNewColumnToDB} />
-          </div>
-        </div>
-        <BoardSideMenu 
-         user={user[0]}
-        />
+    <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
+      {/* Header */}
+      <div className="header">
+        <div>Welcome Board</div>
+        <div><BsThreeDots
+          size={30}
+          className="cursor-pointer hover:bg-slate-500 p-1 rounded"
+          onClick={() => setShowMenu(true)}
+        /></div>
       </div>
+      {/* Main Content */}
+      <div className="board_header_main">
+        <div className="board_header_main_content">
+          <DragDropContext onDragEnd={handleDragAndDrop}>
+            <Droppable droppableId="ROOT" direction="horizontal" type="column">
+              {(provided, snapshot) =>
+                <div
+                  className='flex items-start py-4'
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}>{
+                    cols.map((column: Column, index) => {
+                      const { _id, columnName, order } = column
+                      // match the cards to the column
+                      const arr = items.filter((card: Card) => card.columnId === _id);
+                      return <Column
+                        key={_id}
+                        id={_id}
+                        order={order}
+                        name={columnName}
+                        cards={arr}
+                        index={index}
+                        deleteColumn={deleteColumnInDB}
+                        addCard={addNewCardToDB}
+                        comments={comments}
+                      />
+                    })
+                  }
+                  {provided.placeholder}
+                </div>
+              }
+            </Droppable>
+          </DragDropContext>
+          <CreateListForm addColumn={addNewColumnToDB} />
+        </div>
+      </div>
+      <BoardSideMenu
+        user={user[0]}
+      />
+    </div>
   )
 }
 

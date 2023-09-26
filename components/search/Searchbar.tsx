@@ -40,17 +40,7 @@ const Searchbar = () => {
         ref={ref}
         placeholder='Search'
         type="text"
-        className="
-          w-[250px] 
-          bg-gray-600 
-          py-2 
-          px-6 
-          rounded 
-          text-sm 
-          text-slate-200
-          border-gray-400 
-          outline-blue-500
-        "
+        className="search_input"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />

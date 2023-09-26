@@ -21,26 +21,14 @@ const Button = ({
     disabled={disabled}
       onClick={onClick}
       className={`
-        relative
-        w-full
-        rounded-sm
-        py-2
-        hover:opacity-80
-        transition
-        disabled:opacity-20
-        disabled:cursor-not-allowed
-        text-slate-700
+        button
         ${outline ? 'bg-white': 'bg-rose-500'}
     `}
     >
       {Icon && (
         <Icon
           size={20}
-          className="
-            absolute
-            left-4
-            top-3
-          "
+          className="button_icon"
         />
       )}
       {label}
