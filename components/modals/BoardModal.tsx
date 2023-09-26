@@ -13,7 +13,7 @@ import { fetcher } from '@/lib/fetch';
 import Comment from '../Comment'
 import CreateCommentForm from '../forms/CreateCommentForm';
 import { useRouter } from 'next/navigation';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { toast } from 'react-toastify';
 
 /**
@@ -51,6 +51,10 @@ const Modal = () => {
   const handleUpdateCardName = async () => {
     setShowInput(!showInput)
     if (!title || title === currentCard.title) return
+    const cardscopy = [...cards]
+    const target = cardscopy.find((c: Card) => c._id === currentCard._id)
+    target.title = title
+    mutate('/api/cards', cardscopy, false)
     try {
       const updated = await updateCardInDB(currentCard._id, { title })
       console.log('name was updated = ', updated)
@@ -119,7 +123,7 @@ const Modal = () => {
                 defaultValue={currentCard?.description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder='Write a more detailed description...'
-                className="w-full p-2 text-gray-600" />
+                className="w-full p-2 mr-2 bg-slate-700 text-slate-100" />
               <button
                 className="modal_board_savebutton"
                 onClick={handleUpdateDescription}>
