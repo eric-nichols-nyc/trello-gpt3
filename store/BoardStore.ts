@@ -2,7 +2,6 @@
  * conrols the state of the board when user drags or drops a todo
  */
 import { create } from 'zustand';
-// import {getTodosGroupedByColumn} from "../lib/getTodosGroupedByColumn";
 interface BoardState {
   board: Board;
   getBoard: () => void;

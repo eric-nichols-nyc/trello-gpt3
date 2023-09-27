@@ -5,6 +5,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { mutate } from 'swr';
 import { createApi } from 'unsplash-js'
 import { useBoardStore } from '@/store/BoardStore'
+import Loader from './Loader';
 const Unsplash = () => {
   const showMenu = useBoardStore((state) => state.showMenu)
   // local state
@@ -29,7 +30,6 @@ const Unsplash = () => {
       perPage: 10,
       orientation: 'landscape'
     });
-    console.log(images.response?.results)
     if (!images.response?.results) return
     setImages(images.response?.results)
   }, [currentPage]);
@@ -40,9 +40,10 @@ const Unsplash = () => {
     }
   }, [showMenu, findImages])
 
-
+  if (!images.length) return <Loader />
   return (
     <div className="flex flex-wrap gap-2">
+      
       {
         images.map((image) => {
           return <Image
