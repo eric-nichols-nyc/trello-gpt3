@@ -19,7 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const user = await getCurrentUser()
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
@@ -38,7 +37,7 @@ export default async function RootLayout({
           />
           {/* Same as */}
             <main className='h-screen'>
-              <Modals user={user} />
+              <Modals />
               {children}
             </main>
         </AuthProvider>

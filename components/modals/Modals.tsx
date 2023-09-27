@@ -2,13 +2,8 @@
 import { useModalStore } from "@/store/ModalStore"
 import LoginModal from "./LoginModal";
 import BoardModal from "./BoardModal"
-import { IoMdClose } from 'react-icons/io'
 
-interface IModal {
-  user: User | null,
-}
-
-const Modals = ({user}:IModal) => {
+const Modals = () => {
   const [type, isOpen, closeModal] = useModalStore((state) => [state.type, state.isOpen, state.closeModal])
 
   if(!isOpen) return null
