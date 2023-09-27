@@ -4,10 +4,6 @@ import { mutate } from 'swr';
 import axios from 'axios';
 import Unsplash from './Unsplash';
 
-interface Props {
-  user: User,
-}
-
 const colors = [
   'bg-gradient-to-r from-fuchsia-600 to-purple-600',
   'bg-gradient-to-r from-blue-200 to-cyan-200',
@@ -19,9 +15,7 @@ const colors = [
   'bg-gradient-to-r from-rose-900 to-rose-600',
 ];
 
-const SideBar = ({
-  user,
-}:Props) => {
+const SideBar = () => {
   // set bg color in store
   const [setBgColor, showMenu, setShowMenu] = useBoardStore((state) => [state.setBGColor, state.showMenu, state.setShowMenu])
 
@@ -48,7 +42,7 @@ const SideBar = ({
          </div>
          <hr />
          <div className=" w-full">
-           <p className="py-4 rounded cursor-pointer hover:bg-slate-500 w-full">
+           <p className="py-4 rounded w-full">
              Change Background
            </p>
            <div className="flex flex-wrap gap-2">
@@ -65,6 +59,9 @@ const SideBar = ({
          </div>
           <hr className="mt-3 mb-3"/>
          <Unsplash />
+          <div className="h-[40px] w-full fixed left-0  right-0 bottom-0 bg-slate-800">
+            <div className="unsplash-disclaimer text-xs px-2">By using images from Unsplash, you agree to their <a href="https://unsplash.com/license" target="_blank">license</a> and <a href="https://unsplash.com/terms" target="_blank">Terms of Service</a></div>
+          </div>
        </div> 
   )
 }

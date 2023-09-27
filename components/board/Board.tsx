@@ -260,9 +260,7 @@ function Board() {
           <CreateListForm addColumn={addNewColumnToDB} />
         </div>
       </div>
-      <BoardSideMenu
-        user={user[0]}
-      />
+      <BoardSideMenu />
     </div>
   )
 }
