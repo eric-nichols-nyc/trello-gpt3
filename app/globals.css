@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .button{
-  @apply px-3 py-3 rounded font-sans text-xs font-semibold outline-black mr-2 bg-blue-700 text-white
+  @apply relative px-3 py-3 flex flex-1 justify-between font-sans text-xs font-semibold outline-black mr-2 text-slate-700
 }
 
 .button_icon{

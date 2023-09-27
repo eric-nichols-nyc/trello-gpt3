@@ -92,19 +92,21 @@ function Header({ user }: Props) {
                       <div className="flex flex-col items-center mt-2 mb-2">
                         <div className="flex items-center">
                           <Avatar className="cursor-pointer mr-2" name={user?.name!} size="40" round={true} />
-                          <div className="flex flex-col mb-2">
-                            <p>{user?.name!}</p>
-                            <p className="text-sm">{user?.email!}</p>
+                          <div className="flex flex-col mb-2 w-[140px]">
+                            <p className="truncate whitespace-nowrap text-md">{user?.name!}</p>
+                            <p className="truncate whitespace-nowrap text-sm">{user?.email!}</p>
                           </div>
                         </div>
-                        <div className="w-full p-2">
+                        <div className="flex flex-col w-full p-2">
                           <Link
+                            className='flex flex-1 w-full'
                             href={`/profile/${currentuser._id}`}>
-                            <Button
-                              label="Profile"
-                              outline
-                              icon={CgProfile}
-                            />
+                              <Button
+                                label="Profile"
+                                outline
+                                icon={CgProfile}
+                              />
+
                           </Link>
                           <Button
                             label="Logout"

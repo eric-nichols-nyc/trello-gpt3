@@ -31,6 +31,7 @@ const Button = ({
           className="button_icon"
         />
       )}
+      <span></span>
       {label}
     </button>
   )
