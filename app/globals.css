@@ -61,11 +61,11 @@
   @apply flex justify-between font-bold text-sm p-2
 }
 .column_options{
-  @apply absolute right-0 top-10 bg-slate-700 shadow-sm text-sm rounded w-[300px]
+  @apply absolute right-0 top-10 bg-slate-700 shadow-sm text-sm rounded w-[300px] z-50
 }
 
 .column_options_actions {
-  @apply flex items-center justify-center p-3 relative
+  @apply flex items-center justify-center p-3 relative 
 }
 
 .column_options_actions_close {
