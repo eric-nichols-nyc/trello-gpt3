@@ -9,8 +9,10 @@ interface BoardState {
   setBoardState: (board: Board) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
-  bgColor: string;
+  bgColor: string | null;
+  bgImage: string | null;
   setBGColor: (color: string) => void;
+  setBgImage: (url: string) => void;
   showMenu: boolean;
   setShowMenu: (showMenu: boolean) => void;
 }
@@ -35,5 +37,9 @@ export const useBoardStore = create<BoardState>((set) => ({
   showMenu: false,
   setShowMenu(showMenu) {
     set({ showMenu });
-  }
+  },
+  bgImage: null,
+  setBgImage(url) {
+    set({ bgImage: url });
+  },
 }));

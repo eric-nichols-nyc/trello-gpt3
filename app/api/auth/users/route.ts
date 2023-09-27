@@ -27,6 +27,7 @@ export const PUT = async (
 ) => {
   // update user backgroud color
   const body = await request.json();
+  console.log('body  ', body)
   // connect to DB
   await connectDB();
   // find user from session
@@ -36,7 +37,12 @@ export const PUT = async (
     // update user background color
     const user = await User.findOneAndUpdate(
       { email: session.email },
-      { $set: { backgroundColor: body.backgroundColor } }
+      {
+        $set: {
+          backgroundColor: body.backgroundColor,
+          backgroundImage: body.backgroundImage,
+        },
+      }
     );
     return NextResponse.json(
       { message: 'Update was a success' },

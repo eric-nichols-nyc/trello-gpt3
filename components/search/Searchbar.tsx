@@ -1,6 +1,5 @@
 import { fetcher } from '@/lib/fetch';
-import { set } from 'mongoose';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import useSWR from 'swr';
 import SearchResultItem from './SearchResultItem';

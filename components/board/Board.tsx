@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import Column from '../column/Column'
-import BoardSideMenu from './BoardSideMenu'
+import BoardSideMenu from '../BoardSideMenu'
 import CreateListForm from '../forms/CreateListForm'
 import useSWR, { Fetcher, mutate } from 'swr'
 import axios from 'axios'
@@ -30,7 +30,7 @@ function Board() {
   const [items, setItems] = useState<Card[]>()
   // zustand
   const [setShowMenu] = useBoardStore((state) => [state.setShowMenu]);
-  const [allCards, setCards] = useCardStore((state) => [state.allCards, state.setCards]);
+  const [allCards] = useCardStore((state) => [state.allCards]);
 
   // revalidate cards
   useEffect(() => {
@@ -63,7 +63,7 @@ function Board() {
     mutate('/api/columns');
   }
 
-  // new order for the column should be last
+  // new order for the column should be last item in array
   const getNewItemOrder = (arr: Column[] | Card[]) => {
     if (!arr) return 'm'
     const order = getNewOrder(arr, arr?.length - 1, arr?.length)
@@ -72,7 +72,14 @@ function Board() {
   // return user background from user in db or default color
   const getUserBg = () => {
     if (!user || !user[0]) return 'bg-gradient-to-r from-violet-600 to-indigo-600'
-    if (!user[0].backgroundColor) return 'bg-gradient-to-r from-violet-600 to-indigo-600'
+    if (!user[0].backgroundColor && !user[0].backgroundImage) return 'bg-gradient-to-r from-violet-600 to-indigo-600'
+    if (user[0].backgroundColor && !user[0].backgroundImage) return user[0].backgroundColor
+    // if (!user[0].backgroundColor && user[0].backgroundImage) return `[bg-url(${user[0].backgroundImage})]`
+    const test = user[0].backgroundImage
+      console.log(' test', test)
+
+    if (!user[0].backgroundColor && user[0].backgroundImage) return "bg-no-repeat bg-cover bg-center [bg-url("+test+"})]"
+
     return user[0].backgroundColor
   }
 
@@ -122,6 +129,39 @@ function Board() {
     mutate('/api/cards');
   }
 
+  const updateCardDragAndDrop = (results: any) => {
+    const { source, destination, draggableId, type } = results;
+    const cardSourceIndex = source.index;
+    const cardDestinationIndex = destination.index;
+
+    // 2. find card index from destination column
+    const colDestinationIndex = cols?.findIndex(
+      (col) => col._id === destination.droppableId
+    );
+
+    const destinationColumn = cols && cols[colDestinationIndex];
+    const cardsCopy = [...cards];
+    // 3. get the card id and get find the destination column and index
+    const card = cardsCopy?.find((card) => card._id === draggableId);
+    if (!card) return;
+    // find the cards in the target column
+    const cardsInTargetColumn = cardsCopy?.filter(
+      (card) => card.columnId === destinationColumn._id
+    );
+    // 4. get a new order for the card
+    const order = getNewOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
+    if (!order) throw new Error('Error: order is undefined');
+    // 5. update the card with the new column and order
+    card.columnId = destinationColumn._id;
+    card.order = order;
+    // 6. update the state immediately with swr
+    // update the local state with the new order
+    cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
+    setItems(cardsCopy)
+    // 7. reordering the cards in the database
+    updateCardInDB(card)
+  }
+
   // handle drag and drop
   const handleDragAndDrop = (results: any) => {
     const { source, destination, draggableId, type } = results;
@@ -160,45 +200,22 @@ function Board() {
     }
 
     //=============== HANDLE CARDS DRAG AND DROP =================
-
-    const cardSourceIndex = source.index;
-    const cardDestinationIndex = destination.index;
-    // 1. find card index from source column
-    let colSourceIndex = cols?.findIndex(
-      (col) => col._id === source.droppableId
-    );
-    // 2. find card index from destination column
-    const colDestinationIndex = cols?.findIndex(
-      (col) => col._id === destination.droppableId
-    );
-
-    const destinationColumn = cols && cols[colDestinationIndex];
-    const cardsCopy = [...cards];
-    // 3. get the card id and get find the destination column and index
-    const card = cardsCopy?.find((card) => card._id === draggableId);
-    if (!card) return;
-    // find the cards in the target column
-    const cardsInTargetColumn = cardsCopy?.filter(
-      (card) => card.columnId === destinationColumn._id
-    );
-    // 4. get a new order for the card
-    const order = getNewOrder(cardsInTargetColumn, cardSourceIndex, cardDestinationIndex);
-    if (!order) throw new Error('Error: order is undefined');
-    // 5. update the card with the new column and order
-    card.columnId = destinationColumn._id;
-    card.order = order;
-    // 6. update the state immediately with swr
-    // update the local state with the new order
-    cardsCopy.sort((a, b) => a.order.localeCompare(b.order));
-    setItems(cardsCopy)
-    // 7. reordering the cards in the database
-    updateCardInDB(card)
+    updateCardDragAndDrop(results)
+ 
   };
+  // return user background from user in db or default color
+  const getBgImage = () => {
+    if(!user || !user[0]) return
+    if(!user[0].backgroundImage) return
+    const externalImageUrl = user[0].backgroundImage
+    return {backgroundImage: "url(" + externalImageUrl + ")"} 
+  }
 
   if (!cols || !items || !user) return <Loader />;
 
   return (
-    <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}>
+    <div className={`h-full ${getUserBg()} overflow-hidden flex flex-col items-start justify-center relative`}
+      style={getBgImage()}>
       {/* Header */}
       <div className="header">
         <div>Welcome Board</div>

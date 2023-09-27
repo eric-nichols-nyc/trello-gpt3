@@ -55,10 +55,3 @@ Running commands with npm `npm run [command]`
 | :-------------- | :--------------------------------------- |
 | `dev`           | Starts a development instance of the app |
 
-## FUNCTIONALITY
-- SHOW BOARD MODAL
-  - 
-- GET COMMENTS BY CARD ID
-  - useEffect -> setCardComments(comments.filter((comment: Comment) => comment.cardId === currentCard._id))
-- UPDATE COMMENTS COUNT ON CARD
-  - CreateCommentForm -> createComment() -> mutate('/api/comments')

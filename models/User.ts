@@ -13,8 +13,8 @@ const UserSchema = new Schema({
   image: {
     type: String,
   },
-  backgroundImage: { type: String },
-  backgroundColor: { type: String },
+  backgroundImage: { type: String || null},
+  backgroundColor: { type: String || null },
   onboarded: { type: Boolean, default: false },
 });
 

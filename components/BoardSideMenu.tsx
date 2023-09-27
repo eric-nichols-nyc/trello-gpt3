@@ -1,41 +1,37 @@
-import React from 'react'
 import {AiOutlineClose} from 'react-icons/ai'
 import { useBoardStore } from '@/store/BoardStore';
-import useSWR, { Fetcher, mutate } from 'swr';
+import { mutate } from 'swr';
 import axios from 'axios';
-
-const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
+import Unsplash from './Unsplash';
 
 interface Props {
   user: User,
 }
+
+const colors = [
+  'bg-gradient-to-r from-fuchsia-600 to-purple-600',
+  'bg-gradient-to-r from-blue-200 to-cyan-200',
+  'bg-gradient-to-r from-emerald-500 to-emerald-900',
+  'bg-gradient-to-r from-blue-800 to-indigo-900',
+  'bg-gradient-to-r from-amber-200 to-yellow-500',
+  'bg-gradient-to-r from-slate-900 to-slate-700',
+  'bg-gradient-to-r from-red-500 to-orange-500',
+  'bg-gradient-to-r from-rose-900 to-rose-600',
+];
 
 const SideBar = ({
   user,
 }:Props) => {
   // set bg color in store
   const [setBgColor, showMenu, setShowMenu] = useBoardStore((state) => [state.setBGColor, state.showMenu, state.setShowMenu])
-  //const { data, error } = useSWR(`/api/auth/users/${user._id}`, fetcher)
 
   const changeBackground = async(color: string) => {
-    await axios.put(`/api/auth/users`, {backgroundColor: color})
+    await axios.put(`/api/auth/users`, {backgroundColor: color, backgroundImage: null})
     // set bg in state
     setBgColor(color)
     // update user bg in database
     mutate('/api/auth/users')
   }
-
-  const colors =[
-    'bg-gradient-to-r from-fuchsia-600 to-purple-600',
-    'bg-gradient-to-r from-blue-200 to-cyan-200',
-    'bg-gradient-to-r from-emerald-500 to-emerald-900',
-    'bg-gradient-to-r from-blue-800 to-indigo-900',
-    'bg-gradient-to-r from-amber-200 to-yellow-500',
-    'bg-gradient-to-r from-slate-900 to-slate-700',
-    'bg-gradient-to-r from-red-500 to-orange-500',
-    'bg-gradient-to-r from-teal-200 to-teal-500',
-    'bg-gradient-to-r from-rose-900 to-rose-600'
-  ]
 
    return (
        <div className={`
@@ -57,16 +53,18 @@ const SideBar = ({
            </p>
            <div className="flex flex-wrap gap-2">
              {
-               colors.map((color) => {
+              colors.map((color) => {
                  return <div
                    key={color}
                    onClick={() => changeBackground(color)}
-                   className={`w-16 h-16 rounded-lg hover:bg-opacity-75 cursor-pointer ${color}`}>
+                   className={`w-[70px] h-16 rounded-lg hover:bg-opacity-75 cursor-pointer ${color}`}>
                  </div>
                })
              }
            </div>
          </div>
+          <hr className="mt-3 mb-3"/>
+         <Unsplash />
        </div> 
   )
 }
