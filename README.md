@@ -2,6 +2,7 @@
 
 ![Fullstack Trello Clone](/docs/images/board.png)
 
+![Fullstack Trello Clone](/docs/images/uml.jpg)
 
 This is a repository for a FullStack Trello clone app using React, NextJS, TailwindCSS & Prisma.
 

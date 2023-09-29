@@ -14,9 +14,6 @@ const ColumnSchema = new Schema({
     type: String,
     required: [true, 'Column Name is required'],
   },
-  image: {
-    type: String,
-  },
   order: {
     type: String,
     required: [true, 'Column Order is required'],
