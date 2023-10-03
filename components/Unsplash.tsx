@@ -6,11 +6,16 @@ import { mutate } from 'swr';
 import { createApi } from 'unsplash-js'
 import { useBoardStore } from '@/store/BoardStore'
 import Loader from './Loader';
+import {useDebounce} from '@/hooks/useDebounce'
+import { BiSearch } from 'react-icons/bi';
+import { de } from 'date-fns/locale';
 const Unsplash = () => {
   const showMenu = useBoardStore((state) => state.showMenu)
   // local state
   const [currentPage, setCurrentPage] = useState(1);
   const [images, setImages] = useState<any[]>([]);
+  // debounce search
+  const debouncedSearchImages = useDebounce(images, 500);
 
   const unsplash = createApi({
     accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY as string
@@ -35,17 +40,28 @@ const Unsplash = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    if(showMenu){
+    if (showMenu){
       findImages();
     }
   }, [showMenu, findImages])
 
-  if (!images.length) return <Loader />
+  // if (!images.length) return <Loader />
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="unsplash">
+      <div className="absolute top-[7px] left-[7px]">
+        <BiSearch className="text-gray-400 absolute top-1" />
+      </div>
+    <input type="text"
+      className="search_input mb-4 w-full" 
+      placeholder="Search for images" 
+      onChange={(e) => findImages(e.target.value)} />
+      {
+        !debouncedSearchImages.length && <p className="text-sm text-gray-400">No images found</p>
+      }
+      <div className="unsplash_images">
       
       {
-        images.map((image) => {
+          debouncedSearchImages.map((image:any) => {
           return <Image
             key={image.id}
             onClick={() => handleImageClick(image.urls.regular)}
@@ -53,10 +69,11 @@ const Unsplash = () => {
             src={image.urls.thumb}
             alt={image.alt_description}
             height={90}
-            width={150}
+            width={148}
           />
         })
       }
+    </div>
     </div>
   )
 }
