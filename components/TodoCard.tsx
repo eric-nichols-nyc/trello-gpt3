@@ -28,7 +28,7 @@ function TodoCard({
   const params = useSearchParams()
   // lcoal state
   const [icon, showIcon] = useState(false)
-  const [cardComments, setCardComments] = useState<Comment[]>(comments)
+  const [cardComments, setCardComments] = useState<Comment[]>([])
   // zustan
   const [openModal, setType] = useModalStore((state) => [state.openModal, state.setType]);
   const [setCurrCard] = useCardStore((state) => [state.setCurrentCard]);
@@ -41,12 +41,9 @@ function TodoCard({
 
   // TODO: aggregate comments by card id in db
   useEffect(() => {
-   setCardComments(comments.filter((comment) => comment.cardId === card._id))
+    if(comments.length === 0) return
+    setCardComments(comments.filter((comment) => comment.cardId === card._id))
   }, [comments, card._id])
-
-  // useEffect(() => {
-  //   console.log('cardComments', cardComments)
-  // }, [cardComments])
 
 
   return (
