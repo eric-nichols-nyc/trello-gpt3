@@ -74,7 +74,9 @@ function Board() {
     if (!user || !user[0]) return 'bg-gradient-to-r from-violet-600 to-indigo-600'
     if (!user[0].backgroundColor && !user[0].backgroundImage) return 'bg-gradient-to-r from-violet-600 to-indigo-600'
     if (user[0].backgroundColor && !user[0].backgroundImage) return user[0].backgroundColor
-    if (!user[0].backgroundColor && user[0].backgroundImage) return "bg-no-repeat bg-cover bg-center [bg-url("+test+"})]"
+    // if (!user[0].backgroundColor && user[0].backgroundImage) return `[bg-url(${user[0].backgroundImage})]`
+    const bg = user[0].backgroundImage
+    if (!user[0].backgroundColor && user[0].backgroundImage) return "bg-no-repeat bg-cover bg-center [bg-url("+bg+"})]"
 
     return user[0].backgroundColor
   }
