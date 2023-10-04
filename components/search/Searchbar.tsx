@@ -1,3 +1,4 @@
+'use client'
 import { fetcher } from '@/lib/fetch';
 import { useCallback, useEffect, useState } from 'react';
 import { BiSearch } from 'react-icons/bi';

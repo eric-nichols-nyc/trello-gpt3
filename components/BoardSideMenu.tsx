@@ -1,3 +1,4 @@
+'use client'
 import {AiOutlineClose} from 'react-icons/ai'
 import { useBoardStore } from '@/store/BoardStore';
 import { mutate } from 'swr';

@@ -26,6 +26,8 @@ type Props = {
 
 // Top header component searchbar/user menu
 function Header({ user }: Props) {
+  console.log('session user from header: ', user)
+
   // get current user from db
   const router = useRouter()
   const { data: currentuser } = useCurrentUser()

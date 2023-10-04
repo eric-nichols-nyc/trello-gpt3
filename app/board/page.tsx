@@ -12,7 +12,6 @@ export default async function BoardPage() {
   if (!session?.user) {
     redirect('/')
   }
-  console.log('session', session)
 
   return (
     <section className="flex flex-col h-full">

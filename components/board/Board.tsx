@@ -16,7 +16,7 @@ import { BsThreeDots } from 'react-icons/bs'
   It will contain all the columns and cards.
 */
 function Board() {
-
+  
   const fetcher: Fetcher<[], string> = (...args: string[]) => fetch(...args as [string, RequestInit]).then((res) => res.json());
   function useData(id: string) {
     return useSWR(`/api/${id}`, fetcher);

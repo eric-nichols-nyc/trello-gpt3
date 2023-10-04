@@ -1,3 +1,4 @@
+'use client'
 import { useCardStore } from '@/store/CardStore';
 import { useModalStore } from '@/store/ModalStore';
 import React from 'react'

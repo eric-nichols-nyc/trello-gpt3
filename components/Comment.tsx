@@ -1,4 +1,4 @@
-import React from 'react'
+'use client'
 import Avatar from 'react-avatar'
 import { format } from 'date-fns'
 import { useDeleteComment } from '@/hooks/useComments';
