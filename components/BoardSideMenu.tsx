@@ -1,9 +1,11 @@
 'use client'
+import { use, useEffect } from 'react';
 import {AiOutlineClose} from 'react-icons/ai'
 import { useBoardStore } from '@/store/BoardStore';
 import { mutate } from 'swr';
 import axios from 'axios';
 import Unsplash from './Unsplash';
+import { useWindowResize } from '@/hooks/useWindowResize';
 
 const colors = [
   'bg-gradient-to-r from-fuchsia-600 to-purple-600',
@@ -27,6 +29,13 @@ const SideBar = () => {
     // update user bg in database
     mutate('/api/auth/users')
   }
+
+  const  windowSize = useWindowResize();
+
+
+  useEffect(() => {
+    console.log(windowSize)
+  }, [windowSize])
 
    return (
        <div className={`
@@ -59,7 +68,7 @@ const SideBar = () => {
            </div>
          </div>
           <hr className="mt-3 mb-3"/>
-         <Unsplash />
+         {/* <Unsplash /> */}
           <div className="h-[40px] w-full fixed left-0  right-0 bottom-0 bg-slate-800">
             <div className="unsplash-disclaimer text-xs px-2">By using images from Unsplash, you agree to their <a href="https://unsplash.com/license" target="_blank">license</a> and <a href="https://unsplash.com/terms" target="_blank">Terms of Service</a></div>
           </div>
