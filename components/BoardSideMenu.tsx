@@ -68,7 +68,7 @@ const SideBar = () => {
            </div>
          </div>
           <hr className="mt-3 mb-3"/>
-         {/* <Unsplash /> */}
+         <Unsplash />
           <div className="h-[40px] w-full fixed left-0  right-0 bottom-0 bg-slate-800">
             <div className="unsplash-disclaimer text-xs px-2">By using images from Unsplash, you agree to their <a href="https://unsplash.com/license" target="_blank">license</a> and <a href="https://unsplash.com/terms" target="_blank">Terms of Service</a></div>
           </div>

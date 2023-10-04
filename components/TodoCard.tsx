@@ -40,10 +40,10 @@ function TodoCard({
   }
 
   // TODO: aggregate comments by card id in db
-  useEffect(() => {
-    if(comments.length === 0) return
-    setCardComments(comments.filter((comment) => comment.cardId === card._id))
-  }, [comments, card._id])
+  // useEffect(() => {
+  //   if(comments.length === 0) return
+  //   setCardComments(comments.filter((comment) => comment.cardId === card._id))
+  // }, [comments, card._id])
 
 
   return (
@@ -66,7 +66,7 @@ function TodoCard({
                 <BsTextLeft />
               )
             }
-            {
+            {/* {
               cardComments.length > 0 && (
                 <>
                 <div>
@@ -76,7 +76,7 @@ function TodoCard({
                   <span className="text-xs">{cardComments.length}</span>
                 </>
               )
-            }
+            } */}
           </div>
           </div>
         {
